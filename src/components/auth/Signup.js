@@ -46,14 +46,12 @@ const Signup = () => {
             setError(true);
         }
 
-        console.log('PASSWORD MATCH: ', password === confirmPassword);
         if (password !== confirmPassword) {
             setConfirmPasswordMessage('Passwords do not match');
             setError(true);
         }
 
         if (error) {
-            console.log('ERROR IN THE FORM');
             setUserMessage('Invalid form request. Please try again.');
             return;
         }
