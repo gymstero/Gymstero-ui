@@ -2,16 +2,14 @@ import React, { useState } from 'react';
 import {
     Button,
     Text,
-    Flex,
-    Container,
     Stack,
     Input,
     FormControl,
     WarningOutlineIcon,
     Box,
-    Center,
     NativeBaseProvider,
 } from 'native-base';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 const Signup = () => {
     const [email, setEmail] = useState('');
@@ -46,14 +44,12 @@ const Signup = () => {
             setError(true);
         }
 
-        console.log('PASSWORD MATCH: ', password === confirmPassword);
         if (password !== confirmPassword) {
             setConfirmPasswordMessage('Passwords do not match');
             setError(true);
         }
 
         if (error) {
-            console.log('ERROR IN THE FORM');
             setUserMessage('Invalid form request. Please try again.');
             return;
         }
@@ -85,6 +81,21 @@ const Signup = () => {
                 );
                 setError(true);
             });
+    };
+
+    GoogleSignin.configure({
+        webClientId:
+            '993292350774-qhu55smntth2s3qqsp9k4mntm5lkqhlg.apps.googleusercontent.com',
+    });
+
+    const signupWithGoogle = async () => {
+        await GoogleSignin.hasPlayServices({
+            showPlayServicesUpdateDialog: true,
+        });
+        const { idToken } = await GoogleSignin.signIn();
+        const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+        return auth().signInWithCredential(googleCredential);
     };
 
     return (
@@ -140,6 +151,14 @@ const Signup = () => {
                             Sign Up
                         </Button>
                         <Text>{userMessage}</Text>
+                    </Box>
+                    <Box w='85%' mt='15'>
+                        <Button
+                            w='100%'
+                            p='4'
+                            onPress={() => signupWithGoogle()}>
+                            Sign Up With Google
+                        </Button>
                     </Box>
                 </Box>
             </Stack>
