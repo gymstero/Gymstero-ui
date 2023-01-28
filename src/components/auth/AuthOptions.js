@@ -1,41 +1,41 @@
 import { useNavigation } from '@react-navigation/native';
-import { View, Button, StyleSheet, TouchableOpacity  } from 'react-native';
-
+import {
+    Button,
+    VStack,
+    NativeBaseProvider,
+    Divider,
+    ScrollView
+} from 'native-base';
+import NavBar from '../NavBar';
 const AuthOptions = () => {
     const navigation = useNavigation();
 
     return (
-        <View style={styles.container}>
-            <TouchableOpacity style={{ paddingVertical: 10 }}>
-                <Button
-                    style={styles.button}
-                    title="Sign-up"
-                    onPress={() => navigation.navigate('Sign-up')}
-                />
-            </TouchableOpacity>
-            <TouchableOpacity style={{ paddingVertical: 10 }}>
-                <Button
-                    style={styles.button}
-                    title="Login"
-                    onPress={() => navigation.navigate('Login')}
-                />
-            </TouchableOpacity>
-            <TouchableOpacity style={{ paddingVertical: 10 }}>
-                <Button
-                    style={styles.button}
-                    title="Gmail"
-                />
-            </TouchableOpacity>
-        </View>
+        <NativeBaseProvider flex={1} bg='red'>
+            <ScrollView h='80%'>
+                <VStack alignItems='center' justifyContent="center" mt='300' space={4}>
+                        <Button 
+                            rounded= "full" 
+                            w='85%'
+                            onPress={() => navigation.navigate('Login')}
+                        >Login</Button>
+                        <Button 
+                            rounded= "full" 
+                            w='85%'
+                        >Gmail</Button>
+                        <Divider w="85%" thickness="2" />
+                        <Button
+                            rounded= "full"  
+                            w='85%'
+                            variant="outline"
+                            onPress={() => navigation.navigate('Sign-up')}
+                        >Sign-up</Button>
+                </VStack>
+            </ScrollView >
+            <NavBar />
+        </NativeBaseProvider>
+        
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    
-});
 export default AuthOptions;

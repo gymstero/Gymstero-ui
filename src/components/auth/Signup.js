@@ -2,14 +2,11 @@ import React, { useState } from 'react';
 import {
     Button,
     Text,
-    Flex,
-    Container,
     Stack,
     Input,
     FormControl,
     WarningOutlineIcon,
     Box,
-    Center,
     NativeBaseProvider,
 } from 'native-base';
 
@@ -126,6 +123,7 @@ const Signup = () => {
                     </FormControl>
                     <Box w='85%' mt='15'>
                         <Button
+                            rounded= "full" 
                             w='100%'
                             p='4'
                             onPress={() =>
