@@ -1,11 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import { View, StyleSheet, TouchableOpacity  } from 'react-native';
 import {
     Button,
     VStack,
     NativeBaseProvider,
     Divider,
-    HStack,
     ScrollView
 } from 'native-base';
 import NavBar from '../NavBar';
@@ -14,7 +12,7 @@ const AuthOptions = () => {
 
     return (
         <NativeBaseProvider flex={1} bg='red'>
-            <ScrollView>
+            <ScrollView h='80%'>
                 <VStack alignItems='center' justifyContent="center" mt='300' space={4}>
                         <Button 
                             rounded= "full" 
@@ -33,9 +31,8 @@ const AuthOptions = () => {
                             onPress={() => navigation.navigate('Sign-up')}
                         >Sign-up</Button>
                 </VStack>
-            </ScrollView>
+            </ScrollView >
             <NavBar />
-
         </NativeBaseProvider>
         
     );

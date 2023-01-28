@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Pressable, Box, Text,Center,HStack} from "native-base";
+import { StyleSheet } from 'react-native';
 const NavBar = () => {
     const [selected, setSelected] = React.useState(1);
     return( 
-        <Box flex={1} bg="white" safeAreaTop width="100%"  alignSelf="center">
+        <Box style={styles.container} flex={1} bg="white" safeAreaTop width="100%"  alignSelf="center" >
           <HStack bg="primary.600" alignItems="center" h='100%' safeAreaBottom shadow={6}>
             <Pressable cursor="pointer" opacity={selected === 0 ? 1 : 0.5} py="3" flex={1} onPress={() => setSelected(0)}>
               <Center>
@@ -38,5 +39,13 @@ const NavBar = () => {
      
       )
   }
-
+  const styles = StyleSheet.create({
+    container: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: 60
+    }
+  })
   export default NavBar;
