@@ -9,6 +9,12 @@ import {
     Box,
     NativeBaseProvider,
 } from 'native-base';
+import {
+    GoogleSignin,
+    GoogleSigninButton,
+} from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/native';
 
 const Signup = () => {
     const [email, setEmail] = useState('');
@@ -20,15 +26,17 @@ const Signup = () => {
     const [passwordMessage, setPasswordMessage] = useState('');
     const [confirmPasswordMessage, setConfirmPasswordMessage] = useState('');
 
+    const navigation = useNavigation();
+
     const signupWithEmail = async (email, password, confirmPassword) => {
-        setError(false);
         setUserMessage('');
         setEmailMessage('');
         setPasswordMessage('');
         setConfirmPasswordMessage('');
+        setError(false);
 
         if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
-            setEmailMessage('Invalid email. Please enter valid email.');
+            setEmailMessage('Invalid email. Please use valid email.');
             setError(true);
         }
 
@@ -70,11 +78,11 @@ const Signup = () => {
                     setUserMessage(res.message);
                     setError(true);
                 } else {
-                    setUserMessage(res.message);
+                    navigation.navigate('Dashboard');
                 }
             })
             .catch((err) => {
-                console.log('Error in signup', err);
+                console.error('Error in signup', err);
                 setUserMessage(
                     'Something went wrong while creating user account'
                 );
@@ -82,11 +90,43 @@ const Signup = () => {
             });
     };
 
+    GoogleSignin.configure({
+        webClientId:
+            '993292350774-qhu55smntth2s3qqsp9k4mntm5lkqhlg.apps.googleusercontent.com',
+    });
+
+    const signupWithGoogle = async () => {
+        setError(false);
+        setUserMessage('');
+
+        try {
+            await GoogleSignin.hasPlayServices({
+                showPlayServicesUpdateDialog: true,
+            });
+            const { idToken } = await GoogleSignin.signIn();
+            const googleCredential =
+                auth.GoogleAuthProvider.credential(idToken);
+            const userInfo = await auth().signInWithCredential(
+                googleCredential
+            );
+
+            fetch('http://10.0.2.2:8080/user/register-with-google', {
+                method: 'POST',
+                headers: { 'Content-type': 'application/json' },
+                body: JSON.stringify(userInfo.user),
+            });
+            navigation.navigate('Dashboard');
+        } catch (err) {
+            console.error('ERROR', err);
+            setError(true);
+        }
+    };
+
     return (
         <NativeBaseProvider>
             <Stack direction='column' mt='100' space={10}>
                 <Box alignItems='center'>
-                    <FormControl isInvalid w='85%' maxW='350px' mb='10'>
+                    <FormControl isInvalid w='85%' maxW='350px' mb='5'>
                         <FormControl.Label>Email</FormControl.Label>
                         <Input
                             placeholder='Enter email'
@@ -121,7 +161,18 @@ const Signup = () => {
                             {confirmPasswordMessage}
                         </FormControl.ErrorMessage>
                     </FormControl>
-                    <Box w='85%' mt='15'>
+                    <Box w='85%'>
+                        {error ? (
+                            <Text fontSize='md' color='red.600'>
+                                {userMessage}
+                            </Text>
+                        ) : (
+                            <Text fontSize='md' color='black'>
+                                {userMessage}
+                            </Text>
+                        )}
+                    </Box>
+                    <Box w='85%' mt='5'>
                         <Button
                             rounded= "full" 
                             w='100%'
@@ -135,7 +186,14 @@ const Signup = () => {
                             }>
                             Sign Up
                         </Button>
-                        <Text>{userMessage}</Text>
+                    </Box>
+                    <Box w='87%' mt='15'>
+                        <GoogleSigninButton
+                            style={{ width: '100%', height: 60 }}
+                            size={GoogleSigninButton.Size.Wide}
+                            color={GoogleSigninButton.Color.Dark}
+                            onPress={() => signupWithGoogle()}
+                        />
                     </Box>
                 </Box>
             </Stack>
