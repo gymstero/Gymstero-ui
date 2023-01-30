@@ -181,6 +181,7 @@ const Signup = () => {
                     </Box>
                     <Box w='85%' mt='5'>
                         <Button
+                            rounded= "full" 
                             w='100%'
                             p='4'
                             onPress={() =>
