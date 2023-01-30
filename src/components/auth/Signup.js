@@ -34,7 +34,7 @@ const Signup = () => {
         setPasswordMessage('');
         setConfirmPasswordMessage('');
         setError(false);
-
+        
         if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
             setEmailMessage('Invalid email. Please use valid email.');
             setError(true);
@@ -77,6 +77,9 @@ const Signup = () => {
                 if (res.code > 201) {
                     setUserMessage(res.message);
                     setError(true);
+                    setEmail('');
+                    setPassword('');
+                    setConfirmPassword('');
                 } else {
                     navigation.navigate('Dashboard');
                 }
@@ -87,7 +90,11 @@ const Signup = () => {
                     'Something went wrong while creating user account'
                 );
                 setError(true);
+                setEmail('');
+                setPassword('');
+                setConfirmPassword('');
             });
+        
     };
 
     GoogleSignin.configure({
