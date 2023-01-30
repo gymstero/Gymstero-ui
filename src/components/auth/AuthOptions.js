@@ -6,7 +6,6 @@ import {
     Divider,
     ScrollView
 } from 'native-base';
-import NavBar from '../NavBar';
 const AuthOptions = () => {
     const navigation = useNavigation();
 
@@ -28,7 +27,6 @@ const AuthOptions = () => {
                         >Sign-up</Button>
                 </VStack>
             </ScrollView >
-            <NavBar />
         </NativeBaseProvider>
         
     );
