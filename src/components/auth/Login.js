@@ -9,55 +9,115 @@ import { Box,
   WarningOutlineIcon,
   Text} from 'native-base';
 import {
-  GoogleSigninButton,
+    GoogleSigninButton,
+    GoogleSignin,
 } from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
 
 const Login = () => {
-  const navigation = useNavigation();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
-  const [userMessage, setUserMessage] = useState('');
-  const [emailMessage, setEmailMessage] = useState('');
-  const [passwordMessage, setPasswordMessage] = useState('');
+    const navigation = useNavigation();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState(false);
+    const [userMessage, setUserMessage] = useState('');
+    const [emailMessage, setEmailMessage] = useState('');
+    const [passwordMessage, setPasswordMessage] = useState('');
 
-  const loginWithEmail = async (email, password) => {
-      setUserMessage('');
-      setEmailMessage('');
-      setPasswordMessage('');
-      setError(false);
+    const loginWithEmail = async (email, password) => {
+        setUserMessage('');
+        setEmailMessage('');
+        setPasswordMessage('');
+        setError(false);
 
-      if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
-          setEmailMessage('Invalid email. Please use valid email.');
-          setError(true);
-      }
+        if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+            setEmailMessage('Invalid email. Please use valid email.');
+            setError(true);
+        }
 
-      if (
-          !password.match(
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-          )
-      ) {
-          setPasswordMessage(
-              'Password must be minimum 8 characters with at least one uppercase letter, one lowercase letter, one, number, and one special character'
-          );
-          setError(true);
-      }
+        if (
+            !password.match(
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+            )
+        ) {
+            setPasswordMessage(
+                'Password must be minimum 8 characters with at least one uppercase letter, one lowercase letter, one, number, and one special character'
+            );
+            setError(true);
+        }
 
+        if (error) {
+            setUserMessage('Invalid form request. Please try again.');
+            return;
+        }
 
-      if (error) {
-          setUserMessage('Invalid form request. Please try again.');
-          return;
-      }
+        const userData = {
+            email: email,
+            password: password,
+        };
 
-      const userData = {
-          email: email,
-          password: password,
-      };
-
+        fetch('http://10.0.2.2:8080/user/login', {
+            method: 'POST',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify(userData),
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                if (res.code > 201) {
+                    setUserMessage(res.message);
+                    setError(true);
+                } else {
+                    navigation.navigate('Dashboard');
+                }
+            })
+            .catch((err) => {
+                console.error('Error in login', err);
+                setUserMessage('Something went wrong in login');
+                setError(true);
+            });
     };
 
-  return (
-    <NativeBaseProvider>
+    GoogleSignin.configure({
+        webClientId:
+            '993292350774-qhu55smntth2s3qqsp9k4mntm5lkqhlg.apps.googleusercontent.com',
+    });
+
+    const signInWithGoogle = async () => {
+        setError(false);
+        setUserMessage('');
+
+        try {
+            await GoogleSignin.hasPlayServices({
+                showPlayServicesUpdateDialog: true,
+            });
+            const { idToken } = await GoogleSignin.signIn();
+            const googleCredential =
+                auth.GoogleAuthProvider.credential(idToken);
+            const userInfo = await auth().signInWithCredential(
+                googleCredential
+            );
+
+            fetch('http://10.0.2.2:8080/user/register-with-google', {
+                method: 'POST',
+                headers: { 'Content-type': 'application/json' },
+                body: JSON.stringify(userInfo.user),
+            })
+                .then((res) => res.json())
+                .then((res) => {
+                    if (res.code > 201) {
+                        setUserMessage(res.message);
+                        setError(true);
+                    } else {
+                        navigation.navigate('Dashboard');
+                    }
+                });
+        } catch (err) {
+            console.error('ERROR', err);
+            setError(true);
+        }
+    };
+
+    return (
+        <NativeBaseProvider>
             <VStack direction='column' mt='100' space={10}>
                 <Box alignItems='center'>
                     <FormControl isInvalid w='85%' maxW='350px' mb='5'>
@@ -97,41 +157,26 @@ const Login = () => {
                     </Box>
                     <Box w='85%' mt='5'>
                         <Button
-                            rounded= "full" 
+                            rounded='full'
                             w='100%'
                             p='4'
-                            onPress={() =>{}
-                                }>
+                            onPress={() => loginWithEmail(email, password)}>
                             Login
                         </Button>
                     </Box>
                     <Box w='87%' mt='15'>
-                        <GoogleSigninButton rounded= "full"
+                        <GoogleSigninButton
+                            rounded='full'
                             style={{ width: '100%', height: 60 }}
                             size={GoogleSigninButton.Size.Wide}
                             color={GoogleSigninButton.Color.Dark}
-                            onPress={() => {}}
+                            onPress={signInWithGoogle}
                         />
                     </Box>
                 </Box>
             </VStack>
         </NativeBaseProvider>
-  );
+    );
 };
-/*
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  input: {
-    width: '80%',
-    height: 40,
-    borderWidth: 1,
-    marginVertical: 10,
-    padding: 10,
-  },
-});
-*/
+
 export default Login;
