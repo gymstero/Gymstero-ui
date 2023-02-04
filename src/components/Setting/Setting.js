@@ -14,11 +14,14 @@ import {
     Spacer,
 } from 'native-base';
 import { StyleSheet, TouchableOpacity } from 'react-native';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { getUser, getIdToken } from '../auth/auth';
 
 const Setting = () => {
     const [editMode, setEditMode] = useState(false);
     const [userData, setUserData] = useState({});
+    const [userMessage, setUserMessage] = useState('');
+    const [error, setError] = useState(false);
 
     const updateButtonPressed = () => {
         setEditMode(true);
@@ -67,6 +70,21 @@ const Setting = () => {
             .catch((err) => {
                 console.warn(err);
             });
+    };
+
+    const googleLogout = async () => {
+        setError(false);
+        setUserMessage('');
+
+        try {
+            await GoogleSignin.revokeAccess();
+            await GoogleSignin.signOut();
+            navigation.navigate('Authentication');
+        } catch (err) {
+            console.error('Error in Google logout', err);
+            setUserMessage('Something went wrong. Please try again.');
+            setError(true);
+        }
     };
 
     useEffect(() => {
@@ -227,6 +245,22 @@ const Setting = () => {
                                         Update
                                     </Button>
                                 </Container>
+                                <Box w='85%' mt='5'>
+                                    <Button
+                                        rounded='full'
+                                        w='100%'
+                                        p='2'
+                                        onPress={googleLogout}>
+                                        Logout
+                                    </Button>
+                                    {error ? (
+                                        <Text fontSize='md' color='red.600'>
+                                            {userMessage}
+                                        </Text>
+                                    ) : (
+                                        <></>
+                                    )}
+                                </Box>
                             </Container>
                         </>
                     )}

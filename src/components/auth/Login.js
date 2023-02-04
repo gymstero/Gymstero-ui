@@ -68,7 +68,7 @@ const Login = () => {
                     setUserMessage(res.message);
                     setError(true);
                 } else {
-                    navigation.navigate('Dashboard');
+                    navigation.navigate('Home');
                 }
             })
             .catch((err) => {
@@ -98,20 +98,12 @@ const Login = () => {
                 googleCredential
             );
 
-            fetch('http://10.0.2.2:8080/user/signin-with-google', {
-                method: 'POST',
-                headers: { 'Content-type': 'application/json' },
-                body: JSON.stringify(userInfo.user),
-            })
-                .then((res) => res.json())
-                .then((res) => {
-                    if (res.code > 201) {
-                        setUserMessage(res.message);
-                        setError(true);
-                    } else {
-                        navigation.navigate('Dashboard');
-                    }
-                });
+            if (userInfo) {
+                navigation.navigate('Home');
+            } else {
+                setError(true);
+                setUserMessage('Could not get user info');
+            }
         } catch (err) {
             console.error('Error in Google sign-in', err);
             setError(true);

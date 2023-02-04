@@ -3,10 +3,8 @@ import {
     Container,
     Flex,
     Image,
-    Box,
     Spacer,
     Text,
-    Center,
     HStack,
     NativeBaseProvider,
     VStack,
@@ -15,12 +13,10 @@ import {
 } from 'native-base';
 import UserInfo from './UserInfo';
 import WorkoutInfo from './WorkoutInfo';
-import { TouchableOpacity } from 'react-native';
 import BottomTabBar from '../BottomTabBar';
 import { getUser, getIdToken } from '../auth/auth';
 
 const UserProfile = () => {
-    const [selected, setSelected] = useState(0);
     const [userData, setUserData] = useState({});
 
     const fetchUser = async () => {

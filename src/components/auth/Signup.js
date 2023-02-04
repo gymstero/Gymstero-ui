@@ -80,7 +80,7 @@ const Signup = () => {
                     setUserMessage(res.message);
                     setError(true);
                 } else {
-                    navigation.navigate('Dashboard');
+                    navigation.navigate('Login');
                 }
             })
             .catch((err) => {
@@ -117,7 +117,7 @@ const Signup = () => {
                 headers: { 'Content-type': 'application/json' },
                 body: JSON.stringify(userInfo.user),
             });
-            navigation.navigate('Dashboard');
+            navigation.navigate('Home');
         } catch (err) {
             console.error('Error in Google sign-in', err);
             setError(true);
