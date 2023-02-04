@@ -20,8 +20,8 @@ const Dashboard = () => {
                         w='100%'
                         p='2'
                         variant="outline"
-                        title="LogOut"
-                        onPress={() => navigation.navigate('User Profile')}
+                        title="Profile"
+                        onPress={() => {}}
                     > Profile</Button>
                 </Box>
                 <Box width='85%' p="12" bg='gray.300' mt='4'>
@@ -31,7 +31,6 @@ const Dashboard = () => {
                      </Box>
                 <Box w='85%' mt='4'>
                     <Pressable 
-                        //rounded='full'
                         w='100%'
                         onPress={() => navigation.navigate('Schedule')}>
                              <Image source={image1} alt="Schedule Shortcut" size={70} width='100%' />
@@ -39,7 +38,6 @@ const Dashboard = () => {
                 </Box>
                 <Box w='85%' mt='4'>
                     <Pressable 
-                        //rounded='full'
                         w='100%'
                         onPress={() => navigation.navigate('Workout')}>
                              <Image source={image2} alt="Create Workout short Cut" size={70} width='100%' />
