@@ -129,7 +129,7 @@ const Setting = () => {
                                     </Container>
                                 </Flex>
                             </Container>
-                            <Container>
+                            <Container mt={5}>
                                 <Text fontSize={16} fontWeight={600} mb={1}>
                                     User Description
                                 </Text>
@@ -182,7 +182,7 @@ const Setting = () => {
                                     }
                                 />
                             </Container>
-                            <Container my={2} mx='auto'>
+                            <Container mt={5} mx='auto'>
                                 <Button width={200} onPress={saveButtonPressed}>
                                     Save
                                 </Button>
@@ -238,29 +238,32 @@ const Setting = () => {
                                         />
                                     </Flex>
                                 </Container>
-                                <Container my={10} mx='auto'>
-                                    <Button
-                                        width={200}
-                                        onPress={updateButtonPressed}>
-                                        Update
-                                    </Button>
+                                <Container mt={10} mx='auto'>
+                                    <Box w='85%'>
+                                        <Button
+                                            rounded='full'
+                                            width={230}
+                                            p='2'
+                                            mb={5}
+                                            onPress={updateButtonPressed}>
+                                            Update
+                                        </Button>
+                                        <Button
+                                            rounded='full'
+                                            width={230}
+                                            p='2'
+                                            onPress={googleLogout}>
+                                            Log Out
+                                        </Button>
+                                        {error ? (
+                                            <Text fontSize='md' color='red.600'>
+                                                {userMessage}
+                                            </Text>
+                                        ) : (
+                                            <></>
+                                        )}
+                                    </Box>
                                 </Container>
-                                <Box w='85%' mt='5'>
-                                    <Button
-                                        rounded='full'
-                                        w='100%'
-                                        p='2'
-                                        onPress={googleLogout}>
-                                        Logout
-                                    </Button>
-                                    {error ? (
-                                        <Text fontSize='md' color='red.600'>
-                                            {userMessage}
-                                        </Text>
-                                    ) : (
-                                        <></>
-                                    )}
-                                </Box>
                             </Container>
                         </>
                     )}
