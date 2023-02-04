@@ -46,7 +46,7 @@ const Login = () => {
             isValid = false;
         }
 
-        if (error) {
+        if (!isValid) {
             setUserMessage('Invalid form request. Please try again.');
             setError(true);
             return;
