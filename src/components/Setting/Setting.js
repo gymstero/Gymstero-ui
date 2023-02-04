@@ -76,7 +76,7 @@ const Setting = () => {
     return (
         <NativeBaseProvider style={styles.container}>
             <TouchableOpacity>
-                <VStack alignItems='center' space={36}>
+                <VStack alignItems='center'>
                     {editMode ? (
                         <>
                             <Container mt={5}>
