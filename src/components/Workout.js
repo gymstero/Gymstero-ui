@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, NativeBaseProvider } from 'native-base';
+import { Box, NativeBaseProvider, Center, Text } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
@@ -8,8 +8,14 @@ const Workout = () => {
 
     return (
         <NativeBaseProvider style={styles.container}>
-            <TouchableOpacity></TouchableOpacity>
-        </NativeBaseProvider>
+        <TouchableOpacity>
+            <Center>
+                <Text>
+                    To Do Workout
+                </Text>
+            </Center>
+        </TouchableOpacity>
+    </NativeBaseProvider>
     );
 };
 

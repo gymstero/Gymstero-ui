@@ -1,9 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Schedule from './Schedule';
 import Social from './Social';
-import Setting from './Setting';
+//import Setting from './Setting';
 import Workout from './Workout';
-import UserProfile from './UserProfile';
+import UserProfile from './User/UserProfile';
+import UserNav from './User/UserNav';
 
 const Tab = createBottomTabNavigator();
 
@@ -13,11 +14,11 @@ const BottomTabBar = () => {
             screenOptions={{
                 headerShown: false,
             }}>
+            <Tab.Screen name ='Dashboard' component={UserNav} />
             <Tab.Screen name='Workout' component={Workout} />
             <Tab.Screen name='Schedule' component={Schedule} />
             <Tab.Screen name='Social' component={Social} />
-            <Tab.Screen name='UserProfile' component={UserProfile} />
-            <Tab.Screen name='Settings' component={Setting} />
+            <Tab.Screen name='Settings' component={UserProfile} />
         </Tab.Navigator>
     );
 };

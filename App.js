@@ -4,21 +4,20 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AuthOptions from './src/components/auth/AuthOptions'
 import Signup from './src/components/auth/Signup';
 import Login from './src/components/auth/Login';
-import Dashboard from './src/components/DashBoard';
-import UserProfile from './src/components/User/UserProfile';
-
+import BottomTabBar from './src/components/BottomTabBar'
+import UserNav from './src/components/User/UserNav';
 
 const Stack = createNativeStackNavigator();
 
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='User Profile'>
+      <Stack.Navigator initialRouteName='Home' screenOptions={{ headerShown: true }}>
         <Stack.Screen name="Authentication" component={AuthOptions} />
         <Stack.Screen name="Sign-up" component={Signup} />
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Dashboard" component={Dashboard} />
-        <Stack.Screen name="User Profile" component={UserProfile} />
+        <Stack.Screen name='UserNav' component={UserNav} />
+        <Stack.Screen name="Home" component={BottomTabBar} />
         
       </Stack.Navigator>
     </NavigationContainer>

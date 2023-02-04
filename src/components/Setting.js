@@ -1,3 +1,4 @@
+/*
 import React, { useState, useEffect } from 'react';
 import {
     Box,
@@ -18,9 +19,14 @@ import {
 } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { getUser } from './auth/auth';
+//import { getUser } from './auth/auth';
 
 const Setting = () => {
+    return(<NativeBaseProvider>
+
+    </NativeBaseProvider>)
+    
+
     const [username, setUsername] = useState('');
     const [oldPassword, setOldPassword] = useState('');
     const [password, setPassword] = useState('');
@@ -92,6 +98,7 @@ const Setting = () => {
             </TouchableOpacity>
         </NativeBaseProvider>
     );
+    
 };
 
 const styles = StyleSheet.create({
@@ -103,3 +110,4 @@ const styles = StyleSheet.create({
 });
 
 export default Setting;
+*/
