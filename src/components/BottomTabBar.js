@@ -3,7 +3,6 @@ import Schedule from './Schedule';
 import Social from './Social';
 //import Setting from './Setting';
 import Workout from './Workout';
-import UserProfile from './User/UserProfile';
 import UserNav from './User/UserNav';
 
 const Tab = createBottomTabNavigator();
@@ -18,7 +17,7 @@ const BottomTabBar = () => {
             <Tab.Screen name='Workout' component={Workout} />
             <Tab.Screen name='Schedule' component={Schedule} />
             <Tab.Screen name='Social' component={Social} />
-            <Tab.Screen name='Settings' component={UserProfile} />
+            <Tab.Screen name='Settings' component={Social} />
         </Tab.Navigator>
     );
 };
