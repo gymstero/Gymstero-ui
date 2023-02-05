@@ -29,35 +29,37 @@ const Signup = () => {
     const navigation = useNavigation();
 
     const signupWithEmail = async (email, password, confirmPassword) => {
+        setError(false);
         setUserMessage('');
         setEmailMessage('');
         setPasswordMessage('');
         setConfirmPasswordMessage('');
-        setError(false);
+        let isValid = true;
 
-        if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+        if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
             setEmailMessage('Invalid email. Please use valid email.');
-            setError(true);
+            isValid = false;
         }
 
         if (
-            !password.match(
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+            !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+                password
             )
         ) {
             setPasswordMessage(
                 'Password must be minimum 8 characters with at least one uppercase letter, one lowercase letter, one, number, and one special character'
             );
-            setError(true);
+            isValid = false;
         }
 
         if (password !== confirmPassword) {
             setConfirmPasswordMessage('Passwords do not match');
-            setError(true);
+            isValid = false;
         }
 
-        if (error) {
+        if (!isValid) {
             setUserMessage('Invalid form request. Please try again.');
+            setError(true);
             return;
         }
 
@@ -78,7 +80,7 @@ const Signup = () => {
                     setUserMessage(res.message);
                     setError(true);
                 } else {
-                    navigation.navigate('Dashboard');
+                    navigation.navigate('Login');
                 }
             })
             .catch((err) => {
@@ -110,14 +112,14 @@ const Signup = () => {
                 googleCredential
             );
 
-            fetch('http://10.0.2.2:8080/user/register-with-google', {
+            fetch('http://10.0.2.2:8080/user/signin-with-google', {
                 method: 'POST',
                 headers: { 'Content-type': 'application/json' },
                 body: JSON.stringify(userInfo.user),
             });
-            navigation.navigate('Dashboard');
+            navigation.navigate('Home');
         } catch (err) {
-            console.error('ERROR', err);
+            console.error('Error in Google sign-in', err);
             setError(true);
         }
     };
@@ -174,7 +176,7 @@ const Signup = () => {
                     </Box>
                     <Box w='85%' mt='5'>
                         <Button
-                            rounded= "full" 
+                            rounded='full'
                             w='100%'
                             p='4'
                             onPress={() =>

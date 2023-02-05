@@ -24,29 +24,31 @@ const Login = () => {
     const [passwordMessage, setPasswordMessage] = useState('');
 
     const loginWithEmail = async (email, password) => {
+        setError(false);
         setUserMessage('');
         setEmailMessage('');
         setPasswordMessage('');
-        setError(false);
+        let isValid = true;
 
-        if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+        if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
             setEmailMessage('Invalid email. Please use valid email.');
-            setError(true);
+            isValid = false;
         }
 
         if (
-            !password.match(
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+            !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+                password
             )
         ) {
             setPasswordMessage(
                 'Password must be minimum 8 characters with at least one uppercase letter, one lowercase letter, one, number, and one special character'
             );
-            setError(true);
+            isValid = false;
         }
 
-        if (error) {
+        if (!isValid) {
             setUserMessage('Invalid form request. Please try again.');
+            setError(true);
             return;
         }
 
@@ -66,7 +68,7 @@ const Login = () => {
                     setUserMessage(res.message);
                     setError(true);
                 } else {
-                    navigation.navigate('Dashboard');
+                    navigation.navigate('Home');
                 }
             })
             .catch((err) => {
@@ -96,22 +98,14 @@ const Login = () => {
                 googleCredential
             );
 
-            fetch('http://10.0.2.2:8080/user/register-with-google', {
-                method: 'POST',
-                headers: { 'Content-type': 'application/json' },
-                body: JSON.stringify(userInfo.user),
-            })
-                .then((res) => res.json())
-                .then((res) => {
-                    if (res.code > 201) {
-                        setUserMessage(res.message);
-                        setError(true);
-                    } else {
-                        navigation.navigate('Dashboard');
-                    }
-                });
+            if (userInfo) {
+                navigation.navigate('Home');
+            } else {
+                setError(true);
+                setUserMessage('Could not get user info');
+            }
         } catch (err) {
-            console.error('ERROR', err);
+            console.error('Error in Google sign-in', err);
             setError(true);
         }
     };

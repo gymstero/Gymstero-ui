@@ -3,7 +3,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import Schedule from './Schedule';
 import Social from './Social';
-//import Setting from './Setting';
+import Setting from './Setting/Setting';
 import Workout from './Workout';
 import UserNav from './User/UserNav';
 
