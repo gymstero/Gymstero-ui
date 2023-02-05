@@ -156,11 +156,10 @@ const Setting = () => {
                                     <Switch
                                         size='lg'
                                         value={userData.publicUser}
-                                        onChange={(e) =>
+                                        onValueChange={(value) =>
                                             setUserData({
                                                 ...userData,
-                                                publicUser:
-                                                    !userData.publicUser,
+                                                publicUser: value,
                                             })
                                         }
                                     />
@@ -224,18 +223,13 @@ const Setting = () => {
                                     <Flex
                                         flexDirection='row'
                                         alignItems='center'>
-                                        <Text
-                                            fontSize={16}
-                                            fontWeight={600}
-                                            mb={5}>
+                                        <Text fontSize={16} fontWeight={600}>
                                             Public User
                                         </Text>
                                         <Spacer />
-                                        <Switch
-                                            size='lg'
-                                            value={userData.publicUser}
-                                            disabled
-                                        />
+                                        <Text>
+                                            {userData.publicUser ? 'Yes' : 'No'}
+                                        </Text>
                                     </Flex>
                                 </Container>
                                 <Container mt={10} mx='auto'>
