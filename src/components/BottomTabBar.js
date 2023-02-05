@@ -47,9 +47,9 @@ const BottomTabBar = () => {
                     ),
                   }}
             />
-            <Tab.Screen name='Settings' component={Social} 
+            <Tab.Screen name='Settings' component={Setting} 
                  options={{
-                    tabBarLabel: 'Dashboard',
+                    tabBarLabel: 'Setting',
                     tabBarIcon: ({ color, size }) => (
                       <MaterialCommunityIcons name="cog" color={color} size={size} />
                     ),

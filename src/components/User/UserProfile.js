@@ -13,9 +13,7 @@ import {
 } from 'native-base';
 import UserInfo from './UserInfo';
 import WorkoutInfo from './WorkoutInfo';
-import BottomTabBar from '../BottomTabBar';
 import { getUser, getIdToken } from '../auth/auth';
-
 const UserProfile = () => {
     const [userData, setUserData] = useState({});
 
@@ -85,7 +83,6 @@ const UserProfile = () => {
                         <UserInfo />
                     </Container>
                 </VStack>
-                <BottomTabBar />
             </ScrollView>
         </NativeBaseProvider>
     );
