@@ -28,4 +28,19 @@ const getIdToken = async () => {
     }
 };
 
-export { getUser, getGoogleUser, getIdToken };
+const googleLogout = async (setError, setUserMessage, navigation) => {
+    setError(false);
+    setUserMessage('');
+
+    try {
+        await GoogleSignin.revokeAccess();
+        await GoogleSignin.signOut();
+        navigation.navigate('Authentication');
+    } catch (err) {
+        console.error('Error in Google logout', err);
+        setUserMessage('Something went wrong. Please try again.');
+        setError(true);
+    }
+};
+
+export { getUser, getGoogleUser, getIdToken, googleLogout };
