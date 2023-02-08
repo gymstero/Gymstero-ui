@@ -1,16 +1,12 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { NativeBaseProvider, Stack, Button, Text } from "native-base";
-import AddWorkoutPlan from "./AddWorkoutPlan";
+import { NativeBaseProvider, Text } from "native-base";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 const Tab = createBottomTabNavigator();
 const WorkoutPage = () => {
   const [workouts, setWorkouts] = useState([]);
   const navigation = useNavigation();
-  const addWorkout = () => {
-    navigation.navigate("AddWorkoutPlan");
-  };
 
   return (
     <NativeBaseProvider>
@@ -18,7 +14,7 @@ const WorkoutPage = () => {
         <TouchableOpacity
           activeOpacity={0.7}
           style={styles.addButton}
-          onPress={addWorkout}
+          onPress={() => navigation.navigate('AddWorkoutPlan')}
         >
           <Text style={styles.addButtonText}>ADD WORKOUT PLAN</Text>
         </TouchableOpacity>

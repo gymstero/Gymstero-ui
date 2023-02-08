@@ -1,7 +1,10 @@
 import { Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import { NativeBaseProvider, Text, View, Button } from "native-base";
+import { useNavigation } from "@react-navigation/native";
 
 const AddWorkoutPlan = () => {
+  const navigation = useNavigation();
+
   return (
     <NativeBaseProvider>
       <ScrollView>
@@ -9,7 +12,7 @@ const AddWorkoutPlan = () => {
           <TouchableOpacity
             activeOpacity={0.7}
             style={styles.createWorkoutButton}
-            onPress={() => console.log("Create your Workout Routine pressed")}
+            onPress={() => navigation.navigate('CreateWorkoutPlan') }
           >
             <Image
               source={require("../../images/victor-freitas-WvDYdXDzkhs-unsplash.jpg")}
