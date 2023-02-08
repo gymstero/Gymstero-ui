@@ -1,0 +1,87 @@
+import { Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import { NativeBaseProvider, Text, View, Button, Input, Box, Heading } from "native-base";
+
+const CreateWorkoutPlan = () => {
+  return (
+    <NativeBaseProvider>
+      <ScrollView  >
+        <Box bg='black' w='100%' alignItems='center' >
+            <Heading color="white" w='85%' p='2'>New Workout Plan</Heading>
+            
+        </Box>
+        <Box  w='100%' alignItems='center'>
+            <Input variant="rounded" p='2' mt='2' placeholder="Enter Workout Title" />
+            <Button w='50%' mt='2' rounded='full' > + Add New Exercise</Button>
+            <Button w='50%' mt='2' rounded='full' >Submit</Button>
+        </Box>
+        
+            
+      </ScrollView>
+    </NativeBaseProvider>
+  );
+};
+
+const styles = {
+  container: {
+    padding: 20,
+    alignItems: "center",
+    flex: 1,
+  },
+  createWorkoutButton: {
+    flex: 1,
+    backgroundColor: "white",
+    width: "100%",
+    marginTop: 20,
+    borderRadius: 10,
+    overflow: "hidden",
+    height: 100,
+  },
+  createWorkoutImage: {
+    width: "100%",
+    flex: 1,
+    resizeMode: "cover",
+    overlayColor: "black",
+  },
+  addWorkoutButton: {
+    backgroundColor: "white",
+    width: "100%",
+    marginTop: 20,
+    borderRadius: 10,
+    overflow: "hidden",
+    height: 100,
+    flex: 1,
+  },
+  addWorkoutImage: {
+    width: "100%",
+    height: 200,
+    resizeMode: "cover",
+    flex: 1,
+  },
+  buttonText: {
+    backgroundColor: "#2E2E2E",
+    color: "#FFF0EE",
+    fontWeight: "",
+    textAlign: "center",
+    marginTop: 10,
+    position: "absolute",
+    top: "30%",
+    left: "16%",
+    fontSize: 20,
+  },
+  recentlyOpenedWorkoutsContainer: {
+    marginTop: 0,
+    padding: 20,
+    backgroundColor: "lightgrey",
+  },
+  recentlyOpenedWorkoutsTitle: {
+    fontWeight: "bold",
+    fontSize: 20,
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  recentlyOpenedWorkoutsList: {
+    /* Add styles for the list of recently opened workouts */
+  },
+};
+
+export default CreateWorkoutPlan;

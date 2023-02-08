@@ -4,7 +4,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import Schedule from "./Schedule";
 import Social from "./Social";
 import Setting from "./Setting/Setting";
-import Workout from "./WorkoutPages/Workout";
+import WorkoutNav from "./WorkoutPages/WorkoutNav";
 import UserNav from "./User/UserNav";
 
 const Tab = createBottomTabNavigator();
@@ -32,7 +32,7 @@ const BottomTabBar = () => {
       />
       <Tab.Screen
         name="Workout"
-        component={Workout}
+        component={WorkoutNav}
         options={{
           tabBarLabel: "Workout",
           tabBarIcon: ({ color, size }) => (
