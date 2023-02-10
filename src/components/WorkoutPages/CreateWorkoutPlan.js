@@ -9,7 +9,7 @@ const CreateWorkoutPlan = () => {
     title: ""
   });
   const navigation = useNavigation();
-  const submitWorkoutPlan = () => {
+  const submitWorkoutPlan = async () => {
     console.log(plan.title)
 
     let today = new Date();
@@ -17,7 +17,26 @@ const CreateWorkoutPlan = () => {
     let mm = String(today.getMonth() + 1).padStart(2, '0');
     let yyyy = today.getFullYear();
     today = mm + '/' + dd + '/' + yyyy;
+    /*
+    const userInfo = await getUser();
+    const idToken = await getIdToken();
+    console.log('USER', userData);
 
+    fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/WORKOUT`, {
+        method: 'post',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${idToken}`,
+        },
+        body: JSON.stringify(plan),
+    })
+      .then((res) => res.json())
+      .then((res) => console.log('USER DATA SAVED', res))
+      .catch((err) => {
+          console.error(err);
+      });
+    */
     navigation.navigate("WorkoutMainPage")
   }
   return (
