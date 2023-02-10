@@ -1,7 +1,25 @@
-import { Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
-import { NativeBaseProvider, Text, View, Button, Input, Box, Heading } from "native-base";
+import {  ScrollView } from "react-native";
+import { NativeBaseProvider, Button, Input, Box, Heading } from "native-base";
+import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const CreateWorkoutPlan = () => {
+  const [plan, setPlan] = useState({
+    id:0,
+    title: ""
+  });
+  const navigation = useNavigation();
+  const submitWorkoutPlan = () => {
+    console.log(plan.title)
+
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0');
+    let yyyy = today.getFullYear();
+    today = mm + '/' + dd + '/' + yyyy;
+
+    navigation.navigate("WorkoutMainPage")
+  }
   return (
     <NativeBaseProvider>
       <ScrollView  >
@@ -10,9 +28,19 @@ const CreateWorkoutPlan = () => {
             
         </Box>
         <Box  w='100%' alignItems='center'>
-            <Input variant="rounded" p='2' mt='2' placeholder="Enter Workout Title" />
-            <Button w='50%' mt='2' rounded='full' > + Add New Exercise</Button>
-            <Button w='50%' mt='2' rounded='full' >Submit</Button>
+            <Input 
+              variant="rounded" 
+              p='2' 
+              mt='2' 
+              placeholder="Enter Workout Title"
+              onChangeText={(text) =>
+                setPlan({
+                    ...plan,
+                    title: text,
+                })
+              } 
+            />
+            <Button w='50%' mt='2' rounded='full' onPress={submitWorkoutPlan} >Submit</Button>
         </Box>
         
             
