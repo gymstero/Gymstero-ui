@@ -12,8 +12,8 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Authentication"
-        screenOptions={{ headerShown: true }}
+        initialRouteName="Home"
+        screenOptions={{ headerShown: true}}
       >
         <Stack.Screen name="Authentication" component={AuthOptions} />
         <Stack.Screen name="Sign-up" component={Signup} />

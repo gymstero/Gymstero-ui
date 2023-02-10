@@ -29,7 +29,6 @@ const Dashboard = () => {
                         variant='outline'
                         title='Profile'
                         onPress={() => navigation.navigate('UserProfile')}>
-                        {' '}
                         Profile
                     </Button>
                 </Box>

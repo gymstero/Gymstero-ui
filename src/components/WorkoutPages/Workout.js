@@ -5,8 +5,37 @@ import { NativeBaseProvider, Pressable , HStack , Container, VStack, Flex, AddIc
 import WorkoutPlansList from "../../samples/WorkoutPlansFile";
 
 const WorkoutPage = () => {
-  const [workouts, setWorkouts] = useState(WorkoutPlansList);
+  const [workouts, setWorkouts] = useState(WorkoutPlansList); // placeholder
   const navigation = useNavigation();
+  /*  
+  const [workoutData, setWorkoutData] = useState({});
+  const fetchUser = async () => {
+    const userInfo = await getUser();
+    const idToken = await getIdToken();
+
+    fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/workout`, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${idToken}`,
+        },
+    })
+        .then((res) => res.json())
+        .then((res) => {
+            setUserData(res.WorkoutData);
+            console.info('Workout data fetched', userData);
+        })
+        .catch((err) => {
+            console.warn(err);
+        });
+  };
+
+   useEffect(() => {
+        fetchUser();
+    }, []);
+
+  */
 
   return (
     <NativeBaseProvider>
@@ -21,9 +50,9 @@ const WorkoutPage = () => {
           </Pressable>
         {workouts.length > 0 ? (
             workouts.map((workout, index) => (
+              <Pressable key={index} onPress={() => navigation.navigate('ViewWorkoutPlan', {title: workout.title})} >
               <HStack
                 mt={2}
-                key={index}
                 style={{
                     borderColor: 'gray.100',
                     borderStyle: 'solid',
@@ -43,6 +72,7 @@ const WorkoutPage = () => {
                     <Text> {workout.date}</Text>
                 </VStack>
             </HStack>
+            </Pressable>
             ))
           ) : (
             <Text style={styles.title}>Nothing Here Yet</Text>
