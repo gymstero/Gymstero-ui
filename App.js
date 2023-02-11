@@ -12,7 +12,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Authentication"
         screenOptions={{ headerShown: true}}
       >
         <Stack.Screen name="Authentication" component={AuthOptions} />

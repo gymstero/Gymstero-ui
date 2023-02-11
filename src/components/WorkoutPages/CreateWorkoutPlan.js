@@ -2,7 +2,7 @@ import {  ScrollView } from "react-native";
 import { NativeBaseProvider, Button, Input, Box, Heading } from "native-base";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-
+import { getUser, getIdToken } from '../auth/auth';
 const CreateWorkoutPlan = () => {
   const [plan, setPlan] = useState({
     id:0,
@@ -17,26 +17,37 @@ const CreateWorkoutPlan = () => {
     let mm = String(today.getMonth() + 1).padStart(2, '0');
     let yyyy = today.getFullYear();
     today = mm + '/' + dd + '/' + yyyy;
-    /*
-    const userInfo = await getUser();
-    const idToken = await getIdToken();
-    console.log('USER', userData);
+      const userInfo = await getUser();
+      const idToken = await getIdToken();
 
-    fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/WORKOUT`, {
-        method: 'post',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${idToken}`,
-        },
-        body: JSON.stringify(plan),
-    })
-      .then((res) => res.json())
-      .then((res) => console.log('USER DATA SAVED', res))
-      .catch((err) => {
-          console.error(err);
-      });
-    */
+      fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/workout`, {
+          method: 'POST',
+          headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${idToken}`,
+          },
+          body: JSON.stringify({
+              title: plan.title,
+              exerciseGoals: [
+                  {
+                      exerciseId: '1',
+                      targetSets: 5,
+                      targetReps: 25,
+                      targetWeight: 50.0,
+                      estimatedTime: 300,
+                  },
+              ],
+          }),
+      })
+          .then((res) => res.json())
+          .then((res) => {
+              console.log('RES', res);
+          })
+          .catch((err) => {
+              console.warn(err);
+          });
+  
     navigation.navigate("WorkoutMainPage")
   }
   return (
