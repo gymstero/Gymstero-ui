@@ -16,11 +16,12 @@ import WorkoutInfo from './WorkoutInfo';
 import { getUser, getIdToken } from '../auth/auth';
 const UserProfile = () => {
     const [userData, setUserData] = useState({});
+    const [workoutData, setWorkoutData] = useState({});
 
-    const fetchUser = async () => {
+    const fetchUserProfile = async () => {
         const userInfo = await getUser();
         const idToken = await getIdToken();
-        console.log('USER INFO', userInfo);
+
         fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/profile`, {
             method: 'GET',
             headers: {
@@ -32,7 +33,23 @@ const UserProfile = () => {
             .then((res) => res.json())
             .then((res) => {
                 setUserData(res.userData);
-                console.log('RES', userData);
+                console.log('USER', userData);
+            })
+            .catch((err) => {
+                console.warn(err);
+            });
+
+        fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/workouts`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${idToken}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                setWorkoutData(res.workouts);
             })
             .catch((err) => {
                 console.warn(err);
@@ -40,7 +57,7 @@ const UserProfile = () => {
     };
 
     useEffect(() => {
-        fetchUser();
+        fetchUserProfile();
     }, []);
     return (
         <NativeBaseProvider flex={1}>
@@ -77,7 +94,7 @@ const UserProfile = () => {
                         </Flex>
                     </Container>
                     <Container my={5} width='100%'>
-                        <WorkoutInfo />
+                        <WorkoutInfo workouts={workoutData} />
                     </Container>
                     <Container my={5}>
                         <UserInfo />
