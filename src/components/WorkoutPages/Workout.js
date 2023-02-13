@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import { View,  } from "react-native";
 import { useNavigation} from "@react-navigation/native";
 import { NativeBaseProvider, Pressable , HStack , Container, VStack, Flex, AddIcon, Text } from "native-base";
-import WorkoutPlansList from "../../samples/WorkoutPlansFile";
 import { getUser, getIdToken } from '../auth/auth';
 const WorkoutPage = () => {
-  const [workouts, setWorkouts] = useState([]); // placeholder
+  const [workouts, setWorkouts] = useState([]);
   const navigation = useNavigation();
-  const fetchWorkout = async () => {
+  const fetchWorkouts = async () => {
     const userInfo = await getUser();
     const idToken = await getIdToken();
 
@@ -31,7 +30,7 @@ const WorkoutPage = () => {
   };
 
    useEffect(() => {
-    fetchWorkout();
+    fetchWorkouts();
     }, []);
 
 
@@ -49,7 +48,7 @@ const WorkoutPage = () => {
           </Pressable>
           {workouts.length > 0 ? (
             workouts.map((workout, index) => (
-              <Pressable key={index} onPress={() => navigation.navigate('ViewWorkoutPlan', {title: workout.title})} >
+              <Pressable key={index} onPress={() => navigation.navigate('ViewWorkoutPlan', {id: workout.id})} >
               <HStack
                 mt={2}
                 style={{
@@ -64,11 +63,11 @@ const WorkoutPage = () => {
                         justifyContent='space-between'
                         borderBottomWidth={0.5}>
                         <Text fontSize={18} fontWeight={600}>
-                            {workout.title}
+                           {workout.title}
                         </Text>
                         <AddIcon size='lg' />
                     </Flex>
-                    <Text> {workout.date}</Text>
+                    <Text>  {new Date(workout.createdAt).getFullYear()}/{new Date(workout.createdAt).getMonth()+ 1}/{new Date(workout.createdAt).getDate()}</Text>
                 </VStack>
             </HStack>
             </Pressable>
