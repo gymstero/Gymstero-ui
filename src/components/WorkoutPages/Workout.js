@@ -1,20 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View,  } from "react-native";
 import { useNavigation} from "@react-navigation/native";
 import { NativeBaseProvider, Pressable , HStack , Container, VStack, Flex, AddIcon, Text } from "native-base";
-import WorkoutPlansList from "../../samples/WorkoutPlansFile";
-
+import { getUser, getIdToken } from '../auth/auth';
 const WorkoutPage = () => {
-  const [workouts, setWorkouts] = useState(WorkoutPlansList); // placeholder
+  const [workouts, setWorkouts] = useState([]);
   const navigation = useNavigation();
-  /*  
-  const [workoutData, setWorkoutData] = useState({});
-  const fetchUser = async () => {
+  const fetchWorkouts = async () => {
     const userInfo = await getUser();
     const idToken = await getIdToken();
 
-    fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/workout`, {
-        method: 'GET',
+    fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/workouts`, {
+        method: 'Get',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
@@ -23,8 +20,9 @@ const WorkoutPage = () => {
     })
         .then((res) => res.json())
         .then((res) => {
-            setUserData(res.WorkoutData);
-            console.info('Workout data fetched', userData);
+          setWorkouts(res.workouts);
+          console.log(workouts)
+          console.log('RES', res.workouts);
         })
         .catch((err) => {
             console.warn(err);
@@ -32,10 +30,10 @@ const WorkoutPage = () => {
   };
 
    useEffect(() => {
-        fetchUser();
+    fetchWorkouts();
     }, []);
 
-  */
+
 
   return (
     <NativeBaseProvider>
@@ -48,9 +46,9 @@ const WorkoutPage = () => {
           >
             <Text style={styles.addButtonText}>ADD WORKOUT PLAN</Text>
           </Pressable>
-        {workouts.length > 0 ? (
+          {workouts.length > 0 ? (
             workouts.map((workout, index) => (
-              <Pressable key={index} onPress={() => navigation.navigate('ViewWorkoutPlan', {title: workout.title})} >
+              <Pressable key={index} onPress={() => navigation.navigate('ViewWorkoutPlan', {id: workout.id})} >
               <HStack
                 mt={2}
                 style={{
@@ -65,11 +63,11 @@ const WorkoutPage = () => {
                         justifyContent='space-between'
                         borderBottomWidth={0.5}>
                         <Text fontSize={18} fontWeight={600}>
-                            {workout.title}
+                           {workout.title}
                         </Text>
                         <AddIcon size='lg' />
                     </Flex>
-                    <Text> {workout.date}</Text>
+                    <Text>  {new Date(workout.createdAt).getFullYear()}/{new Date(workout.createdAt).getMonth()+ 1}/{new Date(workout.createdAt).getDate()}</Text>
                 </VStack>
             </HStack>
             </Pressable>

@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Box,
-    Button,
-    Container,
-    Flex,
-    Image,
     NativeBaseProvider,
     VStack,
-    Text,
-    Spacer,
-    Input,
-    Switch,
-    TextArea,
 } from 'native-base';
 import { StyleSheet } from 'react-native';
 import { getUser, getIdToken } from '../auth/auth';

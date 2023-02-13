@@ -1,16 +1,44 @@
 import {  ScrollView } from "react-native";
 import { NativeBaseProvider, Button, Input, Box, Heading, VStack, Center } from "native-base";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigation,useRoute  } from "@react-navigation/native";
+import { getUser, getIdToken } from '../auth/auth';
 
 const ViewWorkoutPlan = () => {
   const route = useRoute();
+  const [workout, setWorkout] = useState([]);
+  const fetchWorkout = async () => {
+    const userInfo = await getUser();
+    const idToken = await getIdToken();
+
+    fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/workout/${route.params.id}`, {
+        method: 'Get',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${idToken}`,
+        },
+    })
+        .then((res) => res.json())
+        .then((res) => {
+          setWorkout(res.workout);
+          console.log(workout)
+          console.log('RES', res.workout);
+        })
+        .catch((err) => {
+            console.warn(err);
+        });
+  };
+
+   useEffect(() => {
+    fetchWorkout();
+    }, []);
   return (
     <NativeBaseProvider flex={1}>
       <ScrollView>
         <VStack alignItems='center' mt='50'>
           <Center width='100%' bg={"black"} >
-            <Heading color={"white"}>{route.params.title}</Heading>
+            <Heading color={"white"}>{workout.title}</Heading>
           </Center>
           <Box w='85%' mt='5'>
               <Button
