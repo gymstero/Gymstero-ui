@@ -16,7 +16,7 @@ import WorkoutInfo from './WorkoutInfo';
 import { getUser, getIdToken } from '../auth/auth';
 const UserProfile = () => {
     const [userData, setUserData] = useState({});
-    const [workoutData, setWorkoutData] = useState({});
+    const [workoutData, setWorkoutData] = useState([]);
 
     const fetchUserProfile = async () => {
         const userInfo = await getUser();
@@ -33,7 +33,7 @@ const UserProfile = () => {
             .then((res) => res.json())
             .then((res) => {
                 setUserData(res.userData);
-                console.log('USER', userData);
+                console.log('User data fetched', userData);
             })
             .catch((err) => {
                 console.warn(err);
@@ -50,6 +50,7 @@ const UserProfile = () => {
             .then((res) => res.json())
             .then((res) => {
                 setWorkoutData(res.workouts);
+                console.log('Workout data fetched', workoutData);
             })
             .catch((err) => {
                 console.warn(err);
