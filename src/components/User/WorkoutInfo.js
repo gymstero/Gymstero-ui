@@ -14,6 +14,7 @@ const WorkoutInfo = ({ workouts }) => {
             </Text>
             {workouts.map((workout) => (
                 <HStack
+                    key={workout.id}
                     style={{
                         borderColor: 'gray.100',
                         borderStyle: 'solid',
