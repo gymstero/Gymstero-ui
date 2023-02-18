@@ -5,6 +5,7 @@ import { useNavigation,useRoute  } from "@react-navigation/native";
 import { getUser, getIdToken } from '../auth/auth';
 
 const ViewWorkoutPlan = () => {
+  const navigation = useNavigation();
   const route = useRoute();
   const [workout, setWorkout] = useState([]);
   const fetchWorkout = async () => {
@@ -46,7 +47,9 @@ const ViewWorkoutPlan = () => {
                   w='100%'
                   p='2'
                   variant='outline'
-                  title='Profile'>
+                  title='Profile'
+                  onPress={() => navigation.navigate('ChooseExerciseType')}
+                  >
                   Add new Exercise
               </Button>
           </Box>
