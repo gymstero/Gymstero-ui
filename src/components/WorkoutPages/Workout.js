@@ -24,7 +24,6 @@ const WorkoutPage = () => {
         const userInfo = await getUser();
         const idToken = await getIdToken();
 
-
         fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/workouts`, {
             method: 'Get',
             headers: {
@@ -41,7 +40,8 @@ const WorkoutPage = () => {
             })
             .catch((err) => {
                 console.warn(err);
-            });
+            })
+            .finally(() => setRefreshing(false));
     };
 
     useEffect(() => {
@@ -68,7 +68,8 @@ const WorkoutPage = () => {
             })
             .catch((err) => {
                 console.warn(err);
-            });
+            })
+            .finally(() => setRefreshing(false));
     };
 
     return (
@@ -82,45 +83,50 @@ const WorkoutPage = () => {
                     <Text style={styles.addButtonText}>ADD WORKOUT PLAN</Text>
                 </Pressable>
                 {workouts && workouts.length > 0 ? (
-                    workouts.map((workout) => (
-                        <Pressable
-                            key={workout.id}
-                            onPress={() =>
-                                navigation.navigate('ViewWorkoutPlan', {
-                                    id: workout.id,
-                                })
-                            }>
-                            <HStack mt={2}>
-                                <MaterialCommunityIcons
-                                    name='circle'
-                                    color='gray.100'
-                                    size={40}
-                                />
-                                <Container w='80%' ml={2} my='auto'>
-                                    <Text fontSize={18}>{workout.title}</Text>
-                                </Container>
-                                <Menu
-                                    trigger={(triggerProps) => {
-                                        return (
-                                            <Pressable
-                                                {...triggerProps}
-                                                my='auto'>
-                                                <ThreeDotsIcon size='4' />
-                                            </Pressable>
-                                        );
-                                    }}>
-                                    <Menu.Item>Update</Menu.Item>
-                                    <Menu.Item
-                                        onPress={() => {
-                                            deleteWorkout(workout.id);
-                                            setRefreshing(true);
+                    <FlatList
+                        data={workouts}
+                        keyExtractor={(item) => item.id}
+                        refreshing={refreshing}
+                        onRefresh={fetchWorkouts}
+                        renderItem={({ item }) => (
+                            <Pressable
+                                onPress={() =>
+                                    navigation.navigate('ViewWorkoutPlan', {
+                                        id: item.id,
+                                    })
+                                }>
+                                <HStack mt={2}>
+                                    <MaterialCommunityIcons
+                                        name='circle'
+                                        color='gray.100'
+                                        size={40}
+                                    />
+                                    <Container w='80%' ml={2} my='auto'>
+                                        <Text fontSize={18}>{item.title}</Text>
+                                    </Container>
+                                    <Menu
+                                        trigger={(triggerProps) => {
+                                            return (
+                                                <Pressable
+                                                    {...triggerProps}
+                                                    my='auto'>
+                                                    <ThreeDotsIcon size='4' />
+                                                </Pressable>
+                                            );
                                         }}>
-                                        Delete
-                                    </Menu.Item>
-                                </Menu>
-                            </HStack>
-                        </Pressable>
-                    ))
+                                        <Menu.Item>Update</Menu.Item>
+                                        <Menu.Item
+                                            onPress={() => {
+                                                deleteWorkout(item.id);
+                                                setRefreshing(true);
+                                            }}>
+                                            Delete
+                                        </Menu.Item>
+                                    </Menu>
+                                </HStack>
+                            </Pressable>
+                        )}
+                    />
                 ) : (
                     <Text style={styles.title}>Nothing Here Yet</Text>
                 )}
