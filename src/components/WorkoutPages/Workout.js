@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { RefreshControl, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -22,6 +23,7 @@ const WorkoutPage = () => {
     const fetchWorkouts = async () => {
         const userInfo = await getUser();
         const idToken = await getIdToken();
+
 
         fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/workouts`, {
             method: 'Get',
