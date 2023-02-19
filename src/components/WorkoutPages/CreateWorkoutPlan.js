@@ -3,7 +3,9 @@ import { NativeBaseProvider, Button, Input, Box, Heading } from "native-base";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { getUser, getIdToken } from "../auth/auth";
+
 import { theme } from "../../theme/theme";
+
 const CreateWorkoutPlan = () => {
   const [plan, setPlan] = useState({
     id: 0,
@@ -24,26 +26,17 @@ const CreateWorkoutPlan = () => {
       },
       body: JSON.stringify({
         title: plan.title,
-        exerciseGoals: [
-          {
-            exerciseId: "1",
-            targetSets: 5,
-            targetReps: 25,
-            targetWeight: 50.0,
-            estimatedTime: 300,
-          },
-        ],
+        exerciseGoals: [],
       }),
     })
       .then((res) => res.json())
       .then((res) => {
         console.log("RES", res);
+        navigation.navigate("ViewWorkoutPlan", { id: res.id });
       })
       .catch((err) => {
         console.warn(err);
       });
-
-    navigation.navigate("WorkoutMainPage");
   };
   return (
     <NativeBaseProvider>
