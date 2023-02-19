@@ -1,5 +1,4 @@
 import React from "react";
-import MyHeader from "../Layout/MyHeader";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ExerciseDetails from "./ExerciseDetails";
 

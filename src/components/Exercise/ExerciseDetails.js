@@ -16,7 +16,6 @@ import {
   View,
   Left,
 } from "native-base";
-import MyHeader from "../Layout/MyHeader";
 import { customStyles } from "../../theme/customStyles";
 
 const ExerciseDetails = ({ navigation }) => {

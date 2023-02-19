@@ -6,7 +6,6 @@ import Social from "./Social";
 import Setting from "./Setting/Setting";
 import WorkoutNav from "./WorkoutPages/WorkoutNav";
 import UserNav from "./User/UserNav";
-import { NativeBaseProvider, View } from "native-base";
 
 const Tab = createBottomTabNavigator();
 
