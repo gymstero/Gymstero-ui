@@ -1,6 +1,8 @@
 import { Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import { NativeBaseProvider, Text, View, Button } from "native-base";
 import { useNavigation } from "@react-navigation/native";
+import ImageButton from "../Layout/ImageButton";
+import { customStyles } from "../../theme/customStyles";
 
 const AddWorkoutPlan = () => {
   const navigation = useNavigation();
@@ -8,37 +10,40 @@ const AddWorkoutPlan = () => {
   return (
     <NativeBaseProvider>
       <ScrollView>
-        <View style={styles.container}>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles.createWorkoutButton}
-            onPress={() => navigation.navigate('CreateWorkoutPlan') }
-          >
-            <Image
-              source={require("../../images/victor-freitas-WvDYdXDzkhs-unsplash.jpg")}
-              style={styles.createWorkoutImage}
-            />
-            <Text style={styles.buttonText}>Create your Workout Routine</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles.addWorkoutButton}
+        <View style={customStyles.container}>
+          <ImageButton
+            imageSource={require("../../images/victor-freitas-WvDYdXDzkhs-unsplash.jpg")}
+            text="Create your Workout Routine"
+            onPress={() => navigation.navigate("CreateWorkoutPlan")}
+            textStyle={styles.buttonText}
+            buttonStyle={{
+              height: 100,
+            }}
+          />
+          <ImageButton
+            imageSource={require("../../images/sam-moghadam-khamseh-vOZP2LojrHI-unsplash.jpg")}
+            text="Add pre-built Workout plan"
             onPress={() => console.log("Add pre-built Workout plan pressed")}
-          >
-            <Image
-              source={require("../../images/sam-moghadam-khamseh-vOZP2LojrHI-unsplash.jpg")}
-              style={styles.addWorkoutImage}
-            />
-            <Text style={styles.buttonText}>Add pre-built Workout plan</Text>
-          </TouchableOpacity>
+            textStyle={styles.buttonText}
+            buttonStyle={{
+              height: 100,
+            }}
+            imageStyle={{
+              opacity: 0.4,
+            }}
+          />
         </View>
         <View style={styles.recentlyOpenedWorkoutsContainer}>
           <Text style={styles.recentlyOpenedWorkoutsTitle}>
             Recently Opened Workouts
           </Text>
+
           <View style={styles.recentlyOpenedWorkoutsList}>
             {/* List of recently opened workouts */}
             {/* You can add code to loop through and display the workouts here */}
+            <Button onPress={() => navigation.navigate("ExerciseNav")}>
+              <Text>Barbell Bench Press</Text>
+            </Button>
           </View>
         </View>
       </ScrollView>
@@ -47,43 +52,7 @@ const AddWorkoutPlan = () => {
 };
 
 const styles = {
-  container: {
-    padding: 20,
-    alignItems: "center",
-    flex: 1,
-  },
-  createWorkoutButton: {
-    flex: 1,
-    backgroundColor: "white",
-    width: "100%",
-    marginTop: 20,
-    borderRadius: 10,
-    overflow: "hidden",
-    height: 100,
-  },
-  createWorkoutImage: {
-    width: "100%",
-    flex: 1,
-    resizeMode: "cover",
-    overlayColor: "black",
-  },
-  addWorkoutButton: {
-    backgroundColor: "white",
-    width: "100%",
-    marginTop: 20,
-    borderRadius: 10,
-    overflow: "hidden",
-    height: 100,
-    flex: 1,
-  },
-  addWorkoutImage: {
-    width: "100%",
-    height: 200,
-    resizeMode: "cover",
-    flex: 1,
-  },
   buttonText: {
-    backgroundColor: "#2E2E2E",
     color: "#FFF0EE",
     fontWeight: "",
     textAlign: "center",
@@ -95,14 +64,14 @@ const styles = {
   },
   recentlyOpenedWorkoutsContainer: {
     marginTop: 0,
-    padding: 20,
-    backgroundColor: "lightgrey",
+    padding: 1,
   },
   recentlyOpenedWorkoutsTitle: {
     fontWeight: "bold",
     fontSize: 20,
+    padding: 20,
     textAlign: "center",
-    marginBottom: 20,
+    backgroundColor: "lightgrey",
   },
   recentlyOpenedWorkoutsList: {
     /* Add styles for the list of recently opened workouts */
