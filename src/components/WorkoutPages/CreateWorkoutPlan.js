@@ -23,26 +23,19 @@ const CreateWorkoutPlan = () => {
           },
           body: JSON.stringify({
               title: plan.title,
-              exerciseGoals: [
-                  {
-                      exerciseId: '1',
-                      targetSets: 5,
-                      targetReps: 25,
-                      targetWeight: 50.0,
-                      estimatedTime: 300,
-                  },
-              ],
+              exerciseGoals: [],
           }),
       })
           .then((res) => res.json())
           .then((res) => {
-              console.log('RES', res);
+              console.log('RES', res );
+              navigation.navigate('ViewWorkoutPlan', {id: res.id})
           })
           .catch((err) => {
               console.warn(err);
           });
   
-    navigation.navigate("WorkoutMainPage")
+          
   }
   return (
     <NativeBaseProvider>

@@ -1,12 +1,13 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { theme } from "../theme/theme";
-import Schedule from "./Schedule";
+
+import ScheduleNav from "./Schedule/ScheduleNav";
 import Social from "./Social";
 import Setting from "./Setting/Setting";
 import WorkoutNav from "./WorkoutPages/WorkoutNav";
 import UserNav from "./User/UserNav";
-import { NativeBaseProvider, View } from "native-base";
+
+import { theme } from "../theme/theme";
 
 const Tab = createBottomTabNavigator();
 
@@ -16,6 +17,7 @@ const BottomTabBar = () => {
       screenOptions={{
         headerShown: false,
         headerTitleAlign: "center",
+
         tabBarActiveTintColor: "#D23812",
         tabBarInactiveTintColor: theme.colors.text,
         tabBarPosition: "bottom",
@@ -64,7 +66,7 @@ const BottomTabBar = () => {
       />
       <Tab.Screen
         name="Schedule"
-        component={Schedule}
+        component={ScheduleNav}
         options={{
           tabBarLabel: "Schedule",
           tabBarIcon: ({ color, size }) => (
