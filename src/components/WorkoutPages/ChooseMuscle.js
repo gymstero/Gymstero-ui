@@ -18,7 +18,7 @@ const ChooseMuscle= () => {
                 <Text>{route.params.eType}</Text>
                     {MuscleGroupArray.length > 0 ? (
                         MuscleGroupArray.map((group, index) => (
-                        <Button key = {index} onPress={() => navigation.navigate('ChooseExercise', {eType: route.params.eType, mGroup: group })}>{group}</Button>
+                        <Button key = {index} onPress={() => navigation.navigate('ChooseExercise', {eType: route.params.eType, mGroup: group, workoutId:route.params.workoutId })}>{group}</Button>
                         ))
                     ) : (
                         <Text>Nothing Here Yet</Text>

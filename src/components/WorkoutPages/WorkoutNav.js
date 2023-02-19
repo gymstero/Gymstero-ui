@@ -7,6 +7,7 @@ import ViewWorkoutPlan from './ViewWorkoutPlan';
 import ChooseExerciseType from './ChooseExerciseType';
 import ChooseMuscle from './ChooseMuscle';
 import ChooseExercise from './ChooseExercise';
+import CreateExercise from './CreateExercise';
 const Work = createNativeStackNavigator();
 
 function WorkoutNav() {
@@ -22,6 +23,7 @@ function WorkoutNav() {
             <Work.Screen name='ChooseExerciseType' component={ChooseExerciseType} />
             <Work.Screen name='ChooseMuscle' component={ChooseMuscle} />
             <Work.Screen name='ChooseExercise' component={ChooseExercise} />
+            <Work.Screen name='CreateExercise' component={CreateExercise} />
         </Work.Navigator>
     );
 }

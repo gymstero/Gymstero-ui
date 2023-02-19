@@ -17,7 +17,7 @@ const ChooseExerciseType= () => {
                 <VStack alignItems='center' justifyContent="center" space={4}>
                     {exerciseTypesArray.length > 0 ? (
                         exerciseTypesArray.map((type, index) => (
-                        <Button key = {index} onPress={() => navigation.navigate('ChooseMuscle', {eType: type})}>{type}</Button>
+                        <Button key = {index} onPress={() => navigation.navigate('ChooseMuscle', {eType: type, workoutId: route.params.workoutId})}>{type}</Button>
                         ))
                         
                     ) : (

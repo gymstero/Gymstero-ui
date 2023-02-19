@@ -23,7 +23,7 @@ const ChooseExercise= () => {
         if ( route.params.mGroup != 'skip'){
             query+= `muscleGroup=${route.params.mGroup}`;
         }
-        fetch(`http://10.0.2.2:8080/api/workout/exercises${query}`, {
+        fetch(`http://10.0.2.2:8080/api/workout/exercises?exerciseType=${route.params.eType}&muscleGroup=${route.params.mGroup}`, {
           method: 'Get',
           headers: {
               Accept: 'application/json',
@@ -54,7 +54,7 @@ const ChooseExercise= () => {
                 <Text>{route.params.eType}, {route.params.mGroup}</Text>
                     {exercises.length > 0 ? (
                         exercises.map((exercise, index) => (
-                        <Button key = {index} >{exercise.title}</Button>
+                        <Button key = {index} onPress={() => navigation.navigate('CreateExercise', {id: exercise.id, title: exercise.title, workoutId:route.params.workoutId })}>{exercise.title}</Button>
                         ))
                     ) : (
                         <Text>Nothing Here Yet</Text>

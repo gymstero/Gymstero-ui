@@ -1,5 +1,5 @@
 import {  ScrollView } from "react-native";
-import { NativeBaseProvider, Button, Input, Box, Heading, VStack, Center } from "native-base";
+import { NativeBaseProvider, Button, Input, Box, Heading, VStack, Center, Text } from "native-base";
 import React, { useState, useEffect } from "react";
 import { useNavigation,useRoute  } from "@react-navigation/native";
 import { getUser, getIdToken } from '../auth/auth';
@@ -7,7 +7,16 @@ import { getUser, getIdToken } from '../auth/auth';
 const ViewWorkoutPlan = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const [workout, setWorkout] = useState([]);
+  const [workout, setWorkout] = useState({
+    title : "",
+    exerciseGoals :[],
+    startDate : '',
+    endDate : '',
+    routine :'once',
+    daysWhenWeekly :[],
+    reminder : '',
+    createdAt : new Date().toISOString()
+  });
   const fetchWorkout = async () => {
     const userInfo = await getUser();
     const idToken = await getIdToken();
@@ -33,7 +42,7 @@ const ViewWorkoutPlan = () => {
 
    useEffect(() => {
     fetchWorkout();
-    }, []);
+    }, [route]);
   return (
     <NativeBaseProvider flex={1}>
       <ScrollView>
@@ -41,6 +50,13 @@ const ViewWorkoutPlan = () => {
           <Center width='100%' bg={"black"} >
             <Heading color={"white"}>{workout.title}</Heading>
           </Center>
+          {workout.exerciseGoals.length > 0 ? (
+            workout.exerciseGoals.map((goal, index) => (
+              <Text key ={index}> {goal}</Text>
+            ))
+          ) : (
+            <Text style={styles.title}>Nothing Here Yet</Text>
+          )}
           <Box w='85%' mt='5'>
               <Button
                   rounded='full'
@@ -48,7 +64,7 @@ const ViewWorkoutPlan = () => {
                   p='2'
                   variant='outline'
                   title='Profile'
-                  onPress={() => navigation.navigate('ChooseExerciseType')}
+                  onPress={() => navigation.navigate('ChooseExerciseType', {workoutId: route.params.id })}
                   >
                   Add new Exercise
               </Button>

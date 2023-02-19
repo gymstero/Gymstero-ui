@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View,  } from "react-native";
 import { useNavigation} from "@react-navigation/native";
-import { NativeBaseProvider, Pressable , HStack , Container, VStack, Flex, AddIcon, Text } from "native-base";
+import { NativeBaseProvider, Pressable , HStack , Container, VStack, Flex, AddIcon, Text ,ScrollView} from "native-base";
 import { getUser, getIdToken } from '../auth/auth';
 const WorkoutPage = () => {
   const [workouts, setWorkouts] = useState([]);
@@ -21,7 +20,7 @@ const WorkoutPage = () => {
         .then((res) => res.json())
         .then((res) => {
           setWorkouts(res.workouts);
-          console.log(workouts)
+          
           console.log('RES', res.workouts);
         })
         .catch((err) => {
@@ -37,7 +36,8 @@ const WorkoutPage = () => {
 
   return (
     <NativeBaseProvider>
-      <View style={styles.container}>
+      <ScrollView >
+        <VStack style={styles.container}>
           <Pressable
             activeOpacity={0.7}
             style={styles.addButton}
@@ -75,7 +75,8 @@ const WorkoutPage = () => {
           ) : (
             <Text style={styles.title}>Nothing Here Yet</Text>
           )}
-      </View>
+          </VStack>
+      </ScrollView>
       
       
     </NativeBaseProvider>
