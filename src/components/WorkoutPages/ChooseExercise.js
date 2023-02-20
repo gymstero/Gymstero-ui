@@ -14,34 +14,35 @@ const ChooseExercise= () => {
     const navigation = useNavigation();
     const [exercises, setExercises] = useState([]);
     const fetchExercises = async () => {
-        const userInfo = await getUser();
         const idToken = await getIdToken();
         let query = '?';
-        if(route.params.eType != 'skip'){
+        if (route.params.eType != 'skip') {
             query += `exerciseType=${route.params.eType}&`;
         }
-        if ( route.params.mGroup != 'skip'){
-            query+= `muscleGroup=${route.params.mGroup}`;
+        if (route.params.mGroup != 'skip') {
+            query += `muscleGroup=${route.params.mGroup}`;
         }
-        fetch(`http://10.0.2.2:8080/api/workout/exercises?exerciseType=${route.params.eType}&muscleGroup=${route.params.mGroup}`, {
-          method: 'Get',
-          headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${idToken}`,
-          },
-      })
-          .then((res) => res.json())
-          .then((res) => {
-            setExercises(res.exercises);
-            console.log(res.exercises);
-            console.log('RES2', res);
-          })
-          .catch((err) => {
-              console.warn(err);
-          });
-       
-      };
+        fetch(
+            `http://10.0.2.2:8080/api/workout/exercises?exerciseType=${route.params.eType}&muscleGroup=${route.params.mGroup}`,
+            {
+                method: 'Get',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${idToken}`,
+                },
+            }
+        )
+            .then((res) => res.json())
+            .then((res) => {
+                setExercises(res.exercises);
+                console.log(res.exercises);
+                console.log('RES2', res);
+            })
+            .catch((err) => {
+                console.warn(err);
+            });
+    };
     
        useEffect(() => {
         fetchExercises();
@@ -50,20 +51,35 @@ const ChooseExercise= () => {
     return (
         <NativeBaseProvider flex={1} bg='red'>
             <ScrollView h='80%'>
-                <VStack alignItems='center' justifyContent="center" space={4}>
-                <Text>{route.params.eType}, {route.params.mGroup}</Text>
+                <VStack
+                    alignItems='center'
+                    justifyContent='center'
+                    space={4}
+                    mt={5}>
+                    <Text fontSize={20} fontWeight={600}>
+                        {route.params.eType}, {route.params.mGroup}
+                    </Text>
                     {exercises.length > 0 ? (
                         exercises.map((exercise, index) => (
-                        <Button key = {index} onPress={() => navigation.navigate('CreateExercise', {id: exercise.id, title: exercise.title, workoutId:route.params.workoutId })}>{exercise.title}</Button>
+                            <Button
+                                minW={150}
+                                key={index}
+                                onPress={() =>
+                                    navigation.navigate('CreateExercise', {
+                                        id: exercise.id,
+                                        title: exercise.title,
+                                        workoutId: route.params.workoutId,
+                                    })
+                                }>
+                                {exercise.title}
+                            </Button>
                         ))
                     ) : (
                         <Text>Nothing Here Yet</Text>
                     )}
-                    
                 </VStack>
-            </ScrollView >
+            </ScrollView>
         </NativeBaseProvider>
-        
     );
 };
 

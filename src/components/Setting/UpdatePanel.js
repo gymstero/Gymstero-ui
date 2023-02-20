@@ -95,7 +95,7 @@ const UpdatePanel = ({ userData, setUserData, setEditMode }) => {
                     <Switch
                         size='lg'
                         value={userData.publicUser}
-                        onValueChange={(value) =>
+                        onToggle={(value) =>
                             setUserData({
                                 ...userData,
                                 publicUser: value,

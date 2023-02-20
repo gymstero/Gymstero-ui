@@ -14,20 +14,35 @@ const ChooseMuscle= () => {
     return (
         <NativeBaseProvider flex={1} bg='red'>
             <ScrollView h='80%'>
-                <VStack alignItems='center' justifyContent="center" space={4}>
-                <Text>{route.params.eType}</Text>
+                <VStack
+                    alignItems='center'
+                    justifyContent='center'
+                    space={4}
+                    mt={5}>
+                    <Text fontSize={20} fontWeight={600}>
+                        {route.params.eType}
+                    </Text>
                     {MuscleGroupArray.length > 0 ? (
                         MuscleGroupArray.map((group, index) => (
-                        <Button key = {index} onPress={() => navigation.navigate('ChooseExercise', {eType: route.params.eType, mGroup: group, workoutId:route.params.workoutId })}>{group}</Button>
+                            <Button
+                                minW={150}
+                                key={index}
+                                onPress={() =>
+                                    navigation.navigate('ChooseExercise', {
+                                        eType: route.params.eType,
+                                        mGroup: group,
+                                        workoutId: route.params.workoutId,
+                                    })
+                                }>
+                                {group}
+                            </Button>
                         ))
                     ) : (
                         <Text>Nothing Here Yet</Text>
                     )}
-                    
                 </VStack>
-            </ScrollView >
+            </ScrollView>
         </NativeBaseProvider>
-        
     );
 };
 

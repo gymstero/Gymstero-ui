@@ -14,19 +14,31 @@ const ChooseExerciseType= () => {
     return (
         <NativeBaseProvider flex={1} bg='red'>
             <ScrollView h='80%'>
-                <VStack alignItems='center' justifyContent="center" space={4}>
+                <VStack
+                    alignItems='center'
+                    justifyContent='center'
+                    space={4}
+                    mt={5}>
                     {exerciseTypesArray.length > 0 ? (
                         exerciseTypesArray.map((type, index) => (
-                        <Button key = {index} onPress={() => navigation.navigate('ChooseMuscle', {eType: type, workoutId: route.params.workoutId})}>{type}</Button>
+                            <Button
+                                minW={120}
+                                key={index}
+                                onPress={() =>
+                                    navigation.navigate('ChooseMuscle', {
+                                        eType: type,
+                                        workoutId: route.params.workoutId,
+                                    })
+                                }>
+                                {type}
+                            </Button>
                         ))
-                        
                     ) : (
                         <Text>Nothing Here Yet</Text>
                     )}
                 </VStack>
-            </ScrollView >
+            </ScrollView>
         </NativeBaseProvider>
-        
     );
 };
 

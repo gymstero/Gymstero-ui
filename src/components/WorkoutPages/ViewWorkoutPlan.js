@@ -56,6 +56,7 @@ const ViewWorkoutPlan = () => {
                 </Center>
                 {exerciseGoals && exerciseGoals.length > 0 ? (
                     <FlatList
+                        maxH='85%'
                         data={exerciseGoals}
                         keyExtractor={(exerciseGoal) => exerciseGoal.id}
                         refreshing={refreshing}
