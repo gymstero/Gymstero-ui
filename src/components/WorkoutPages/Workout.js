@@ -93,6 +93,7 @@ const WorkoutPage = () => {
                                 onPress={() =>
                                     navigation.navigate('ViewWorkoutPlan', {
                                         id: item.id,
+                                        title: item.title,
                                     })
                                 }>
                                 <HStack mt={2}>

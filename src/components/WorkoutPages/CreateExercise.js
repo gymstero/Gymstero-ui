@@ -10,48 +10,52 @@ import {
 } from 'native-base';
 import { useState } from 'react';
 import { getIdToken } from '../auth/auth';
-const CreateExercise= () => {
-    const [exercise,SetExercise] = useState({
-        exerciseId: "",
-        targetSets: "",
-        targetReps: "",
-        targetWeight: "",
-        estimatedTime: "",
-        comment: "",
-    })
+
+const CreateExercise = () => {
+    const [exercise, SetExercise] = useState({
+        exerciseId: '',
+        targetSets: '',
+        targetReps: '',
+        targetWeight: '',
+        estimatedTime: '',
+        comment: '',
+    });
     const navigation = useNavigation();
     const route = useRoute();
-    const submitExercise = async () => {
 
+    const submitExercise = async () => {
         const idToken = await getIdToken();
 
-        fetch(`http://10.0.2.2:8080/api/workout/${route.params.workoutId}/exercise-goal`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${idToken}`,
-            },
-            body: JSON.stringify(
-                    {
-                        exerciseId: route.params.id,
-                        targetSets: exercise.targetSets,
-                        targetReps: exercise.targetSets,
-                        targetWeight: exercise.targetWeight,
-                        estimatedTime: exercise.estimatedTime,
-                        comment: exercise.comment,
-                    },
-            ),
-        })
+        fetch(
+            `http://10.0.2.2:8080/api/workout/${route.params.workoutId}/exercise-goal`,
+            {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${idToken}`,
+                },
+                body: JSON.stringify({
+                    exerciseId: route.params.id,
+                    targetSets: exercise.targetSets,
+                    targetReps: exercise.targetSets,
+                    targetWeight: exercise.targetWeight,
+                    estimatedTime: exercise.estimatedTime,
+                    comment: exercise.comment,
+                }),
+            }
+        )
             .then((res) => res.json())
             .then((res) => {
-                console.log('RES', res );
-                navigation.navigate('ViewWorkoutPlan', {id: route.params.workoutId})
+                console.info('Exercise goal posted', res);
+                navigation.navigate('ViewWorkoutPlan', {
+                    id: route.params.workoutId,
+                });
             })
             .catch((err) => {
                 console.warn(err);
             });
-    }
+    };
     return (
         <NativeBaseProvider flex={1} bg='red'>
             <VStack direction='column' mt='100' space={10}>
@@ -66,7 +70,7 @@ const CreateExercise= () => {
                                     ...exercise,
                                     targetSets: text,
                                 })
-                              } 
+                            }
                         />
                         <FormControl.Label>Target Reps</FormControl.Label>
                         <Input
@@ -76,9 +80,9 @@ const CreateExercise= () => {
                                     ...exercise,
                                     targetReps: text,
                                 })
-                              } 
+                            }
                         />
-                         <FormControl.Label>Target Weight</FormControl.Label>
+                        <FormControl.Label>Target Weight</FormControl.Label>
                         <Input
                             placeholder='Enter Weight'
                             onChangeText={(text) =>
@@ -86,9 +90,11 @@ const CreateExercise= () => {
                                     ...exercise,
                                     targetWeight: text,
                                 })
-                              } 
+                            }
                         />
-                         <FormControl.Label>Estimated Time</FormControl.Label>
+                        <FormControl.Label>
+                            Estimated Time - mins
+                        </FormControl.Label>
                         <Input
                             placeholder='Enter Estimated Time'
                             onChangeText={(text) =>
@@ -96,9 +102,9 @@ const CreateExercise= () => {
                                     ...exercise,
                                     estimatedTime: text,
                                 })
-                              } 
+                            }
                         />
-                         <FormControl.Label>Comment</FormControl.Label>
+                        <FormControl.Label>Comment</FormControl.Label>
                         <Input
                             placeholder='Enter comment'
                             onChangeText={(text) =>
@@ -106,22 +112,19 @@ const CreateExercise= () => {
                                     ...exercise,
                                     comment: text,
                                 })
-                              } 
+                            }
                         />
                     </FormControl>
                     <Button
-                            rounded='full'
-                            w='85%'
-                            p='4'
-                            onPress={submitExercise}
-                            >
-                            Submit
-                        </Button>
+                        rounded='full'
+                        w='85%'
+                        p='4'
+                        onPress={submitExercise}>
+                        Submit
+                    </Button>
                 </Box>
-
             </VStack>
         </NativeBaseProvider>
-        
     );
 };
 
