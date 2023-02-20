@@ -50,6 +50,7 @@ const CreateExercise = () => {
                 console.info('Exercise goal posted', res);
                 navigation.navigate('ViewWorkoutPlan', {
                     id: route.params.workoutId,
+                    title: res.workout.title,
                 });
             })
             .catch((err) => {
