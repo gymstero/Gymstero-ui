@@ -9,8 +9,9 @@ const CreateWorkoutPlan = () => {
     title: ""
   });
   const navigation = useNavigation();
+
   const submitWorkoutPlan = async () => {
-    console.log(plan.title)
+      console.log(plan.title);
       const userInfo = await getUser();
       const idToken = await getIdToken();
 
@@ -28,15 +29,16 @@ const CreateWorkoutPlan = () => {
       })
           .then((res) => res.json())
           .then((res) => {
-              console.log('RES', res );
-              navigation.navigate('ViewWorkoutPlan', {id: res.id})
+              console.info('Workout fetched', res);
+              navigation.navigate('ViewWorkoutPlan', {
+                  id: res.id,
+                  title: plan.title,
+              });
           })
           .catch((err) => {
               console.warn(err);
           });
-  
-          
-  }
+  };
   return (
     <NativeBaseProvider>
       <ScrollView  >
