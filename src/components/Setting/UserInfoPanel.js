@@ -7,6 +7,7 @@ const UserInfoPanel = ({
     setEditMode,
     error,
     setError,
+    userMessage,
     setUserMessage,
 }) => {
     const navigation = useNavigation();
