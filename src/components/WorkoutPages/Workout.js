@@ -85,7 +85,7 @@ const WorkoutPage = () => {
                 {workouts && workouts.length > 0 ? (
                     <FlatList
                         data={workouts}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item.id.toString()}
                         refreshing={refreshing}
                         onRefresh={fetchWorkouts}
                         renderItem={({ item }) => (
@@ -93,6 +93,7 @@ const WorkoutPage = () => {
                                 onPress={() =>
                                     navigation.navigate('ViewWorkoutPlan', {
                                         id: item.id,
+                                        title: item.title,
                                     })
                                 }>
                                 <HStack mt={2}>

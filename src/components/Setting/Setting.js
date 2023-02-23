@@ -56,6 +56,7 @@ const Setting = () => {
                         setEditMode={setEditMode}
                         error={error}
                         setError={setError}
+                        userMessage={userMessage}
                         setUserMessage={setUserMessage}
                     />
                 )}

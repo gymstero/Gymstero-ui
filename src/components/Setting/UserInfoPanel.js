@@ -4,11 +4,14 @@ import { useNavigation } from "@react-navigation/native";
 import { theme } from "../../theme/theme";
 
 const UserInfoPanel = ({
-  userData,
-  setEditMode,
-  error,
-  setError,
-  setUserMessage,
+
+    userData,
+    setEditMode,
+    error,
+    setError,
+    userMessage,
+    setUserMessage,
+
 }) => {
   const navigation = useNavigation();
 

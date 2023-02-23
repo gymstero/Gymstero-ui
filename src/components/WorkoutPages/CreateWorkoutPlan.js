@@ -12,10 +12,13 @@ const CreateWorkoutPlan = () => {
     title: "",
   });
   const navigation = useNavigation();
+
   const submitWorkoutPlan = async () => {
-    console.log(plan.title);
-    const userInfo = await getUser();
-    const idToken = await getIdToken();
+
+      console.log(plan.title);
+      const userInfo = await getUser();
+      const idToken = await getIdToken();
+
 
     fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/workout`, {
       method: "POST",
@@ -33,10 +36,17 @@ const CreateWorkoutPlan = () => {
       .then((res) => {
         console.log("RES", res);
         navigation.navigate("ViewWorkoutPlan", { id: res.id });
-      })
-      .catch((err) => {
-        console.warn(err);
-      });
+      }).then((res) => res.json())
+          .then((res) => {
+              console.info('Workout fetched', res);
+              navigation.navigate('ViewWorkoutPlan', {
+                  id: res.id,
+                  title: plan.title,
+              });
+          })
+          .catch((err) => {
+              console.warn(err);
+          });
   };
   return (
     <NativeBaseProvider>
