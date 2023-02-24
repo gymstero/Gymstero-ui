@@ -21,22 +21,18 @@ const CreateWorkoutPlan = () => {
 
 
     fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/workout`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${idToken}`,
-      },
-      body: JSON.stringify({
-        title: plan.title,
-        exerciseGoals: [],
-      }),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log("RES", res);
-        navigation.navigate("ViewWorkoutPlan", { id: res.id });
-      }).then((res) => res.json())
+          method: 'POST',
+          headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${idToken}`,
+          },
+          body: JSON.stringify({
+              title: plan.title,
+              exerciseGoals: [],
+          }),
+      })
+          .then((res) => res.json())
           .then((res) => {
               console.info('Workout fetched', res);
               navigation.navigate('ViewWorkoutPlan', {
