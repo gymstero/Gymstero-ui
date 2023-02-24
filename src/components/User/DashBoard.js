@@ -1,94 +1,132 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
+import { customStyles } from "../../theme/customStyles";
 import {
-    NativeBaseProvider,
-    VStack,
-    Box,
-    Button,
-    Image,
-    Pressable,
-    Text,
-    ScrollView,
-} from 'native-base';
-import React, { useState, useEffect } from 'react';
-import { getUser, getIdToken } from '../auth/auth';
-import image1 from '../../images/schedule.png';
-import image2 from '../../images/workout.png';
+  NativeBaseProvider,
+  VStack,
+  Box,
+  Button,
+  Image,
+  Pressable,
+  Text,
+  ScrollView,
+  View,
+  HStack,
+} from "native-base";
+import React, { useState, useEffect } from "react";
+import { getUser, getIdToken } from "../auth/auth";
+import defaultMaleProfilePic from "../../images/defaultMaleProfilePic.jpg";
+import schedule from "../../images/schedule.png";
+import groupWorkout from "../../images/groupWorkout.jpg";
+import barbelWorkout from "../../images/barbel.jpg";
+import { theme } from "../../theme/theme";
+import ImageButton from "../Layout/ImageButton";
 
 const Dashboard = () => {
-    const navigation = useNavigation();
-    const [userData, setUserData] = useState({});
-    const fetchUser = async () => {
-        const userInfo = await getUser();
-        const idToken = await getIdToken();
+  const navigation = useNavigation();
+  const [userData, setUserData] = useState({});
+  const fetchUser = async () => {
+    const userInfo = await getUser();
+    const idToken = await getIdToken();
 
-        fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/setting`, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${idToken}`,
-            },
-        })
-            .then((res) => res.json())
-            .then((res) => {
-                setUserData(res.userData);
-                console.info('User data fetched', userData);
-            })
-            .catch((err) => {
-                console.warn(err);
-            });
-    };
+    fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/setting`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setUserData(res.userData);
+        console.info("User data fetched", userData);
+      })
+      .catch((err) => {
+        console.warn(err);
+      });
+  };
 
-    useEffect(() => {
-        fetchUser();
-    }, []);
-    return (
-        <NativeBaseProvider flex={1}>
-            <VStack alignItems='center' mt='50'>
-                <Box>
-                    <Text>Welcome, {userData.username}</Text>
-                </Box>
-                <Box w='85%' mt='5'>
-                    <Button
-                        rounded='full'
-                        w='100%'
-                        p='2'
-                        variant='outline'
-                        title='Profile'
-                        onPress={() => navigation.navigate('UserProfile')}>
-                        Profile
-                    </Button>
-                </Box>
-                <Box width='85%' p='12' bg='gray.300' mt='4'>
-                    <ScrollView w={['200', '300']} h='50'></ScrollView>
-                </Box>
-                <Box w='85%' mt='4'>
-                    <Pressable
-                        w='100%'
-                        onPress={() => navigation.navigate('Schedule')}>
-                        <Image
-                            source={image1}
-                            alt='Schedule Shortcut'
-                            size={70}
-                            width='100%'
-                        />
-                    </Pressable>
-                </Box>
-                <Box w='85%' mt='4'>
-                    <Pressable
-                        w='100%'
-                        onPress={() => navigation.navigate('Workout')}>
-                        <Image
-                            source={image2}
-                            alt='Create Workout short Cut'
-                            size={70}
-                            width='100%'
-                        />
-                    </Pressable>
-                </Box>
+  useEffect(() => {
+    fetchUser();
+  }, []);
+  return (
+    <NativeBaseProvider>
+      <View style={customStyles.container}>
+        <VStack>
+          <HStack
+            style={{
+              alignItems: "center",
+            }}
+          >
+            <VStack
+              style={{
+                left: 1,
+                padding: 10,
+              }}
+            >
+               <Image
+                style={{
+                  width: 200,
+                  height: 200,
+                  borderRadius: 10,
+                }}
+                source={{
+                  uri:
+                    userData.photoURL ||
+                    "https://img.icons8.com/ios-glyphs/90/000000/user--v1.png",
+                }}
+                alt="user profile"
+              />
             </VStack>
-        </NativeBaseProvider>
-    );
+            <VStack
+              style={{
+                padding: 10,
+              }}
+            >
+              <View style={customStyles.textBox}>
+                <Text style={customStyles.text}>
+                  Welcome, {userData && userData.username}
+                </Text>
+              </View>
+
+              <Pressable
+                rounded="md"
+                w="100px"
+                p="2"
+                variant="outline"
+                title="Profile"
+                onPress={() => navigation.navigate("UserProfile")}
+                style={{
+                  alignItems: "center",
+                  backgroundColor: theme.colors.primary,
+                }}
+              >
+                <Text color={theme.colors.text}>Profile</Text>
+              </Pressable>
+            </VStack>
+          </HStack>
+        </VStack>
+
+        <ImageButton
+          imageSource={barbelWorkout}
+          text="WORKOUT"
+          onPress={() => navigation.navigate("Workout")}
+        />
+
+        <ImageButton
+          imageSource={groupWorkout}
+          text="SOCIAL"
+          onPress={() => navigation.navigate("Social")}
+        />
+
+        <ImageButton
+          imageSource={schedule}
+          text="SCHEDULE"
+          onPress={() => navigation.navigate("Schedule")}
+        />
+      </View>
+    </NativeBaseProvider>
+  );
 };
 
 export default Dashboard;

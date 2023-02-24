@@ -1,21 +1,26 @@
-import {  ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { NativeBaseProvider, Button, Input, Box, Heading } from "native-base";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { getUser, getIdToken } from '../auth/auth';
+import { getUser, getIdToken } from "../auth/auth";
+
+import { theme } from "../../theme/theme";
+
 const CreateWorkoutPlan = () => {
   const [plan, setPlan] = useState({
-    id:0,
-    title: ""
+    id: 0,
+    title: "",
   });
   const navigation = useNavigation();
 
   const submitWorkoutPlan = async () => {
+
       console.log(plan.title);
       const userInfo = await getUser();
       const idToken = await getIdToken();
 
-      fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/workout`, {
+
+    fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/workout`, {
           method: 'POST',
           headers: {
               Accept: 'application/json',
@@ -41,28 +46,35 @@ const CreateWorkoutPlan = () => {
   };
   return (
     <NativeBaseProvider>
-      <ScrollView  >
-        <Box bg='black' w='100%' alignItems='center' >
-            <Heading color="white" w='85%' p='2'>New Workout Plan</Heading>
-            
+      <ScrollView>
+        <Box bg="black" w="100%" alignItems="center">
+          <Heading color="white" w="85%" p="2">
+            New Workout Plan
+          </Heading>
         </Box>
-        <Box  w='100%' alignItems='center'>
-            <Input 
-              variant="rounded" 
-              p='2' 
-              mt='2' 
-              placeholder="Enter Workout Title"
-              onChangeText={(text) =>
-                setPlan({
-                    ...plan,
-                    title: text,
-                })
-              } 
-            />
-            <Button w='50%' mt='2' rounded='full' onPress={submitWorkoutPlan} >Submit</Button>
+        <Box w="100%" alignItems="center">
+          <Input
+            variant="rounded"
+            p="2"
+            mt="2"
+            placeholder="Enter Workout Title"
+            onChangeText={(text) =>
+              setPlan({
+                ...plan,
+                title: text,
+              })
+            }
+          />
+          <Button
+            backgroundColor={theme.colors.secondary}
+            w="50%"
+            mt="2"
+            rounded="full"
+            onPress={submitWorkoutPlan}
+          >
+            Submit
+          </Button>
         </Box>
-        
-            
       </ScrollView>
     </NativeBaseProvider>
   );
