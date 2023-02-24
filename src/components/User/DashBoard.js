@@ -64,13 +64,18 @@ const Dashboard = () => {
                 padding: 10,
               }}
             >
-              <Image
+               <Image
                 style={{
                   width: 200,
                   height: 200,
                   borderRadius: 10,
                 }}
-                source={defaultMaleProfilePic}
+                source={{
+                  uri:
+                    userData.photoURL ||
+                    "https://img.icons8.com/ios-glyphs/90/000000/user--v1.png",
+                }}
+                alt="user profile"
               />
             </VStack>
             <VStack
