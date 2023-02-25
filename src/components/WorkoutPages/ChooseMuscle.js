@@ -32,6 +32,7 @@ const ChooseMuscle= () => {
                                         eType: route.params.eType,
                                         mGroup: group,
                                         workoutId: route.params.workoutId,
+                                        workoutTitle: route.params.workoutTitle
                                     })
                                 }>
                                 {group}

@@ -68,6 +68,7 @@ const ChooseExercise= () => {
                                     navigation.navigate('CreateExercise', {
                                         id: exercise.id,
                                         title: exercise.title,
+                                        workoutTitle: route.params.workoutTitle,
                                         workoutId: route.params.workoutId,
                                     })
                                 }>
