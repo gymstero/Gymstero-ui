@@ -92,6 +92,7 @@ const ViewWorkoutPlan = () => {
                         onPress={() =>
                             navigation.navigate('ChooseExerciseType', {
                                 workoutId: route.params.id,
+                                title: route.params.title
                             })
                         }>
                         Add new Exercise

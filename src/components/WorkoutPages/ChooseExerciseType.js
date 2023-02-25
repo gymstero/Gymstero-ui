@@ -28,6 +28,7 @@ const ChooseExerciseType= () => {
                                     navigation.navigate('ChooseMuscle', {
                                         eType: type,
                                         workoutId: route.params.workoutId,
+                                        workoutTitle: route.params.title
                                     })
                                 }>
                                 {type}

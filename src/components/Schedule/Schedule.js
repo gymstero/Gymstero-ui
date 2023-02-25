@@ -8,7 +8,7 @@ import {
     Switch,
     Alert,
 } from 'react-native';
-import { Heading, NativeBaseProvider, Text, View } from 'native-base';
+import { Button, Heading, NativeBaseProvider, Text, View, VStack } from 'native-base';
 import AgendaItem from './AgendaItem';
 import {
     Agenda,
@@ -18,6 +18,7 @@ import {
     WeekCalendar,
 } from 'react-native-calendars';
 import { ChevronLeftIcon, ChevronRightIcon } from 'native-base';
+import { useNavigation } from '@react-navigation/native';
 
 const themeColor = '#00AAAF';
 const today = new Date().toISOString().split('T')[0];
@@ -61,7 +62,7 @@ const agendaItems = [
     {
         title: dates[2],
         data: [
-            { duration: '1h', title: 'Workout 4' },
+            { duration: '1h', title: 'Workout 4' , id: '11'},
             { duration: '1h', title: 'Workout 5' },
             { duration: '1h', title: 'Workout 6' },
         ],
@@ -90,6 +91,7 @@ function getMarkedDates() {
 }
 
 const Schedule = () => {
+    const navigation = useNavigation();
     const marked = useRef(getMarkedDates());
     const todayBtnTheme = useRef({
         todayButtonTextColor: themeColor,
@@ -113,6 +115,10 @@ const Schedule = () => {
 
     return (
         <NativeBaseProvider>
+            <VStack  alignItems='center' justifyContent='center'>
+                <Button w='85%' rounded={'full'} onPress={() =>
+                                    navigation.navigate('ScheduleWorkout', {dummy:'dum'})}>Schedule a Workout</Button>
+            </VStack>
             <CalendarProvider
                 date={new Date().toISOString()}
                 onDateChanged={onDateChanged}
