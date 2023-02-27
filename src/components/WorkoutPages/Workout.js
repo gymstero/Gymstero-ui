@@ -36,7 +36,7 @@ const WorkoutPage = () => {
             .then((res) => {
                 setWorkouts(res.workouts);
                 setRefreshing(false);
-                console.info('Workout fetched', workouts);
+                console.info('Workout fetched', res.workouts, workouts);
             })
             .catch((err) => {
                 console.warn(err);
@@ -85,7 +85,7 @@ const WorkoutPage = () => {
                 {workouts && workouts.length > 0 ? (
                     <FlatList
                         data={workouts}
-                        keyExtractor={(item) => item.id.toString()}
+                        keyExtractor={(item) => item.id}
                         refreshing={refreshing}
                         onRefresh={fetchWorkouts}
                         renderItem={({ item }) => (
@@ -115,7 +115,7 @@ const WorkoutPage = () => {
                                                 </Pressable>
                                             );
                                         }}>
-                                        <Menu.Item>Update</Menu.Item>
+                                        {/* <Menu.Item onPress={}>Update</Menu.Item> */}
                                         <Menu.Item
                                             onPress={() => {
                                                 deleteWorkout(item.id);

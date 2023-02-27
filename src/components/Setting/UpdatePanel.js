@@ -16,26 +16,25 @@ import { theme } from "../../theme/theme";
 
 const UpdatePanel = ({ userData, setUserData, setEditMode }) => {
   const saveButtonPressed = async () => {
-    const userInfo = await getUser();
-    const idToken = await getIdToken();
-    console.log("USER", userData);
+      const userInfo = await getUser();
+      const idToken = await getIdToken();
 
-    fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/setting`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${idToken}`,
-      },
-      body: JSON.stringify(userData),
-    })
-      .then((res) => res.json())
-      .then((res) => console.log("USER DATA SAVED", res))
-      .catch((err) => {
-        console.error(err);
-      });
+      fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/setting`, {
+          method: 'PUT',
+          headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${idToken}`,
+          },
+          body: JSON.stringify(userData),
+      })
+          .then((res) => res.json())
+          .then((res) => console.log('User data saved', res))
+          .catch((err) => {
+              console.error(err);
+          });
 
-    setEditMode(false);
+      setEditMode(false);
   };
 
 

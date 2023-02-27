@@ -38,7 +38,7 @@ const CreateExercise = () => {
                 body: JSON.stringify({
                     exerciseId: route.params.id,
                     targetSets: exercise.targetSets,
-                    targetReps: exercise.targetSets,
+                    targetReps: exercise.targetReps,
                     targetWeight: exercise.targetWeight,
                     estimatedTime: exercise.estimatedTime,
                     comment: exercise.comment,

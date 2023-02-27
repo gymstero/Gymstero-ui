@@ -1,15 +1,14 @@
-import {  ScrollView } from "react-native";
 import {
     NativeBaseProvider,
     Button,
-    Input,
     Box,
     Heading,
     VStack,
     Center,
     Text,
     FlatList,
-    HStack,
+    Pressable,
+    Spinner,
 } from 'native-base';
 import React, { useState, useEffect } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -62,21 +61,30 @@ const ViewWorkoutPlan = () => {
                         refreshing={refreshing}
                         onRefresh={fetchWorkout}
                         renderItem={({ item }) => (
-                            <Box
-                                minW={350}
-                                borderWidth='2'
-                                borderColor='coolGray.200'
-                                p='2'
-                                my='2'
-                                alignSelf='center'>
-                                <Text fontSize='lg' fontWeight='600'>
-                                    {item.exerciseInfo.title}
-                                </Text>
-                                <Text>
-                                    {item.exerciseInfo.exerciseType} -
-                                    {item.exerciseInfo.muscleGroup}
-                                </Text>
-                            </Box>
+                            <Pressable
+                                onPress={() =>
+                                    navigation.navigate('ModifyExercise', {
+                                        exerciseGoal: item,
+                                        workoutId: id,
+                                        workoutTitle: title,
+                                    })
+                                }>
+                                <Box
+                                    minW={350}
+                                    borderWidth='2'
+                                    borderColor='coolGray.200'
+                                    p='2'
+                                    my='2'
+                                    alignSelf='center'>
+                                    <Text fontSize='lg' fontWeight='600'>
+                                        {item.exerciseInfo.title}
+                                    </Text>
+                                    <Text>
+                                        {item.exerciseInfo.exerciseType} -
+                                        {item.exerciseInfo.muscleGroup}
+                                    </Text>
+                                </Box>
+                            </Pressable>
                         )}
                     />
                 ) : (
@@ -92,7 +100,7 @@ const ViewWorkoutPlan = () => {
                         onPress={() =>
                             navigation.navigate('ChooseExerciseType', {
                                 workoutId: route.params.id,
-                                title: route.params.title
+                                title: route.params.title,
                             })
                         }>
                         Add new Exercise
@@ -104,66 +112,66 @@ const ViewWorkoutPlan = () => {
 };
 
 const styles = {
-  container: {
-    padding: 20,
-    alignItems: "center",
-    flex: 1,
-  },
-  createWorkoutButton: {
-    flex: 1,
-    backgroundColor: "white",
-    width: "100%",
-    marginTop: 20,
-    borderRadius: 10,
-    overflow: "hidden",
-    height: 100,
-  },
-  createWorkoutImage: {
-    width: "100%",
-    flex: 1,
-    resizeMode: "cover",
-    overlayColor: "black",
-  },
-  addWorkoutButton: {
-    backgroundColor: "white",
-    width: "100%",
-    marginTop: 20,
-    borderRadius: 10,
-    overflow: "hidden",
-    height: 100,
-    flex: 1,
-  },
-  addWorkoutImage: {
-    width: "100%",
-    height: 200,
-    resizeMode: "cover",
-    flex: 1,
-  },
-  buttonText: {
-    backgroundColor: "#2E2E2E",
-    color: "#FFF0EE",
-    fontWeight: "",
-    textAlign: "center",
-    marginTop: 10,
-    position: "absolute",
-    top: "30%",
-    left: "16%",
-    fontSize: 20,
-  },
-  recentlyOpenedWorkoutsContainer: {
-    marginTop: 0,
-    padding: 20,
-    backgroundColor: "lightgrey",
-  },
-  recentlyOpenedWorkoutsTitle: {
-    fontWeight: "bold",
-    fontSize: 20,
-    textAlign: "center",
-    marginBottom: 20,
-  },
-  recentlyOpenedWorkoutsList: {
-    /* Add styles for the list of recently opened workouts */
-  },
+    container: {
+        padding: 20,
+        alignItems: 'center',
+        flex: 1,
+    },
+    createWorkoutButton: {
+        flex: 1,
+        backgroundColor: 'white',
+        width: '100%',
+        marginTop: 20,
+        borderRadius: 10,
+        overflow: 'hidden',
+        height: 100,
+    },
+    createWorkoutImage: {
+        width: '100%',
+        flex: 1,
+        resizeMode: 'cover',
+        overlayColor: 'black',
+    },
+    addWorkoutButton: {
+        backgroundColor: 'white',
+        width: '100%',
+        marginTop: 20,
+        borderRadius: 10,
+        overflow: 'hidden',
+        height: 100,
+        flex: 1,
+    },
+    addWorkoutImage: {
+        width: '100%',
+        height: 200,
+        resizeMode: 'cover',
+        flex: 1,
+    },
+    buttonText: {
+        backgroundColor: '#2E2E2E',
+        color: '#FFF0EE',
+        fontWeight: '',
+        textAlign: 'center',
+        marginTop: 10,
+        position: 'absolute',
+        top: '30%',
+        left: '16%',
+        fontSize: 20,
+    },
+    recentlyOpenedWorkoutsContainer: {
+        marginTop: 0,
+        padding: 20,
+        backgroundColor: 'lightgrey',
+    },
+    recentlyOpenedWorkoutsTitle: {
+        fontWeight: 'bold',
+        fontSize: 20,
+        textAlign: 'center',
+        marginBottom: 20,
+    },
+    recentlyOpenedWorkoutsList: {
+        /* Add styles for the list of recently opened workouts */
+    },
 };
 
 export default ViewWorkoutPlan;
