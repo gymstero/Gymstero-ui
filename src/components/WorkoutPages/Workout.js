@@ -1,17 +1,16 @@
 
-import React, { useState, useEffect, useRef } from 'react';
-import { View } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { RefreshControl, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {
     NativeBaseProvider,
     Pressable,
     HStack,
     Container,
-    AlertDialog,
-    DeleteIcon,
+    ThreeDotsIcon,
     Text,
+    Menu,
     FlatList,
-    Button,
 } from 'native-base';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -19,11 +18,7 @@ import { getUser, getIdToken } from '../auth/auth';
 const WorkoutPage = () => {
     const [workouts, setWorkouts] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
-    const cancelRef = useRef(null);
     const navigation = useNavigation();
-
-    const onClose = () => setIsOpen(!isOpen);
 
     const fetchWorkouts = async () => {
         const userInfo = await getUser();
@@ -110,50 +105,25 @@ const WorkoutPage = () => {
                                     <Container w='80%' ml={2} my='auto'>
                                         <Text fontSize={18}>{item.title}</Text>
                                     </Container>
-                                    <Pressable my='auto'>
-                                        <DeleteIcon
-                                            size='4'
-                                            onPress={() => setIsOpen(!isOpen)}
-                                        />
-                                    </Pressable>
-                                    <AlertDialog
-                                        leastDestructiveRef={cancelRef}
-                                        isOpen={isOpen}
-                                        onClose={onClose}>
-                                        <AlertDialog.Content>
-                                            <AlertDialog.CloseButton />
-                                            <AlertDialog.Header>
-                                                Delete Workout Plan
-                                            </AlertDialog.Header>
-                                            <AlertDialog.Body>
-                                                This will remove all data
-                                                relating to Workout Plan. Are
-                                                you sure?
-                                            </AlertDialog.Body>
-                                            <AlertDialog.Footer>
-                                                <Button.Group space={2}>
-                                                    <Button
-                                                        variant='unstyled'
-                                                        colorScheme='coolGray'
-                                                        onPress={onClose}
-                                                        ref={cancelRef}>
-                                                        Cancel
-                                                    </Button>
-                                                    <Button
-                                                        colorScheme='danger'
-                                                        onPress={() => {
-                                                            deleteWorkout(
-                                                                item.id
-                                                            );
-                                                            setRefreshing(true);
-                                                            onClose();
-                                                        }}>
-                                                        Delete
-                                                    </Button>
-                                                </Button.Group>
-                                            </AlertDialog.Footer>
-                                        </AlertDialog.Content>
-                                    </AlertDialog>
+                                    <Menu
+                                        trigger={(triggerProps) => {
+                                            return (
+                                                <Pressable
+                                                    {...triggerProps}
+                                                    my='auto'>
+                                                    <ThreeDotsIcon size='4' />
+                                                </Pressable>
+                                            );
+                                        }}>
+                                        {/* <Menu.Item onPress={}>Update</Menu.Item> */}
+                                        <Menu.Item
+                                            onPress={() => {
+                                                deleteWorkout(item.id);
+                                                setRefreshing(true);
+                                            }}>
+                                            Delete
+                                        </Menu.Item>
+                                    </Menu>
                                 </HStack>
                             </Pressable>
                         )}
