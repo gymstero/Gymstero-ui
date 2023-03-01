@@ -4,12 +4,12 @@ import {
     VStack,
     NativeBaseProvider,
     ScrollView,
-    Text
+    Text,
 } from 'native-base';
 import { useState, useEffect } from 'react';
-import { getUser, getIdToken } from '../auth/auth';
+import { getIdToken } from '../auth/auth';
 
-const ChooseExercise= () => {
+const ChooseExercise = () => {
     const route = useRoute();
     const navigation = useNavigation();
     const [exercises, setExercises] = useState([]);
@@ -36,17 +36,16 @@ const ChooseExercise= () => {
             .then((res) => res.json())
             .then((res) => {
                 setExercises(res.exercises);
-                console.log(res.exercises);
-                console.log('RES2', res);
+                console.info('Exercises are fetched', res.exercises);
             })
             .catch((err) => {
                 console.warn(err);
             });
     };
-    
-       useEffect(() => {
+
+    useEffect(() => {
         fetchExercises();
-        }, []);
+    }, []);
 
     return (
         <NativeBaseProvider flex={1} bg='red'>
