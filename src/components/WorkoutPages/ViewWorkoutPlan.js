@@ -8,11 +8,14 @@ import {
     Text,
     FlatList,
     Pressable,
-    Spinner,
+    ChevronUpIcon,
+    ChevronDownIcon,
+    HStack,
+    Spacer,
 } from 'native-base';
 import React, { useState, useEffect } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { getUser, getIdToken } from '../auth/auth';
+import { getIdToken } from '../auth/auth';
 
 const ViewWorkoutPlan = () => {
     const navigation = useNavigation();
@@ -43,24 +46,80 @@ const ViewWorkoutPlan = () => {
             .finally(() => setRefreshing(false));
     };
 
+    const updateWorkout = async () => {
+        const idToken = await getIdToken();
+
+        let exerciseGoalIds = [];
+        exerciseGoals.forEach((exerciseGoal) =>
+            exerciseGoalIds.unshift(exerciseGoal.id)
+        );
+
+        fetch(`http://10.0.2.2:8080/api/workout/${id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${idToken}`,
+            },
+            body: JSON.stringify(exerciseGoalIds),
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                console.info('Workout plan updated', res);
+                navigation.navigate('WorkoutMainPage');
+            })
+            .catch((err) => {
+                console.warn(err);
+            });
+    };
+
+    const reorderArray = (event) => {
+        const movedItem = exerciseGoals.find(
+            (item, index) => index === event.oldIndex
+        );
+        const remainingItems = exerciseGoals.filter(
+            (item, index) => index !== event.oldIndex
+        );
+
+        const reorderedItems = [
+            ...remainingItems.slice(0, event.newIndex),
+            movedItem,
+            ...remainingItems.slice(event.newIndex),
+        ];
+
+        return reorderedItems;
+    };
+
+    function changeOrder(index, direction) {
+        setExerciseGoals(
+            reorderArray(
+                {
+                    oldIndex: index,
+                    newIndex: index + (direction === 'UP' ? -1 : 1),
+                },
+                exerciseGoals
+            )
+        );
+    }
+
     useEffect(() => {
         fetchWorkout();
     }, [route, refreshing]);
 
     return (
         <NativeBaseProvider flex={1}>
-            <VStack alignItems='center' mt='50'>
+            <VStack alignItems='center' mt='45'>
                 <Center width='100%' bg={'black'}>
                     <Heading color={'white'}>{title}</Heading>
                 </Center>
                 {exerciseGoals && exerciseGoals.length > 0 ? (
                     <FlatList
-                        maxH='85%'
+                        maxH='80%'
                         data={exerciseGoals}
                         keyExtractor={(exerciseGoal) => exerciseGoal.id}
                         refreshing={refreshing}
                         onRefresh={fetchWorkout}
-                        renderItem={({ item }) => (
+                        renderItem={({ item, index }) => (
                             <Pressable
                                 onPress={() =>
                                     navigation.navigate('ModifyExercise', {
@@ -76,13 +135,33 @@ const ViewWorkoutPlan = () => {
                                     p='2'
                                     my='2'
                                     alignSelf='center'>
-                                    <Text fontSize='lg' fontWeight='600'>
-                                        {item.exerciseInfo.title}
-                                    </Text>
-                                    <Text>
-                                        {item.exerciseInfo.exerciseType} -
-                                        {item.exerciseInfo.muscleGroup}
-                                    </Text>
+                                    <HStack>
+                                        <VStack>
+                                            <Text
+                                                fontSize='lg'
+                                                fontWeight='600'>
+                                                {item.exerciseInfo.title}
+                                            </Text>
+                                            <Text>
+                                                {item.exerciseInfo.exerciseType}{' '}
+                                                -{' '}
+                                                {item.exerciseInfo.muscleGroup}
+                                            </Text>
+                                        </VStack>
+                                        <Spacer />
+                                        <VStack alignSelf='center'>
+                                            <ChevronUpIcon
+                                                onPress={() =>
+                                                    changeOrder(index, 'UP')
+                                                }
+                                            />
+                                            <ChevronDownIcon
+                                                onPress={() =>
+                                                    changeOrder(index, 'DOWN')
+                                                }
+                                            />
+                                        </VStack>
+                                    </HStack>
                                 </Box>
                             </Pressable>
                         )}
@@ -90,11 +169,12 @@ const ViewWorkoutPlan = () => {
                 ) : (
                     <Text style={styles.title}>Nothing Here Yet</Text>
                 )}
-                <Box w='85%' mt='5'>
+                <Box w='85%'>
                     <Button
                         rounded='full'
                         w='100%'
                         p='2'
+                        mb={3}
                         variant='outline'
                         title='Profile'
                         onPress={() =>
@@ -104,6 +184,15 @@ const ViewWorkoutPlan = () => {
                             })
                         }>
                         Add new Exercise
+                    </Button>
+                    <Button
+                        rounded='full'
+                        w='100%'
+                        p='2'
+                        variant='outline'
+                        title='Profile'
+                        onPress={updateWorkout}>
+                        Update Workout Plan
                     </Button>
                 </Box>
             </VStack>
