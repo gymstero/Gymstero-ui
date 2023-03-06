@@ -27,34 +27,50 @@ const ChooseMuscle = () => {
   ];
 
   return (
-    <NativeBaseProvider flex={1} bg="red">
-      <ScrollView h="80%">
-        <VStack alignItems="center" justifyContent="center" space={4} mt={5}>
-          <Text fontSize={20} fontWeight={600}>
-            {route.params.eType}
-          </Text>
-          {MuscleGroupArray.length > 0 ? (
-            MuscleGroupArray.map((muscle, index) => (
-              <ItemCard
-                key={index}
-                imageSource={muscle.image}
-                title={muscle.name}
-                onPress={() =>
-                  navigation.navigate("ChooseExercise", {
-                    eType: route.params.eType,
-                    mGroup: muscle.name,
-                    workoutId: route.params.workoutId,
-                    workoutTitle: route.params.workoutTitle,
-                  })
-                }
-              />
-            ))
-          ) : (
-            <Text>Nothing Here Yet</Text>
-          )}
-        </VStack>
-      </ScrollView>
-    </NativeBaseProvider>
+      <NativeBaseProvider flex={1} bg='red'>
+          <ScrollView h='80%'>
+              <VStack
+                  alignItems='center'
+                  justifyContent='center'
+                  space={4}
+                  mt={5}>
+                  <Text fontSize={20} fontWeight={600}>
+                      Exercise Type: {route.params.eType}
+                  </Text>
+                  {MuscleGroupArray.length > 0 ? (
+                      MuscleGroupArray.map((muscle, index) => (
+                          <ItemCard
+                              key={index}
+                              imageSource={muscle.image}
+                              title={muscle.name}
+                              onPress={() =>
+                                  navigation.navigate('ChooseExercise', {
+                                      eType: route.params.eType,
+                                      mGroup: muscle.name,
+                                      workoutId: route.params.workoutId,
+                                      workoutTitle: route.params.workoutTitle,
+                                  })
+                              }
+                          />
+                      ))
+                  ) : (
+                      <Text>Nothing Here Yet</Text>
+                  )}
+                  <Button
+                      w='90%'
+                      onPress={() =>
+                          navigation.navigate('ChooseExercise', {
+                              eType: route.params.eType,
+                              mGroup: 'Any',
+                              workoutId: route.params.workoutId,
+                              workoutTitle: route.params.workoutTitle,
+                          })
+                      }>
+                      Skip
+                  </Button>
+              </VStack>
+          </ScrollView>
+      </NativeBaseProvider>
   );
 };
 
