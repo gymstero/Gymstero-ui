@@ -122,45 +122,43 @@ const WorkoutPage = () => {
                                                 setIsOpen(!isOpen);
                                             }}
                                         />
-                                        <AlertDialog
-                                            leastDestructiveRef={cancelRef}
-                                            isOpen={isOpen}
-                                            onClose={onClose}>
-                                            <AlertDialog.Content>
-                                                <AlertDialog.CloseButton />
-                                                <AlertDialog.Header>
-                                                    Delete Workout Plan
-                                                </AlertDialog.Header>
-                                                <AlertDialog.Body>
-                                                    {`This will remove all data relating to ${workoutToDelete.title}. Are you sure?`}
-                                                </AlertDialog.Body>
-                                                <AlertDialog.Footer>
-                                                    <Button.Group space={2}>
-                                                        <Button
-                                                            variant='unstyled'
-                                                            colorScheme='coolGray'
-                                                            onPress={onClose}
-                                                            ref={cancelRef}>
-                                                            Cancel
-                                                        </Button>
-                                                        <Button
-                                                            colorScheme='danger'
-                                                            onPress={() => {
-                                                                deleteWorkout(
-                                                                    workoutToDelete.id
-                                                                );
-                                                                setRefreshing(
-                                                                    true
-                                                                );
-                                                                onClose();
-                                                            }}>
-                                                            Delete
-                                                        </Button>
-                                                    </Button.Group>
-                                                </AlertDialog.Footer>
-                                            </AlertDialog.Content>
-                                        </AlertDialog>
                                     </Pressable>
+                                    <AlertDialog
+                                        leastDestructiveRef={cancelRef}
+                                        isOpen={isOpen}
+                                        onClose={onClose}>
+                                        <AlertDialog.Content>
+                                            <AlertDialog.CloseButton />
+                                            <AlertDialog.Header>
+                                                Delete Workout Plan
+                                            </AlertDialog.Header>
+                                            <AlertDialog.Body>
+                                                {`This will remove all data relating to ${workoutToDelete.title}. Are you sure?`}
+                                            </AlertDialog.Body>
+                                            <AlertDialog.Footer>
+                                                <Button.Group space={2}>
+                                                    <Button
+                                                        variant='unstyled'
+                                                        colorScheme='coolGray'
+                                                        onPress={onClose}
+                                                        ref={cancelRef}>
+                                                        Cancel
+                                                    </Button>
+                                                    <Button
+                                                        colorScheme='danger'
+                                                        onPress={() => {
+                                                            deleteWorkout(
+                                                                workoutToDelete.id
+                                                            );
+                                                            setRefreshing(true);
+                                                            onClose();
+                                                        }}>
+                                                        Delete
+                                                    </Button>
+                                                </Button.Group>
+                                            </AlertDialog.Footer>
+                                        </AlertDialog.Content>
+                                    </AlertDialog>
                                 </HStack>
                             </Pressable>
                         )}
