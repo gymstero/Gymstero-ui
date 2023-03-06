@@ -20,6 +20,7 @@ const WorkoutPage = () => {
     const [workouts, setWorkouts] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const [workoutToDelete, setWorkoutToDelete] = useState({});
     const cancelRef = useRef(null);
     const navigation = useNavigation();
 
@@ -113,7 +114,13 @@ const WorkoutPage = () => {
                                     <Pressable my='auto'>
                                         <DeleteIcon
                                             size='4'
-                                            onPress={() => setIsOpen(!isOpen)}
+                                            onPress={() => {
+                                                setWorkoutToDelete({
+                                                    id: item.id,
+                                                    title: item.title,
+                                                });
+                                                setIsOpen(!isOpen);
+                                            }}
                                         />
                                     </Pressable>
                                     <AlertDialog
@@ -126,9 +133,7 @@ const WorkoutPage = () => {
                                                 Delete Workout Plan
                                             </AlertDialog.Header>
                                             <AlertDialog.Body>
-                                                This will remove all data
-                                                relating to Workout Plan. Are
-                                                you sure?
+                                                {`This will remove all data relating to ${workoutToDelete.title}. Are you sure?`}
                                             </AlertDialog.Body>
                                             <AlertDialog.Footer>
                                                 <Button.Group space={2}>
@@ -143,7 +148,7 @@ const WorkoutPage = () => {
                                                         colorScheme='danger'
                                                         onPress={() => {
                                                             deleteWorkout(
-                                                                item.id
+                                                                workoutToDelete.id
                                                             );
                                                             setRefreshing(true);
                                                             onClose();
