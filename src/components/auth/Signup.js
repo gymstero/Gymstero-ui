@@ -9,6 +9,8 @@ import {
   WarningOutlineIcon,
   Box,
   NativeBaseProvider,
+  View,
+  Image,
 } from "native-base";
 import {
   GoogleSignin,
@@ -16,6 +18,7 @@ import {
 } from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth";
 import { useNavigation } from "@react-navigation/native";
+import Logo from "../../images/gymsteroLogo.png";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -122,8 +125,23 @@ const Signup = () => {
 
   return (
     <NativeBaseProvider>
-      <Stack direction="column" mt="100" space={10}>
+      <Stack direction="column" mt="0" space={10}>
         <Box alignItems="center">
+          <View
+            style={{
+              maxWidth: "70%",
+              maxHeight: 150,
+            }}
+          >
+            <Image
+              style={{
+                flex: 1,
+                resizeMode: "cover",
+              }}
+              alt="Logo"
+              source={Logo}
+            />
+          </View>
           <FormControl isInvalid w="85%" maxW="350px" mb="5">
             <FormControl.Label>Email</FormControl.Label>
             <Input

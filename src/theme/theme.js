@@ -1,3 +1,5 @@
+import { Center } from "native-base";
+
 export const theme = {
   colors: {
     primary: "#030A10", //very dark blue
@@ -10,6 +12,7 @@ export const theme = {
       fontFamily: "Arial",
       fontSize: 32,
       fontWeight: "bold",
+      padding: 10,
     },
     h2: {
       fontFamily: "Arial",

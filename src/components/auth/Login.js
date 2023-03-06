@@ -10,12 +10,15 @@ import {
   Input,
   WarningOutlineIcon,
   Text,
+  View,
+  Image,
 } from "native-base";
 import {
   GoogleSigninButton,
   GoogleSignin,
 } from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth";
+import Logo from "../../images/gymsteroLogo.png";
 
 const Login = () => {
   const navigation = useNavigation();
@@ -112,8 +115,23 @@ const Login = () => {
 
   return (
     <NativeBaseProvider>
-      <VStack direction="column" mt="100" space={10}>
+      <VStack direction="column" mt="0" space={10}>
         <Box alignItems="center">
+          <View
+            style={{
+              maxWidth: "70%",
+              maxHeight: 150,
+            }}
+          >
+            <Image
+              style={{
+                flex: 1,
+                resizeMode: "cover",
+              }}
+              alt="Logo"
+              source={Logo}
+            />
+          </View>
           <FormControl isInvalid w="85%" maxW="350px" mb="5">
             <FormControl.Label>Email</FormControl.Label>
             <Input
