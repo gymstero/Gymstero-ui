@@ -185,15 +185,19 @@ const ViewWorkoutPlan = () => {
                         }>
                         Add new Exercise
                     </Button>
-                    <Button
-                        rounded='full'
-                        w='100%'
-                        p='2'
-                        variant='outline'
-                        title='Profile'
-                        onPress={updateWorkout}>
-                        Update Workout Plan
-                    </Button>
+                    {exerciseGoals && exerciseGoals.length > 0 ? (
+                        <Button
+                            rounded='full'
+                            w='100%'
+                            p='2'
+                            variant='outline'
+                            title='Profile'
+                            onPress={updateWorkout}>
+                            Update Workout Plan
+                        </Button>
+                    ) : (
+                        <></>
+                    )}
                 </Box>
             </VStack>
         </NativeBaseProvider>
