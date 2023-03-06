@@ -19,7 +19,7 @@ const AuthOptions = () => {
         <View
           style={{
             maxWidth: "100%",
-            maxHeight: 400,
+            maxHeight: 350,
           }}
         >
           <Image
