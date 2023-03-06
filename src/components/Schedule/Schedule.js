@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import times from 'lodash/times';
 import {
@@ -18,7 +18,8 @@ import {
     WeekCalendar,
 } from 'react-native-calendars';
 import { ChevronLeftIcon, ChevronRightIcon } from 'native-base';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { getUser, getIdToken } from '../auth/auth';
 
 const themeColor = '#00AAAF';
 const today = new Date().toISOString().split('T')[0];
@@ -47,39 +48,10 @@ function getPastDate(numberOfDays) {
         .split('T')[0];
 }
 
-const agendaItems = [
-    {
-        title: dates[0],
-        data: [{ duration: '2h', title: 'Workout 1' }],
-    },
-    {
-        title: dates[1],
-        data: [
-            { duration: '1h', title: 'Workout 2' },
-            { duration: '1h', title: 'Workout 3' },
-        ],
-    },
-    {
-        title: dates[2],
-        data: [
-            { duration: '1h', title: 'Workout 4' , id: '11'},
-            { duration: '1h', title: 'Workout 5' },
-            { duration: '1h', title: 'Workout 6' },
-        ],
-    },
-    {
-        title: dates[3],
-        data: [{ duration: '2h', title: 'Workout 7' }],
-    },
-    {
-        title: dates[4],
-        data: [{}],
-    },
-];
 
 function getMarkedDates() {
     const marked = {};
-
+/*
     agendaItems.forEach((item) => {
         if (item.data && item.data.length > 0 && !isEmpty(item.data[0])) {
             marked[item.title] = { marked: true };
@@ -87,15 +59,72 @@ function getMarkedDates() {
             marked[item.title] = { disabled: true };
         }
     });
+    */
     return marked;
 }
 
 const Schedule = () => {
+    const [agendaItems,setAgendaItems] = useState([{title: "2023-03-05T03:25:07.677Z", data: [{duration: '1h', title: '11' ,id : '111'}]  }]);
+    const [workouts, setWorkouts] = useState([]);
     const navigation = useNavigation();
+    const route = useRoute();
     const marked = useRef(getMarkedDates());
     const todayBtnTheme = useRef({
         todayButtonTextColor: themeColor,
     });
+    
+    const addToAgenda = (workouts) => {
+        let temp = [{title: "2023-03-05T03:25:07.677Z", data: [{duration: '1h', title: '11' ,id : '111'}]  }];
+        workouts.forEach(workout => {   
+        if (workout.hasOwnProperty("schedule")) {
+            workout.schedule.forEach(element => {
+                let found = false;
+                for( let i= 0; i < temp.length; i++) {
+                    console.log('wk' ,temp[i].title.split('T')[0] , element.split('Tr')[0]);
+                    if (temp[i].title.split('T')[0] == element.split('T')[0]){
+                        temp[i].data.push({duration: '1h', title: workout.title ,id : workout.id});
+                        found = true;
+                    }
+                }
+                if(found == false){
+                temp.push({title: element, data: [{duration: '1h', title: workout.title ,id : workout.id}]  })
+                }
+            });
+            console.log('temp' ,temp);
+            
+        }
+    });
+    setAgendaItems(temp);
+    }
+    const fetchWorkouts = async () => {
+        const userInfo = await getUser();
+        const idToken = await getIdToken();
+
+        fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/workouts`, {
+            method: 'Get',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${idToken}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                setWorkouts(res.workouts);
+                console.info('Workout fetched', res.workouts);
+                console.log(workouts);
+            })
+            .catch((err) => {
+                console.warn(err);
+            })
+        
+        
+    };
+
+    useEffect(() => {
+        fetchWorkouts();
+        addToAgenda(workouts);
+    }, []);
 
     const onDateChanged = useCallback((date, updateSource) => {
         console.log(

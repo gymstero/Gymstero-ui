@@ -13,7 +13,7 @@ const AgendaItem = (props) => {
     const { item } = props;
 
     const buttonPressed = useCallback(() => {
-        Alert.alert(item.title);
+        Alert.alert(item.id);
     }, []);
 
     if (isEmpty(item)) {
