@@ -9,6 +9,7 @@ const ImageButton = ({
   imageStyle,
   textStyle,
   onPress,
+  key,
 }) => {
   return (
     <TouchableOpacity
