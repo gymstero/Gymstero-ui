@@ -1,42 +1,41 @@
-import React, { useState } from "react";
+import React from 'react';
 import {
-  Box,
-  Button,
-  Container,
-  Flex,
-  Image,
-  Switch,
-  Text,
-  Input,
-  TextArea,
-  Spacer,
-} from "native-base";
-import { getUser, getIdToken } from "../auth/auth";
-import { theme } from "../../theme/theme";
+    Box,
+    Button,
+    Container,
+    Flex,
+    Image,
+    Switch,
+    Text,
+    Input,
+    TextArea,
+    Spacer,
+} from 'native-base';
+import { getUser, getIdToken } from '../auth/auth';
+import { theme } from '../../theme/theme';
 
 const UpdatePanel = ({ userData, setUserData, setEditMode }) => {
-  const saveButtonPressed = async () => {
-      const userInfo = await getUser();
-      const idToken = await getIdToken();
+    const saveButtonPressed = async () => {
+        const userInfo = await getUser();
+        const idToken = await getIdToken();
 
-      fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/setting`, {
-          method: 'PUT',
-          headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${idToken}`,
-          },
-          body: JSON.stringify(userData),
-      })
-          .then((res) => res.json())
-          .then((res) => console.log('User data saved', res))
-          .catch((err) => {
-              console.error(err);
-          });
+        fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/setting`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${idToken}`,
+            },
+            body: JSON.stringify(userData),
+        })
+            .then((res) => res.json())
+            .then((res) => console.log('User data saved', res))
+            .catch((err) => {
+                console.error(err);
+            });
 
-      setEditMode(false);
-  };
-
+        setEditMode(false);
+    };
 
     return (
         <>
@@ -121,19 +120,17 @@ const UpdatePanel = ({ userData, setUserData, setEditMode }) => {
                     }
                 />
             </Container>
-                 <Container mt={5} mx="auto">
-        <Button
-          backgroundColor={theme.colors.secondary}
-          color={theme.colors.text}
-          width={200}
-          onPress={saveButtonPressed}
-        >
-          Save
-        </Button>
-      </Container>
+            <Container mt={5} mx='auto'>
+                <Button
+                    backgroundColor={theme.colors.secondary}
+                    color={theme.colors.text}
+                    width={200}
+                    onPress={saveButtonPressed}>
+                    Save
+                </Button>
+            </Container>
         </>
     );
-
 };
 
 export default UpdatePanel;
