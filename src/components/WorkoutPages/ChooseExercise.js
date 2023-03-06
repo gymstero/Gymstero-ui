@@ -13,17 +13,25 @@ const ChooseExercise = () => {
     const route = useRoute();
     const navigation = useNavigation();
     const [exercises, setExercises] = useState([]);
+
     const fetchExercises = async () => {
         const idToken = await getIdToken();
-        let query = '?';
-        if (route.params.eType != 'skip') {
-            query += `exerciseType=${route.params.eType}&`;
+
+        let eTypeQuery, mGroupQuery;
+        if (route.params.eType === 'Any') {
+            eTypeQuery = '';
+        } else {
+            eTypeQuery = `exerciseType=${route.params.eType}`;
         }
-        if (route.params.mGroup != 'skip') {
-            query += `muscleGroup=${route.params.mGroup}`;
+
+        if (route.params.mGroup === 'Any') {
+            mGroupQuery = '';
+        } else {
+            mGroupQuery = `muscleGroup=${route.params.mGroup}`;
         }
+
         fetch(
-            `http://10.0.2.2:8080/api/workout/exercises?exerciseType=${route.params.eType}&muscleGroup=${route.params.mGroup}`,
+            `http://10.0.2.2:8080/api/workout/exercises?${eTypeQuery}&${mGroupQuery}`,
             {
                 method: 'Get',
                 headers: {
@@ -56,9 +64,10 @@ const ChooseExercise = () => {
                     space={4}
                     mt={5}>
                     <Text fontSize={20} fontWeight={600}>
-                        {route.params.eType}, {route.params.mGroup}
+                        Type: {route.params.eType}, Muscle:{' '}
+                        {route.params.mGroup}
                     </Text>
-                    {exercises.length > 0 ? (
+                    {exercises && exercises.length > 0 ? (
                         exercises.map((exercise, index) => (
                             <Button
                                 minW={150}
