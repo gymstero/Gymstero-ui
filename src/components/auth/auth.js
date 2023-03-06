@@ -3,28 +3,25 @@ import { firebase } from '@react-native-firebase/auth';
 
 const getGoogleUser = async () => {
     try {
-        return await GoogleSignin.getCurrentUser();
+        return GoogleSignin.getCurrentUser();
     } catch (err) {
         console.log(err);
-        return null;
     }
 };
 
 const getUser = async () => {
     try {
-        return await firebase.auth().currentUser;
+        return firebase.auth().currentUser;
     } catch (err) {
         console.log(err);
-        return null;
     }
 };
 
 const getIdToken = async () => {
     try {
-        return await firebase.auth().currentUser.getIdToken(true);
+        return firebase.auth().currentUser.getIdToken(true);
     } catch (err) {
         console.log(err);
-        return null;
     }
 };
 
