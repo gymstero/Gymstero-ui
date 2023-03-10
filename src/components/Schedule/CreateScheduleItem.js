@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import {
     Button,
     VStack,
@@ -27,7 +27,6 @@ const CreateScheduleItem = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [dayErrorMessage, setDayErrorMessage] = useState('');
     const navigation = useNavigation();
-    const route = useRoute();
 
     const Reminder = {
         Morning: '9am on the day',
@@ -46,11 +45,9 @@ const CreateScheduleItem = () => {
     };
 
     const onChangeStart = (event, selectedDate) => {
-        console.log('INPUT', selectedDate);
         const currentDate = selectedDate || date;
         setStartDate(currentDate);
         setShowStart(false);
-        console.log('START DATE', startDate);
     };
 
     const showStartPicker = () => {
@@ -58,11 +55,9 @@ const CreateScheduleItem = () => {
     };
 
     const onChangeEnd = (event, selectedDate) => {
-        console.log('INPUT', selectedDate);
         const currentDate = selectedDate || date;
         setEndDate(currentDate);
         setShowEnd(false);
-        console.log('END DATE', endDate);
     };
 
     const showEndPicker = () => {

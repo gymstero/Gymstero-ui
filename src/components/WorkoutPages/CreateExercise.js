@@ -83,7 +83,9 @@ const CreateExercise = () => {
                                 })
                             }
                         />
-                        <FormControl.Label>Target Weight</FormControl.Label>
+                        <FormControl.Label>
+                            Target Weight - kg
+                        </FormControl.Label>
                         <Input
                             placeholder='Enter Weight'
                             onChangeText={(text) =>

@@ -1,20 +1,18 @@
 import isEmpty from 'lodash/isEmpty';
-import React, { useCallback } from 'react';
-import {
-    StyleSheet,
-    Alert,
-    View,
-    Text,
-    TouchableOpacity,
-    Button,
-} from 'react-native';
+import React, { useState, useRef } from 'react';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Text, Button } from 'native-base';
+import { AlertDialog } from 'native-base';
+import { getIdToken } from '../auth/auth';
 
 const AgendaItem = (props) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [scheduleToDelete, setScheduleToDelete] = useState({});
+    const cancelRef = useRef(null);
+
     const { item } = props;
 
-    const buttonPressed = useCallback(() => {
-        Alert.alert(item.id);
-    }, []);
+    const onClose = () => setIsOpen(!isOpen);
 
     if (isEmpty(item)) {
         return (
@@ -24,16 +22,88 @@ const AgendaItem = (props) => {
         );
     }
 
+    const deleteSchedule = async (workoutId) => {
+        const idToken = await getIdToken();
+
+        fetch(`http://10.0.2.2:8080/api/workout/${workoutId}/schedule-delete`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${idToken}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                console.info('Workout schedule deleted', res);
+            })
+            .catch((err) => {
+                console.warn(err);
+            });
+    };
+
     return (
-        <TouchableOpacity style={styles.item}>
-            <View>
-                <Text style={styles.itemDurationText}>{item.duration}</Text>
-            </View>
-            <Text style={styles.itemTitleText}>{item.title}</Text>
-            <View style={styles.itemButtonContainer}>
-                <Button color={'grey'} title={'Info'} onPress={buttonPressed} />
-            </View>
-        </TouchableOpacity>
+        <>
+            <TouchableOpacity style={styles.item}>
+                <View>
+                    <Text style={styles.itemDurationText}>{item.duration}</Text>
+                </View>
+                <View
+                    style={{
+                        backgroundColor: item.color,
+                        padding: 10,
+                        borderRadius: 5,
+                        marginLeft: 16,
+                        flex: 2,
+                    }}>
+                    <Text style={styles.itemTitleText}>{item.title}</Text>
+                </View>
+                <View style={styles.itemButtonContainer}>
+                    <Button
+                        onPress={() => {
+                            setScheduleToDelete({
+                                id: item.id,
+                                title: item.title,
+                            });
+                            setIsOpen(!isOpen);
+                        }}>
+                        Delete
+                    </Button>
+                </View>
+            </TouchableOpacity>
+            <AlertDialog
+                leastDestructiveRef={cancelRef}
+                isOpen={isOpen}
+                onClose={onClose}>
+                <AlertDialog.Content>
+                    <AlertDialog.CloseButton />
+                    <AlertDialog.Header>
+                        Delete Workout Schedule
+                    </AlertDialog.Header>
+                    <AlertDialog.Body>
+                        {`Are you sure to remove ${scheduleToDelete.title} schedule? Workout data will be kept.`}
+                    </AlertDialog.Body>
+                    <AlertDialog.Footer>
+                        <Button.Group space={2}>
+                            <Button
+                                variant='unstyled'
+                                colorScheme='coolGray'
+                                onPress={onClose}
+                                ref={cancelRef}>
+                                Cancel
+                            </Button>
+                            <Button
+                                colorScheme='danger'
+                                onPress={() => {
+                                    deleteSchedule(scheduleToDelete.id);
+                                    onClose();
+                                }}>
+                                Delete
+                            </Button>
+                        </Button.Group>
+                    </AlertDialog.Footer>
+                </AlertDialog.Content>
+            </AlertDialog>
+        </>
     );
 };
 
@@ -41,26 +111,23 @@ export default AgendaItem;
 
 const styles = StyleSheet.create({
     item: {
-        padding: 20,
+        paddingHorizontal: 20,
+        paddingVertical: 12,
         backgroundColor: 'white',
         borderBottomWidth: 1,
         borderBottomColor: 'lightgrey',
         flexDirection: 'row',
     },
-    itemHourText: {
-        color: 'black',
-    },
     itemDurationText: {
         color: 'grey',
         fontSize: 12,
-        marginTop: 4,
+        marginTop: 10,
         marginLeft: 4,
     },
     itemTitleText: {
-        color: 'black',
-        marginLeft: 16,
+        color: 'white',
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 18,
     },
     itemButtonContainer: {
         flex: 1,
