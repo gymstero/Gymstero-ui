@@ -1,101 +1,128 @@
-import React, { useState, useMemo, useRef, useCallback } from 'react';
 import isEmpty from 'lodash/isEmpty';
-import times from 'lodash/times';
-import {
-    StyleSheet,
-    ScrollView,
-    TouchableOpacity,
-    Switch,
-    Alert,
-} from 'react-native';
-import { Button, Heading, NativeBaseProvider, Text, View, VStack } from 'native-base';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { NativeBaseProvider, Button, VStack } from 'native-base';
 import AgendaItem from './AgendaItem';
 import {
-    Agenda,
     ExpandableCalendar,
     AgendaList,
     CalendarProvider,
-    WeekCalendar,
 } from 'react-native-calendars';
 import { ChevronLeftIcon, ChevronRightIcon } from 'native-base';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
+import { getUser, getIdToken } from '../auth/auth';
 
 const themeColor = '#00AAAF';
-const today = new Date().toISOString().split('T')[0];
-const fastDate = getPastDate(3);
-const futureDates = getFutureDates(12);
-const dates = [fastDate, today].concat(futureDates);
-
-function getFutureDates(numberOfDays) {
-    const array = [];
-    for (let index = 1; index <= numberOfDays; index++) {
-        let d = Date.now();
-        if (index > 8) {
-            // set dates on the next month
-            const newMonth = new Date(d).getMonth() + 1;
-            d = new Date(d).setMonth(newMonth);
-        }
-        const date = new Date(d + 864e5 * index); // 864e5 == 86400000 == 24*60*60*1000
-        const dateString = date.toISOString().split('T')[0];
-        array.push(dateString);
-    }
-    return array;
-}
-function getPastDate(numberOfDays) {
-    return new Date(Date.now() - 864e5 * numberOfDays)
-        .toISOString()
-        .split('T')[0];
-}
-
-const agendaItems = [
-    {
-        title: dates[0],
-        data: [{ duration: '2h', title: 'Workout 1' }],
-    },
-    {
-        title: dates[1],
-        data: [
-            { duration: '1h', title: 'Workout 2' },
-            { duration: '1h', title: 'Workout 3' },
-        ],
-    },
-    {
-        title: dates[2],
-        data: [
-            { duration: '1h', title: 'Workout 4' , id: '11'},
-            { duration: '1h', title: 'Workout 5' },
-            { duration: '1h', title: 'Workout 6' },
-        ],
-    },
-    {
-        title: dates[3],
-        data: [{ duration: '2h', title: 'Workout 7' }],
-    },
-    {
-        title: dates[4],
-        data: [{}],
-    },
+const barColourSet = [
+    '#b30000',
+    '#7c1158',
+    '#4421af',
+    '#1a53ff',
+    '#0d88e6',
+    '#00b7c7',
+    '#5ad45a',
+    '#8be04e',
+    '#ebdc78',
 ];
 
-function getMarkedDates() {
-    const marked = {};
-
-    agendaItems.forEach((item) => {
-        if (item.data && item.data.length > 0 && !isEmpty(item.data[0])) {
-            marked[item.title] = { marked: true };
-        } else {
-            marked[item.title] = { disabled: true };
-        }
-    });
-    return marked;
-}
-
 const Schedule = () => {
+    const [workoutScheduleItems, setWorkoutScheduleItems] = useState([]);
+
+    const isFocused = useIsFocused();
     const navigation = useNavigation();
     const marked = useRef(getMarkedDates());
     const todayBtnTheme = useRef({
         todayButtonTextColor: themeColor,
     });
+
+    function getMarkedDates() {
+        const marked = {};
+        workoutScheduleItems.forEach((item) => {
+            if (item.data && item.data.length > 0 && !isEmpty(item.data[0])) {
+                marked[item.title] = { marked: true };
+            } else {
+                marked[item.title] = { disabled: true };
+            }
+        });
+        return marked;
+    }
+
+    const addToCalendar = (workouts) => {
+        let tempArray = [];
+
+        if (workouts) {
+            workouts.forEach((workout) => {
+                const randomIndex = Math.floor(Math.random() * 10);
+                if (workout.schedule) {
+                    workout.schedule.forEach((date) => {
+                        if (
+                            tempArray.some(
+                                (item) =>
+                                    item.title.split('T')[0] ===
+                                    date.split('T')[0]
+                            )
+                        ) {
+                            let dateFound = tempArray.find(
+                                (item) =>
+                                    item.title.split('T')[0] ===
+                                    date.split('T')[0]
+                            );
+                            dateFound.data.push({
+                                id: workout.id,
+                                title: workout.title,
+                                duration: `${workout.totalWorkoutTime}m`,
+                                color: barColourSet[randomIndex],
+                            });
+                        } else {
+                            tempArray.push({
+                                title: date,
+                                data: [
+                                    {
+                                        id: workout.id,
+                                        title: workout.title,
+                                        duration: `${workout.totalWorkoutTime}m`,
+                                        color: barColourSet[randomIndex],
+                                    },
+                                ],
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+        tempArray.sort((a, b) => a.title > b.title);
+        setWorkoutScheduleItems(tempArray);
+    };
+    const fetchWorkoutSchedule = async () => {
+        const userInfo = await getUser();
+        const idToken = await getIdToken();
+
+        fetch(
+            `http://10.0.2.2:8080/api/user/${userInfo.uid}/workout-schedule`,
+            {
+                method: 'Get',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${idToken}`,
+                },
+            }
+        )
+            .then((res) => res.json())
+            .then((res) => {
+                console.info('Workout fetched', res.workoutSchedule);
+                addToCalendar(res.workoutSchedule);
+            })
+            .catch((err) => {
+                console.warn(err);
+            });
+    };
+
+    useEffect(() => {
+        if (isFocused) {
+            fetchWorkoutSchedule();
+        }
+    }, [isFocused]);
 
     const onDateChanged = useCallback((date, updateSource) => {
         console.log(
@@ -115,9 +142,13 @@ const Schedule = () => {
 
     return (
         <NativeBaseProvider>
-            <VStack  alignItems='center' justifyContent='center'>
-                <Button w='85%' rounded={'full'} onPress={() =>
-                                    navigation.navigate('ScheduleWorkout', {dummy:'dum'})}>Schedule a Workout</Button>
+            <VStack alignItems='center' justifyContent='center'>
+                <Button
+                    w='85%'
+                    rounded={'full'}
+                    onPress={() => navigation.navigate('ScheduleWorkout')}>
+                    Schedule a Workout
+                </Button>
             </VStack>
             <CalendarProvider
                 date={new Date().toISOString()}
@@ -138,11 +169,15 @@ const Schedule = () => {
                     animateScroll
                     closeOnDayPress={false}
                 />
-                <AgendaList
-                    sections={agendaItems}
-                    renderItem={renderItem}
-                    scrollToNextEvent
-                />
+                {workoutScheduleItems && workoutScheduleItems.length > 0 ? (
+                    <AgendaList
+                        sections={workoutScheduleItems}
+                        renderItem={renderItem}
+                        scrollToNextEvent
+                    />
+                ) : (
+                    <></>
+                )}
             </CalendarProvider>
         </NativeBaseProvider>
     );
