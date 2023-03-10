@@ -7,7 +7,7 @@ import { StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
 import { NativeBaseProvider, Text, ScrollView, View } from "native-base";
 import { customStyles } from "../../theme/customStyles";
 import { FontAwesome } from "@expo/vector-icons";
-import { theme } from "../../theme/globalTheme";
+import { theme } from "../../theme/theme";
 import LinearGradient from "react-native-linear-gradient";
 
 const ExerciseDetails = () => {
