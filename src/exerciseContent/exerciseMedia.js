@@ -30,7 +30,7 @@ const exerciseMedia = {
     video: require("./exerciseVideos/AdIoGtUyDnySdgqolMoM.mp4"),
   },
   AOlbu29XrVIBPJpOTLSU: {
-    video: 'require("./exerciseVideos/AOlbu29XrVIBPJpOTLSU.mp4")',
+    video: require("./exerciseVideos/AOlbu29XrVIBPJpOTLSU.mp4"),
   },
   AzH7gRuZqdHPYhDFHF4v: {
     video: require("./exerciseVideos/AzH7gRuZqdHPYhDFHF4v.mp4"),
