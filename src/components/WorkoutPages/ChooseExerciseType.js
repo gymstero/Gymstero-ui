@@ -24,6 +24,24 @@ const ChooseExerciseType = () => {
         { type: 'Core', image: CoreImage },
         { type: 'Weight Lifting', image: WeightLiftingImage },
     ];
+    
+    const goToNextStep = (type) => {
+
+        if(type =='Weight Lifting' ){
+            navigation.navigate('ChooseMuscle', {
+                eType: type,
+                workoutId: route.params.workoutId,
+                workoutTitle: route.params.title,
+            })
+        } else{
+            navigation.navigate('ChooseExercise', {
+                eType: type,
+                mGroup: 'Any',
+                workoutId: route.params.workoutId,
+                workoutTitle: route.params.title,
+            })
+    }
+}
 
     // Group the exerciseTypesArray into arrays of 2 items
     const exerciseTypeRows = exerciseTypesArray.reduce(
@@ -60,11 +78,9 @@ const ChooseExerciseType = () => {
                                     imageSource={exerciseType.image}
                                     text={exerciseType.type}
                                     onPress={() =>
-                                        navigation.navigate('ChooseMuscle', {
-                                            eType: exerciseType.type,
-                                            workoutId: route.params.workoutId,
-                                            workoutTitle: route.params.title,
-                                        })
+                                        goToNextStep(
+                                            exerciseType.type
+                                        )
                                     }
                                     buttonStyle={{
                                         borderRadius: 0,

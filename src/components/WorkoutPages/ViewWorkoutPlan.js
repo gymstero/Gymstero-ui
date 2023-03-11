@@ -114,7 +114,7 @@ const ViewWorkoutPlan = () => {
                 </Center>
                 {exerciseGoals && exerciseGoals.length > 0 ? (
                     <FlatList
-                        maxH='80%'
+                        maxH='70%'
                         data={exerciseGoals}
                         keyExtractor={(exerciseGoal) => exerciseGoal.id}
                         refreshing={refreshing}
@@ -169,7 +169,26 @@ const ViewWorkoutPlan = () => {
                 ) : (
                     <Text style={styles.title}>Nothing Here Yet</Text>
                 )}
+                
                 <Box w='85%'>
+                {exerciseGoals && exerciseGoals.length > 0 ? (
+                    <Button
+                        rounded='full'
+                        w='100%'
+                        p='2'
+                        mb={2}
+                        variant='outline'
+                        title='Run'
+                        onPress={() =>
+                            navigation.navigate('RunExercise', {
+                                exercises: exerciseGoals,
+                            })
+                        }>
+                        Run Workout
+                    </Button>
+                     ) : (
+                        <></>
+                    )}
                     <Button
                         rounded='full'
                         w='100%'
@@ -185,6 +204,7 @@ const ViewWorkoutPlan = () => {
                         }>
                         Add new Exercise
                     </Button>
+                    
                     {exerciseGoals && exerciseGoals.length > 0 ? (
                         <Button
                             rounded='full'
