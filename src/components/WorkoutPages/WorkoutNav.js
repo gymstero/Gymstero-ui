@@ -8,7 +8,7 @@ import ChooseExerciseType from "./ChooseExerciseType";
 import ChooseMuscle from "./ChooseMuscle";
 import ChooseExercise from "./ChooseExercise";
 import CreateExercise from "./CreateExercise";
-import ModifyExercise from './ModifyExercise';
+import ModifyExercise from "./ModifyExercise";
 
 import ExerciseNav from "../Exercise/ExerciseNav";
 import RunExercise from "./RunWorkout/RunExercise";
@@ -17,15 +17,17 @@ const Work = createNativeStackNavigator();
 
 function WorkoutNav() {
   return (
-      <Work.Navigator
-          initialRouteName='WorkoutMainPage'
-          screenOptions={{ headerShown: false }}>
-          <Work.Screen name='WorkoutMainPage' component={Workout} />
-          <Work.Screen name='AddWorkoutPlan' component={AddWorkoutPlan} />
-          <Work.Screen name='CreateWorkoutPlan' component={CreateWorkoutPlan} />
-          <Work.Screen name='ViewWorkoutPlan' component={ViewWorkoutPlan} />
+    <Work.Navigator
+      initialRouteName="WorkoutMainPage"
+      screenOptions={{ headerShown: false }}
+    >
+      <Work.Screen name="WorkoutMainPage" component={Workout} />
+      <Work.Screen name="AddWorkoutPlan" component={AddWorkoutPlan} />
+      <Work.Screen name="CreateWorkoutPlan" component={CreateWorkoutPlan} />
+      <Work.Screen name="ViewWorkoutPlan" component={ViewWorkoutPlan} />
 
-          <Work.Screen name='ExerciseNav' component={ExerciseNav} />
+      <Work.Screen name="ExerciseNav" component={ExerciseNav} />
+
 
           <Work.Screen
               name='ChooseExerciseType'

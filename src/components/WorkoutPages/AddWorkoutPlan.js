@@ -3,6 +3,8 @@ import { NativeBaseProvider, Text, View, Button } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import ImageButton from "../Layout/ImageButton";
 import { customStyles } from "../../theme/customStyles";
+import ItemCard from "../Layout/ItemCard";
+import exerciseMedia from "../../exerciseContent/exerciseMedia";
 
 const AddWorkoutPlan = () => {
   const navigation = useNavigation();
@@ -41,9 +43,13 @@ const AddWorkoutPlan = () => {
           <View style={styles.recentlyOpenedWorkoutsList}>
             {/* List of recently opened workouts */}
             {/* You can add code to loop through and display the workouts here */}
-            <Button onPress={() => navigation.navigate("ExerciseNav")}>
-              <Text>Barbell Bench Press</Text>
-            </Button>
+
+            <ItemCard
+              imageSource={exerciseMedia["ptixVI5fnk43gT9Y2GJO"].picture}
+              title={"Barbell Bench Press"}
+              onPress={() => navigation.navigate("ExerciseNav")}
+              imageStyle={{ padding: 5, height: 100 }}
+            />
           </View>
         </View>
       </ScrollView>

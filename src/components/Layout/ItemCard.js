@@ -2,10 +2,10 @@ import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "native-base";
 
-const ItemCard = ({ imageSource, title, onPress }) => (
+const ItemCard = ({ imageSource, title, onPress, imageStyle }) => (
   <TouchableOpacity onPress={onPress}>
     <View style={styles.container}>
-      <Image source={imageSource} style={styles.image} />
+      <Image source={imageSource} style={[styles.image, imageStyle]} />
       <View style={styles.body}>
         <Text style={styles.title}>{title}</Text>
       </View>

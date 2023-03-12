@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import Video from "react-native-video";
-import benchPressVideo from "./BenchPressVideo.mp4";
 import ExerciseData from "./exerciseData.json";
 import { StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
 import { NativeBaseProvider, Text, ScrollView, View } from "native-base";
@@ -9,6 +8,7 @@ import { customStyles } from "../../theme/customStyles";
 import { FontAwesome } from "@expo/vector-icons";
 import { theme } from "../../theme/theme";
 import LinearGradient from "react-native-linear-gradient";
+import exerciseMedia from "../../exerciseContent/exerciseMedia";
 
 const ExerciseDetails = () => {
   //Video dimension calculation
@@ -55,7 +55,7 @@ const ExerciseDetails = () => {
 
         <View style={{ flex: 1 }} onLayout={onLayout}>
           <Video
-            source={benchPressVideo} // just update the source for example source={{ uri: 'http://www.example.com/video.mp4' }}
+            source={exerciseMedia["ptixVI5fnk43gT9Y2GJO"].video} // just update the source for example source={{ uri: 'http://www.example.com/video.mp4' }}
             style={{ width, height }}
             resizeMode="cover"
             repeat={true}
