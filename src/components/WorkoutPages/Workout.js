@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -14,9 +15,9 @@ import {
   Image,
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
 import { getUser, getIdToken } from "../auth/auth";
 import { theme } from "../../theme/theme";
+
 const WorkoutPage = () => {
   const [workouts, setWorkouts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);

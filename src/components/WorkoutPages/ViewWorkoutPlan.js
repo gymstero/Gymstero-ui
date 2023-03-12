@@ -118,13 +118,13 @@ const ViewWorkoutPlan = () => {
 
   return (
     <NativeBaseProvider flex={1}>
-      <VStack alignItems="center" flex={1} backgroundColor={"white"}>
+      <VStack alignItems="center" backgroundColor={"white"}>
         <Heading mb={5} color={"black"}>
           {title}
         </Heading>
         {exerciseGoals && exerciseGoals.length > 0 ? (
           <FlatList
-            maxH="80%"
+            maxH="70%"
             data={exerciseGoals}
             keyExtractor={(exerciseGoal) => exerciseGoal.id}
             refreshing={refreshing}
@@ -140,12 +140,11 @@ const ViewWorkoutPlan = () => {
                 }
               >
                 <Box
-                  borderRadius={10}
                   minW={350}
                   borderWidth="2"
-                  //coolGray.200
-                  borderColor={"coolGray.300"}
-                  p="5"
+                  borderColor="coolGray.200"
+                  borderRadius={10}
+                  p="2"
                   my="2"
                   alignSelf="center"
                 >
@@ -190,15 +189,41 @@ const ViewWorkoutPlan = () => {
           <Text style={styles.title}>Nothing Here Yet</Text>
         )}
 
-        <Box alignItems={"center"} w="90%">
+        <Box w="85%">
+          {exerciseGoals && exerciseGoals.length > 0 ? (
+            <Button
+              w="100%"
+              p="2"
+              mt={3}
+              mb={2}
+              variant="outline"
+              title="Run"
+              backgroundColor={theme.colors.primary}
+              onPress={() =>
+                navigation.navigate("RunExercise", {
+                  exercises: exerciseGoals,
+                })
+              }
+            >
+              <Text color={theme.colors.text}>
+                <FontAwesome
+                  name="play"
+                  color={theme.colors.text}
+                  marginRight={5}
+                />
+                {"  "}
+                Run Workout
+              </Text>
+            </Button>
+          ) : (
+            <></>
+          )}
           <Button
             p="2"
-            mt={3}
             mb={3}
             variant="outline"
             title="Profile"
             backgroundColor={"transparent"}
-            // borderColor={"transparent"}
             onPress={() =>
               navigation.navigate("ChooseExerciseType", {
                 workoutId: route.params.id,
@@ -216,6 +241,7 @@ const ViewWorkoutPlan = () => {
               ADD NEW EXERCISE
             </Text>
           </Button>
+
           {exerciseGoals && exerciseGoals.length > 0 ? (
             <Button
               w="100%"
@@ -226,7 +252,14 @@ const ViewWorkoutPlan = () => {
               onPress={updateWorkout}
               backgroundColor={theme.colors.secondary}
             >
-              <Text color={theme.colors.text}>Update Workout Plan</Text>
+              <Text color={theme.colors.text}>
+                <FontAwesome
+                  name="upload"
+                  color={theme.colors.text}
+                  marginRight={5}
+                />
+                {"  "}Update Workout Plan
+              </Text>
             </Button>
           ) : (
             <></>

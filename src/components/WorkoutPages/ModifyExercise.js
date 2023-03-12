@@ -9,9 +9,11 @@ import {
   HStack,
   Heading,
   Spinner,
+  Text,
 } from "native-base";
 import { useEffect, useState } from "react";
 import { customStyles } from "../../theme/customStyles";
+import { theme } from "../../theme/theme";
 import { getIdToken } from "../auth/auth";
 
 const ModifyExercise = () => {
@@ -78,8 +80,8 @@ const ModifyExercise = () => {
   }, []);
 
   return (
-    <NativeBaseProvider flex={1}>
-      <VStack direction="column" mt="100" space={10} backgroundColor={"white"}>
+    <NativeBaseProvider flex={1} bg="red">
+      <VStack direction="column" mt="100" space={10}>
         {exercise.exerciseInfo ? (
           <Box alignItems="center">
             <Heading>
@@ -109,7 +111,7 @@ const ModifyExercise = () => {
                   })
                 }
               />
-              <FormControl.Label>Target Weight</FormControl.Label>
+              <FormControl.Label>Target Weight - kg</FormControl.Label>
               <Input
                 placeholder="Enter Weight"
                 value={exercise.targetWeight}
@@ -144,17 +146,25 @@ const ModifyExercise = () => {
               />
             </FormControl>
             <HStack>
-              <Button rounded="full" w="42%" p="4" onPress={updateExercise}>
-                Update
-              </Button>
-              <Button
-                rounded="full"
-                w="42%"
-                p="4"
-                onPress={() => deleteExercise(exercise.id)}
-              >
-                Delete
-              </Button>
+              <VStack p="2">
+                <Button
+                  w={40}
+                  backgroundColor={theme.colors.primary}
+                  onPress={updateExercise}
+                >
+                  <Text color={theme.colors.text}>Update</Text>
+                </Button>
+              </VStack>
+
+              <VStack p="2">
+                <Button
+                  w={40}
+                  onPress={() => deleteExercise(exercise.id)}
+                  backgroundColor={theme.colors.secondary}
+                >
+                  <Text color={theme.colors.text}>Delete</Text>
+                </Button>
+              </VStack>
             </HStack>
           </Box>
         ) : (

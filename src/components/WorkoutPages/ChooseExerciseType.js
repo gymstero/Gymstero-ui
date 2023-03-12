@@ -17,14 +17,34 @@ import { theme } from "../../theme/theme";
 import { customStyles } from "../../theme/customStyles";
 
 const ChooseExerciseType = () => {
-  const route = useRoute();
-  const navigation = useNavigation();
-  const exerciseTypesArray = [
-    { type: "Calisthenics", image: CalisthenicsImage },
-    { type: "Cardio", image: CardioImage },
-    { type: "Core", image: CoreImage },
-    { type: "Weight Lifting", image: WeightLiftingImage },
-  ];
+
+    const route = useRoute();
+    const navigation = useNavigation();
+    const exerciseTypesArray = [
+        { type: 'Calisthenics', image: CalisthenicsImage },
+        { type: 'Cardio', image: CardioImage },
+        { type: 'Core', image: CoreImage },
+        { type: 'Weight Lifting', image: WeightLiftingImage },
+    ];
+    
+    const goToNextStep = (type) => {
+
+        if(type =='Weight Lifting' ){
+            navigation.navigate('ChooseMuscle', {
+                eType: type,
+                workoutId: route.params.workoutId,
+                workoutTitle: route.params.title,
+            })
+        } else{
+            navigation.navigate('ChooseExercise', {
+                eType: type,
+                mGroup: 'Any',
+                workoutId: route.params.workoutId,
+                workoutTitle: route.params.title,
+            })
+    }
+}
+
 
   // Group the exerciseTypesArray into arrays of 2 items
   const exerciseTypeRows = exerciseTypesArray.reduce(
@@ -39,38 +59,39 @@ const ChooseExerciseType = () => {
     []
   );
 
-  return (
-    <NativeBaseProvider>
-      <Box px={5} backgroundColor={"white"}>
-        <VStack alignItems="center" justifyContent="center" space={0} mt={90}>
-          <View
-            style={{
-              alignItems: "center",
-            }}
-          >
-            <Text style={theme.typography.h1}>Exercise Types</Text>
-          </View>
-          {exerciseTypeRows.map((exerciseTypeRow, index) => (
-            <HStack space={4} key={index}>
-              {exerciseTypeRow.map((exerciseType, index) => (
-                <ImageButton
-                  key={index}
-                  imageSource={exerciseType.image}
-                  text={exerciseType.type}
-                  onPress={() =>
-                    navigation.navigate("ChooseMuscle", {
-                      eType: exerciseType.type,
-                      workoutId: route.params.workoutId,
-                      workoutTitle: route.params.title,
-                    })
-                  }
-                  buttonStyle={{
-                    borderRadius: 0,
-                    aspectRatio: 1,
-                  }}
-                  textStyle={{
-                    color: theme.colors.text,
 
+    return (
+        <NativeBaseProvider>
+            <Box px={5}>
+                <VStack
+                    alignItems='center'
+                    justifyContent='center'
+                    space={0}
+                    mt={90}>
+                    <View
+                        style={{
+                            alignItems: 'center',
+                        }}>
+                        <Text style={theme.typography.h1}>Exercise Types</Text>
+                    </View>
+                    {exerciseTypeRows.map((exerciseTypeRow, index) => (
+                        <HStack space={4} key={index}>
+                            {exerciseTypeRow.map((exerciseType, index) => (
+                                <ImageButton
+                                    key={index}
+                                    imageSource={exerciseType.image}
+                                    text={exerciseType.type}
+                                    onPress={() =>
+                                        goToNextStep(
+                                            exerciseType.type
+                                        )
+                                    }
+                                    buttonStyle={{
+                                        borderRadius: 0,
+                                        aspectRatio: 1,
+                                    }}
+                                    textStyle={{
+                                        color: theme.colors.text,
                     textAlign: "center",
                     marginTop: 10,
                     position: "absolute",
