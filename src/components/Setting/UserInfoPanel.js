@@ -2,16 +2,15 @@ import { Box, Button, Container, Flex, Image, Text, Spacer } from "native-base";
 import { googleLogout } from "../auth/auth";
 import { useNavigation } from "@react-navigation/native";
 import { theme } from "../../theme/theme";
+import { customStyles } from "../../theme/customStyles";
 
 const UserInfoPanel = ({
-
-    userData,
-    setEditMode,
-    error,
-    setError,
-    userMessage,
-    setUserMessage,
-
+  userData,
+  setEditMode,
+  error,
+  setError,
+  userMessage,
+  setUserMessage,
 }) => {
   const navigation = useNavigation();
 

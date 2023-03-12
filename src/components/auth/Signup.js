@@ -125,7 +125,13 @@ const Signup = () => {
 
   return (
     <NativeBaseProvider>
-      <Stack direction="column" mt="0" space={10}>
+      <Stack
+        direction="column"
+        mt="0"
+        space={10}
+        backgroundColor={"white"}
+        height={"100%"}
+      >
         <Box alignItems="center">
           <View
             style={{

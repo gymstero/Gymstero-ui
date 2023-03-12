@@ -14,7 +14,6 @@ import {
 } from "native-base";
 import React, { useState, useEffect } from "react";
 import { getUser, getIdToken } from "../auth/auth";
-import defaultMaleProfilePic from "../../images/defaultMaleProfilePic.jpg";
 import schedule from "../../images/schedule.png";
 import groupWorkout from "../../images/groupWorkout.jpg";
 import barbelWorkout from "../../images/barbel.jpg";
@@ -64,7 +63,7 @@ const Dashboard = () => {
                 padding: 10,
               }}
             >
-               <Image
+              <Image
                 style={{
                   width: 200,
                   height: 200,

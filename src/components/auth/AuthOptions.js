@@ -10,12 +10,13 @@ import {
   View,
 } from "native-base";
 import Logo from "../../images/gymsteroLogo.png";
+import { customStyles } from "../../theme/customStyles";
 const AuthOptions = () => {
   const navigation = useNavigation();
 
   return (
-    <NativeBaseProvider flex={1} bg="red">
-      <VStack alignItems="center" justifyContent="center" space={4}>
+    <NativeBaseProvider flex={1}>
+      <VStack space={4} style={customStyles.container}>
         <View
           style={{
             maxWidth: "100%",

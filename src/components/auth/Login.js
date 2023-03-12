@@ -19,6 +19,7 @@ import {
 } from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth";
 import Logo from "../../images/gymsteroLogo.png";
+import { customStyles } from "../../theme/customStyles";
 
 const Login = () => {
   const navigation = useNavigation();
@@ -115,7 +116,7 @@ const Login = () => {
 
   return (
     <NativeBaseProvider>
-      <VStack direction="column" mt="0" space={10}>
+      <VStack direction="column" mt="0" space={10} backgroundColor={"white"}>
         <Box alignItems="center">
           <View
             style={{
