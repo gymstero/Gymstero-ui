@@ -10,6 +10,7 @@ import {
 } from "native-base";
 import { useState } from "react";
 import { customStyles } from "../../theme/customStyles";
+import { theme } from "../../theme/theme";
 import { getIdToken } from "../auth/auth";
 
 const CreateExercise = () => {
@@ -84,7 +85,7 @@ const CreateExercise = () => {
                 })
               }
             />
-            <FormControl.Label>Target Weight</FormControl.Label>
+            <FormControl.Label>Target Weight - kg</FormControl.Label>
             <Input
               placeholder="Enter Weight"
               onChangeText={(text) =>
@@ -115,7 +116,13 @@ const CreateExercise = () => {
               }
             />
           </FormControl>
-          <Button rounded="full" w="85%" p="4" onPress={submitExercise}>
+          <Button
+            rounded="full"
+            w="85%"
+            p="4"
+            onPress={submitExercise}
+            backgroundColor={theme.colors.secondary}
+          >
             Submit
           </Button>
         </Box>
