@@ -16,8 +16,9 @@ export const theme = {
     },
     h2: {
       fontFamily: "Arial",
-      fontSize: 24,
+      fontSize: 26,
       fontWeight: "bold",
+      padding: 10,
     },
     body: {
       fontFamily: "Arial",

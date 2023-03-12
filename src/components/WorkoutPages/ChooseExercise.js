@@ -9,6 +9,7 @@ import {
 } from "native-base";
 import { useState, useEffect } from "react";
 import exerciseMedia from "../../exerciseContent/exerciseMedia";
+import { theme } from "../../theme/theme";
 import { getIdToken } from "../auth/auth";
 import ItemCard from "../Layout/ItemCard";
 
@@ -59,21 +60,26 @@ const ChooseExercise = () => {
   }, []);
 
   return (
-    <NativeBaseProvider flex={1} bg="red">
+    <NativeBaseProvider flex={1}>
+      <Text textAlign={"center"} style={theme.typography.h2}>
+        {route.params.eType}{" "}
+        {route.params.mGroup === "Any" ? "All" : route.params.mGroup} Exercises
+      </Text>
       <ScrollView h="80%">
-        <VStack alignItems="center" justifyContent="center" space={4} mt={5}>
-          <Text fontSize={20} fontWeight={600}>
-            Type: {route.params.eType}, Muscle: {route.params.mGroup}
-          </Text>
+        <VStack alignItems="center" justifyContent="center" space={0} mt={5}>
           {exercises && exercises.length > 0 ? (
             exercises.map((exercise, index) => (
               <View
                 alignItems={"center"}
-                borderColor={"coolGray.300"}
-                borderWidth={2}
-                borderRadius={10}
-                padding={1}
-                margin={2}
+                //borderColor={"coolGray.300"}
+                borderTopColor={"coolGray.100"}
+                borderTopWidth={2}
+                borderBottomColor={"coolGray.100"}
+                borderBottomWidth={2}
+                //borderRadius={10}
+                // padding={1}
+                marginLeft={5}
+                marginRight={5}
               >
                 <ItemCard
                   key={index}

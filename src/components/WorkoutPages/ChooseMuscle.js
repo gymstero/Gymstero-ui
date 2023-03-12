@@ -5,7 +5,6 @@ import {
   NativeBaseProvider,
   ScrollView,
   Text,
-  View,
 } from "native-base";
 import ItemCard from "../Layout/ItemCard";
 import ChestImage from "../../images/Chest.png";
@@ -15,7 +14,7 @@ import TricepsImage from "../../images/Triceps.png";
 import LegsImage from "../../images/Legs.png";
 import BackImage from "../../images/Back.png";
 import { theme } from "../../theme/theme";
-import { customStyles } from "../../theme/customStyles";
+
 const ChooseMuscle = () => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -31,10 +30,10 @@ const ChooseMuscle = () => {
   return (
     <NativeBaseProvider flex={1}>
       <ScrollView backgroundColor={"white"}>
+        <Text style={theme.typography.h2} textAlign={"center"}>
+          {route.params.eType} Muscle Groups
+        </Text>
         <VStack alignItems="center" space={4} mt={5}>
-          <Text fontSize={20} fontWeight={600}>
-            Exercise Type: {route.params.eType}
-          </Text>
           {MuscleGroupArray.length > 0 ? (
             MuscleGroupArray.map((muscle, index) => (
               <ItemCard

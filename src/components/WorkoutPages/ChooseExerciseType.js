@@ -59,13 +59,10 @@ const ChooseExerciseType = () => {
     <NativeBaseProvider>
       <Box px={5}>
         <VStack alignItems="center" justifyContent="center" space={0} mt={90}>
-          <View
-            style={{
-              alignItems: "center",
-            }}
-          >
-            <Text style={theme.typography.h1}>Exercise Types</Text>
-          </View>
+          <Text style={[theme.typography.h1, { textAlign: "center" }]}>
+            Exercise Types
+          </Text>
+
           {exerciseTypeRows.map((exerciseTypeRow, index) => (
             <HStack space={4} key={index}>
               {exerciseTypeRow.map((exerciseType, index) => (
