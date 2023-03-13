@@ -52,7 +52,7 @@ const Schedule = () => {
 
         if (workouts) {
             workouts.forEach((workout) => {
-                const randomIndex = Math.floor(Math.random() * 10);
+                const randomIndex = Math.floor(Math.random() * 9);
                 if (workout.schedule) {
                     workout.schedule.forEach((date) => {
                         if (
@@ -92,6 +92,7 @@ const Schedule = () => {
         }
 
         tempArray.sort((a, b) => a.title > b.title);
+        console.log('SCHEUDLE', tempArray);
         setWorkoutScheduleItems(tempArray);
     };
     const fetchWorkoutSchedule = async () => {
