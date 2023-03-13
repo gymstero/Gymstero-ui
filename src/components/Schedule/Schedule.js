@@ -1,6 +1,6 @@
 import isEmpty from "lodash/isEmpty";
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { NativeBaseProvider, Button, VStack, View, Text } from 'native-base';
+import { NativeBaseProvider, Button, VStack, Text } from 'native-base';
 import AgendaItem from './AgendaItem';
 import {
     ExpandableCalendar,
@@ -92,7 +92,6 @@ const Schedule = () => {
         }
 
         tempArray.sort((a, b) => a.title > b.title);
-        console.log('SCHEUDLE', tempArray);
         setWorkoutScheduleItems(tempArray);
     };
     const fetchWorkoutSchedule = async () => {
