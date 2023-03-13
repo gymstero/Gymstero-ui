@@ -87,21 +87,23 @@ const CreateScheduleItem = () => {
     };
 
     const addSchedule = async () => {
+        let isValid = true;
         setError(false);
         setErrorMessage('');
         setDayErrorMessage('');
 
         if (!workoutId) {
+            isValid = false;
             setError(true);
             setErrorMessage('Must choose workout');
         }
 
         if (!groupValues.length) {
+            isValid = false;
             setError(true);
             setDayErrorMessage('Choose at least one day');
         }
-
-        if (error) {
+        if (!isValid) {
             return;
         }
 
