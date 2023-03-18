@@ -8,7 +8,6 @@ import { theme } from "../../theme/theme";
 import PlaceHolderImage from "../../images/Biceps.png";
 
 const WorkoutPlanCard = ({ imageSources }) => {
-  console.log("this is image sources \n" + JSON.stringify(imageSources));
   return (
     <View style={styles.cardItem}>
       <View style={styles.cardBody}>
