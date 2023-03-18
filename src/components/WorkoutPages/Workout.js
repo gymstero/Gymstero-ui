@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -12,11 +11,12 @@ import {
   Text,
   FlatList,
   Button,
-  Image,
+  Divider,
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { getUser, getIdToken } from "../auth/auth";
 import { theme } from "../../theme/theme";
+import WorkoutPlanCard from "../Layout/WorkoutPlanCard";
 
 const WorkoutPage = () => {
   const [workouts, setWorkouts] = useState([]);
@@ -87,7 +87,6 @@ const WorkoutPage = () => {
           activeOpacity={0.7}
           style={styles.addButton}
           onPress={() => navigation.navigate("AddWorkoutPlan")}
-          mt="2"
         >
           <Text style={styles.addButtonText}>ADD WORKOUT PLAN</Text>
         </Pressable>
@@ -105,26 +104,20 @@ const WorkoutPage = () => {
                     title: item.title,
                   })
                 }
+                padding={5}
+                mb={2}
               >
                 <HStack mt={2}>
-                  <MaterialCommunityIcons
-                    name="circle"
-                    color="gray.100"
-                    size={40}
-                  />
-                  <View style={styles.leftSide}>
-                    {console.log(
-                      "-------------------\nthis is workouts.exerciseInfo\n" +
-                        JSON.stringify(workouts) +
-                        "\n---------------------"
-                    )}
-                  </View>
-                  <Container w="80%" ml={2} my="auto">
-                    <Text fontSize={18}>{item.title}</Text>
+                  <Container w="90%" ml={4} my="auto">
+                    <Text fontSize={20} fontWeight={"bold"}>
+                      {item.title}
+                    </Text>
                   </Container>
                   <Pressable my="auto">
                     <DeleteIcon
+                      ml={5}
                       size="4"
+                      color={theme.colors.secondary}
                       onPress={() => {
                         setWorkoutToDelete({
                           id: item.id,
@@ -134,6 +127,7 @@ const WorkoutPage = () => {
                       }}
                     />
                   </Pressable>
+
                   <AlertDialog
                     leastDestructiveRef={cancelRef}
                     isOpen={isOpen}
@@ -158,7 +152,7 @@ const WorkoutPage = () => {
                             Cancel
                           </Button>
                           <Button
-                            colorScheme="danger"
+                            colorScheme="red"
                             onPress={() => {
                               deleteWorkout(workoutToDelete.id);
                               setRefreshing(true);
@@ -172,6 +166,8 @@ const WorkoutPage = () => {
                     </AlertDialog.Content>
                   </AlertDialog>
                 </HStack>
+                <Divider m={1} />
+                <WorkoutPlanCard imageSources={item.exercises} />
               </Pressable>
             )}
           />
@@ -185,13 +181,13 @@ const WorkoutPage = () => {
 
 const styles = {
   container: {
-    padding: 20,
+    padding: 5,
     flex: 1,
     alignItems: "center",
     backgroundColor: theme.colors.background,
   },
   title: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "",
     marginBottom: 20,
   },
@@ -200,22 +196,14 @@ const styles = {
     marginBottom: 10,
   },
   addButton: {
-    marginTop: 20,
     alignItems: "center",
     backgroundColor: "#050D13",
-    width: "100%",
+    // marginLeft: 25,
+    //  marginRight: 25,
     height: 60,
     borderRadius: 2,
     padding: 20,
-  },
-  addButton: {
-    marginTop: 20,
-    alignItems: "center",
-    backgroundColor: "#050D13",
-    width: "100%",
-    height: 60,
-    borderRadius: 2,
-    padding: 20,
+    width: "90%",
   },
   addButtonText: {
     alignItems: "center",
