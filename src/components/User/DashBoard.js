@@ -1,131 +1,161 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigation, useIsFocused } from '@react-navigation/native';
-import { customStyles } from '../../theme/customStyles';
+import React, { useState, useEffect } from "react";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
+import { customStyles } from "../../theme/customStyles";
 import {
-    NativeBaseProvider,
-    VStack,
-    Image,
-    Pressable,
-    Text,
-    View,
-    HStack,
-} from 'native-base';
-import { getUser, getIdToken } from '../auth/auth';
-import schedule from '../../images/schedule.png';
-import groupWorkout from '../../images/groupWorkout.jpg';
-import barbelWorkout from '../../images/barbel.jpg';
-import { theme } from '../../theme/theme';
-import ImageButton from '../Layout/ImageButton';
-
+  NativeBaseProvider,
+  VStack,
+  Image,
+  Pressable,
+  Text,
+  View,
+  HStack,
+  ScrollView,
+  Divider,
+} from "native-base";
+import { getUser, getIdToken } from "../auth/auth";
+import schedule from "../../images/schedule.png";
+import groupWorkout from "../../images/groupWorkout.jpg";
+import barbelWorkout from "../../images/barbel.jpg";
+import { theme } from "../../theme/theme";
+import ImageButton from "../Layout/ImageButton";
+import { FontAwesome } from "@expo/vector-icons";
+import moment from "moment";
+import SocialCounterHeader from "../Layout/SocialCounterHeader";
+import SmallWorkoutPlanCard from "../Layout/SmallWorkoutPlanCard";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 const Dashboard = () => {
-    const navigation = useNavigation();
-    const [userData, setUserData] = useState({});
+  const navigation = useNavigation();
+  const [userData, setUserData] = useState({});
 
-    const isFocused = useIsFocused();
+  const isFocused = useIsFocused();
 
-    const fetchUser = async () => {
-        const userInfo = await getUser();
-        const idToken = await getIdToken();
+  const fetchUser = async () => {
+    const userInfo = await getUser();
+    const idToken = await getIdToken();
 
-        fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/setting`, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${idToken}`,
-            },
-        })
-            .then((res) => res.json())
-            .then((res) => {
-                setUserData(res.userData);
-                console.info('User data fetched', userData);
-            })
-            .catch((err) => {
-                console.warn(err);
-            });
-    };
+    fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/setting`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setUserData(res.userData);
+        console.info("User data fetched", userData);
+      })
+      .catch((err) => {
+        console.warn(err);
+      });
+  };
 
-    useEffect(() => {
-        if (isFocused) {
-            fetchUser();
-        }
-    }, [isFocused]);
-    return (
-        <NativeBaseProvider>
-            <View style={customStyles.container}>
-                <VStack>
-                    <HStack
-                        style={{
-                            alignItems: 'center',
-                        }}>
-                        <VStack
-                            style={{
-                                left: 1,
-                                padding: 10,
-                            }}>
-                            <Image
-                                style={{
-                                    width: 200,
-                                    height: 200,
-                                    borderRadius: 10,
-                                }}
-                                source={{
-                                    uri:
-                                        userData.photoURL ||
-                                        'https://img.icons8.com/ios-glyphs/90/000000/user--v1.png',
-                                }}
-                                alt='user profile'
-                            />
-                        </VStack>
-                        <VStack
-                            style={{
-                                padding: 10,
-                            }}>
-                            <View style={customStyles.textBox}>
-                                <Text style={customStyles.text}>
-                                    Welcome, {userData && userData.username}
-                                </Text>
-                            </View>
+  useEffect(() => {
+    if (isFocused) {
+      fetchUser();
+    }
+  }, [isFocused]);
+  /*
+  const [notification, notificationSet] = useState({});
 
-                            <Pressable
-                                rounded='md'
-                                w='100px'
-                                p='2'
-                                variant='outline'
-                                title='Profile'
-                                onPress={() =>
-                                    navigation.navigate('UserProfile')
-                                }
-                                style={{
-                                    alignItems: 'center',
-                                    backgroundColor: theme.colors.primary,
-                                }}>
-                                <Text color={theme.colors.text}>Profile</Text>
-                            </Pressable>
-                        </VStack>
-                    </HStack>
-                </VStack>
+  function notificationSet(initialState) {
+    const [state, setState] = useState(initialState);
+    const toggle = () => setState(!state);
+    return [state, toggle];
+  }
+  */
+  return (
+    <NativeBaseProvider>
+      <View style={customStyles.container}>
+        <HStack>
+          <Text style={customStyles.h1}>{userData && userData.username}</Text>
 
-                <ImageButton
-                    imageSource={barbelWorkout}
-                    text='WORKOUT'
-                    onPress={() => navigation.navigate('Workout')}
-                />
+          <Pressable>
+            <FontAwesome
+              //  name={showFullDescription ? "bell" : "bells"}
+              name={"bell"}
+              style={{ color: theme.colors.primary, fontSize: 20, right: 0 }}
+            />
+          </Pressable>
+        </HStack>
 
-                <ImageButton
-                    imageSource={groupWorkout}
-                    text='SOCIAL'
-                    onPress={() => navigation.navigate('Social')}
-                />
+        <SocialCounterHeader userData={userData} />
 
-                <ImageButton
-                    imageSource={schedule}
-                    text='SCHEDULE'
-                    onPress={() => navigation.navigate('Schedule')}
-                />
-            </View>
-        </NativeBaseProvider>
-    );
+        <View
+          //  w={"100%"}
+          //  h={250}
+          backgroundColor={theme.colors.primary}
+          // backgroundColor={"#01070C"}
+          // borderColor={theme.colors.primary}
+          borderColor={theme.colors.secondary}
+          p={3}
+          borderWidth={0}
+          borderRadius={10}
+          alignItems="center"
+        >
+          <Text
+            color={theme.colors.text}
+            fontSize={21}
+            fontWeight={"bold"}
+            mb={2}
+          >
+            Workouts for: <>{moment().format("dddd MMMM Do")}</>
+          </Text>
+
+          <View
+            h={180}
+            backgroundColor={theme.colors.background}
+            borderRadius={10}
+            padding={2}
+            mt={2}
+          >
+            <ScrollView>
+              <SmallWorkoutPlanCard
+                title={"Morning Routine"}
+                imageSources={[
+                  "9hn6zh5wncHfo05ontbq",
+                  "A31gG4qQGQIbH4esLvIY",
+                  "z3VmcvWKwPk96Lu7SvsE",
+                  "DKNZso4okyMFR4HPSBVj",
+                ]} // you can pass exercise array ex: imageSources={item.exercises}
+                onPress={() =>
+                  navigation.navigate("ViewWorkoutPlan", {
+                    // id: item.id,
+                    // title: item.title,
+
+                    id: "qcxdQmiKJqWHEX2j7CVu",
+                    title: "Morning Routine",
+                  })
+                }
+              />
+
+              <SmallWorkoutPlanCard />
+              <SmallWorkoutPlanCard />
+              <SmallWorkoutPlanCard />
+              <SmallWorkoutPlanCard />
+            </ScrollView>
+          </View>
+        </View>
+
+        <ImageButton
+          imageSource={barbelWorkout}
+          text="WORKOUT"
+          onPress={() => navigation.navigate("Workout")}
+        />
+        <ImageButton
+          imageSource={groupWorkout}
+          text="SOCIAL"
+          onPress={() => navigation.navigate("Social")}
+        />
+        <ImageButton
+          imageSource={schedule}
+          text="SCHEDULE"
+          onPress={() => navigation.navigate("Schedule")}
+        />
+      </View>
+    </NativeBaseProvider>
+  );
 };
 
 export default Dashboard;
