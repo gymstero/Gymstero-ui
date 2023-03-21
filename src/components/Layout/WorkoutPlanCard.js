@@ -30,7 +30,7 @@ const WorkoutPlanCard = ({ imageSources }) => {
               ) : (
                 <ScrollView
                   horizontal={true}
-                  showsHorizontalScrollIndicator={false}
+                  showsHorizontalScrollIndicator={true}
                 >
                   {imageSources.map((source, index) => (
                     <Image
