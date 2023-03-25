@@ -1,13 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import {
-  HStack,
-  NativeBaseProvider,
-  VStack,
-  Image,
-  Text,
-  View,
-  Pressable,
-} from "native-base";
+import { HStack, VStack, Image, Text, Pressable } from 'native-base';
 import React from "react";
 import { theme } from "../../theme/theme";
 
