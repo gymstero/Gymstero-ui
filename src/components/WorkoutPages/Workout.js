@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import {
   NativeBaseProvider,
@@ -17,6 +17,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { getUser, getIdToken } from "../auth/auth";
 import { theme } from "../../theme/theme";
 import WorkoutPlanCard from "../Layout/WorkoutPlanCard";
+import { customStyles } from "../../theme/customStyles";
 
 const WorkoutPage = () => {
   const [workouts, setWorkouts] = useState([]);
@@ -25,12 +26,13 @@ const WorkoutPage = () => {
   const [workoutToDelete, setWorkoutToDelete] = useState({});
   const cancelRef = useRef(null);
   const navigation = useNavigation();
-
   const onClose = () => setIsOpen(!isOpen);
-
+  const [loading, setLoading] = useState(false);
+  
   const fetchWorkouts = async () => {
     const userInfo = await getUser();
     const idToken = await getIdToken();
+    setLoading(true);
 
     fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/workouts`, {
       method: "Get",
@@ -49,7 +51,7 @@ const WorkoutPage = () => {
       .catch((err) => {
         console.warn(err);
       })
-      .finally(() => setRefreshing(false));
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => {
@@ -90,7 +92,11 @@ const WorkoutPage = () => {
         >
           <Text style={styles.addButtonText}>ADD WORKOUT PLAN</Text>
         </Pressable>
-        {workouts && workouts.length > 0 ? (
+        {loading ? (
+          <View style={customStyles.loadingContainer}>
+            <ActivityIndicator size="large" color={theme.colors.secondary} />
+          </View>
+        ) : workouts && workouts.length > 0 ? (
           <FlatList
             data={workouts}
             keyExtractor={(item) => item.id}
@@ -172,7 +178,10 @@ const WorkoutPage = () => {
             )}
           />
         ) : (
-          <Text style={styles.title}>Nothing Here Yet</Text>
+          <View style={customStyles.loadingContainer}>
+            <Text>Nothing Here Yet</Text>
+            <Text>You can Add Workout Plans using button above</Text>
+          </View>
         )}
       </View>
     </NativeBaseProvider>
