@@ -1,10 +1,17 @@
-import { ScrollView } from "react-native";
-import { NativeBaseProvider, Button, Input, Box, Heading } from "native-base";
+import {
+  NativeBaseProvider,
+  Button,
+  Input,
+  Box,
+  Heading,
+  View,
+} from "native-base";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { getUser, getIdToken } from "../auth/auth";
 
 import { theme } from "../../theme/theme";
+import { customStyles } from "../../theme/customStyles";
 
 const CreateWorkoutPlan = () => {
   const [plan, setPlan] = useState({
@@ -43,15 +50,14 @@ const CreateWorkoutPlan = () => {
   };
   return (
     <NativeBaseProvider>
-      <ScrollView>
-        <Box bg="black" w="100%" alignItems="center">
-          <Heading color="white" w="85%" p="2">
+      <View style={customStyles.container}>
+        <Box w="100%" alignItems="center" style={customStyles.h1}>
+          <Heading color={theme.colors.primary} p="2">
             New Workout Plan
           </Heading>
         </Box>
         <Box w="100%" alignItems="center">
           <Input
-            variant="rounded"
             p="2"
             mt="2"
             placeholder="Enter Workout Title"
@@ -65,14 +71,14 @@ const CreateWorkoutPlan = () => {
           <Button
             backgroundColor={theme.colors.secondary}
             w="50%"
-            mt="2"
+            mt="5"
             rounded="full"
             onPress={submitWorkoutPlan}
           >
-            Submit
+            Next
           </Button>
         </Box>
-      </ScrollView>
+      </View>
     </NativeBaseProvider>
   );
 };
