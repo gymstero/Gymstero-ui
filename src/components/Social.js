@@ -13,7 +13,7 @@ import {
 } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { getIdToken } from './auth/auth';
+import { getIdToken , getUser} from './auth/auth';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const Social = () => {
     const [workouts, setWorkouts] = useState([]);
@@ -90,7 +90,7 @@ const Social = () => {
             })
             .catch((err) => {
                 console.warn(err);
-            });
+            }).finally(() => setRefreshing(false));
     };
     const searchUser = async () => {
         const idToken = await getIdToken();
@@ -127,6 +127,49 @@ const Social = () => {
             fetchWorkouts();
         }
     };
+    const addFollower = async(id) => {
+        const idToken = await getIdToken();
+        const userInfo = await getUser();
+        fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/following/${id}`, {
+            method: 'Put',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${idToken}`,
+            },
+        })
+            .then((res) => res.json())
+            .catch((err) => {
+                console.warn(err);
+            });
+    }
+    const removeFollower = async(id) => {
+        const idToken = await getIdToken();
+        const userInfo = await getUser();
+        fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/unfollowing/${id}`, {
+            method: 'Put',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${idToken}`,
+            },
+        })
+            .then((res) => res.json())
+            .catch((err) => {
+                console.warn(err);
+            });
+    }
+
+    const follow = async (user) => {
+        const userInfo = await getUser();
+        console.log(userInfo)
+        if (!user.followers.includes(userInfo.uid)){
+            addFollower(user.id);
+        }
+        else if (user.followers.includes(userInfo.uid)){
+            removeFollower(user.id)
+        }
+    }
     useEffect(() => {
         fetchWorkouts();
         fetchUsers();
@@ -209,6 +252,7 @@ const Social = () => {
                                             source={{ uri: item.photoURL }}
                                             alt={item.username}
                                             size='sm'
+                                            
                                         />
 
                                         <Container w='60%' ml={4} my='auto'>
@@ -216,10 +260,15 @@ const Social = () => {
                                                 {item.username}
                                             </Text>
                                         </Container>
-                                        <Container alignSelf='center'>
+                                        <Container alignSelf='center' >
                                             <MaterialCommunityIcons
                                                 name='share-variant'
                                                 size={28}
+                                                onPress = {() => {
+                                                    follow(item)
+                                                    setRefreshing(true);
+                                                }
+                                                }
                                             />
                                         </Container>
                                         <Text
@@ -228,7 +277,7 @@ const Social = () => {
                                             ml={2}
                                             textAlign='right'
                                             alignSelf='center'>
-                                            {item.numOfFollowers}
+                                            {item.followers.length}
                                         </Text>
                                     </HStack>
                                 </Pressable>
