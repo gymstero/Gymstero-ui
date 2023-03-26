@@ -2,8 +2,21 @@ import React from "react";
 import { useState } from "react";
 import Video from "react-native-video";
 import ExerciseData from "./exerciseData.json";
-import { StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
-import { NativeBaseProvider, Text, ScrollView, View } from "native-base";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  ImageBackground,
+  Pressable,
+} from "react-native";
+import {
+  NativeBaseProvider,
+  Text,
+  ScrollView,
+  View,
+  HStack,
+  ArrowBackIcon,
+  CheckIcon,
+} from "native-base";
 import { customStyles } from "../../theme/customStyles";
 import { FontAwesome } from "@expo/vector-icons";
 import { theme } from "../../theme/theme";
@@ -48,10 +61,21 @@ const ExerciseDetails = () => {
   //-------------------------------------------
   return (
     <NativeBaseProvider>
-      <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
-        <Text style={[customStyles.header, { color: "black" }]}>
-          {ExerciseData.title}
-        </Text>
+      <ScrollView style={{ backgroundColor: "white" }}>
+        <HStack alignItems={"center"}>
+          <Pressable>
+            <ArrowBackIcon ml={2} color={theme.colors.primary} size={7} />
+          </Pressable>
+
+          <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
+            <Text style={[customStyles.header, { color: "black" }]}>
+              {ExerciseData.title}
+            </Text>
+          </View>
+          <Pressable>
+            <CheckIcon mr={2} color={theme.colors.primary} size={7} />
+          </Pressable>
+        </HStack>
 
         <View style={{ flex: 1 }} onLayout={onLayout}>
           <Video
