@@ -99,6 +99,7 @@ const Social = () => {
         })
             .then((res) => res.json())
             .then((res) => {
+                // setFollowing(res.following);
                 setUsers(res.users);
                 setRefreshing(false);
                 console.info('Users fetched', following, users);
@@ -158,6 +159,7 @@ const Social = () => {
                 .then((res) => res.json())
                 .then((res) => {
                     setFollowing(res.following);
+                    fetchUsers();
                     console.info(`Start following ${otherUserId}`);
                 })
                 .catch((err) => {
@@ -178,6 +180,7 @@ const Social = () => {
                 .then((res) => res.json())
                 .then((res) => {
                     setFollowing(res.following);
+                    fetchUsers();
                     console.info(`Unfollowed ${otherUserId}`);
                 })
                 .catch((err) => {
@@ -212,8 +215,30 @@ const Social = () => {
         )
             .then((res) => res.json())
             .then((res) => {
-                setFollowing(res.following);
+                // setFollowing(res.following);
                 console.info(`Copied ${workoutId}`);
+            })
+            .catch((err) => {
+                console.warn(err);
+            });
+    };
+
+    const getFollowingUsers = async () => {
+        const userInfo = await getUser();
+        const idToken = await getIdToken();
+
+        fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/get-following`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${idToken}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                setFollowing(res.following);
+                console.info(`Fetched following users`, res);
             })
             .catch((err) => {
                 console.warn(err);
@@ -231,10 +256,11 @@ const Social = () => {
 
     useEffect(() => {
         if (isFocused) {
-            fetchWorkouts();
+            getFollowingUsers();
             fetchUsers();
+            fetchWorkouts();
         }
-    }, [refreshing, isFocused, following]);
+    }, [refreshing, isFocused]);
 
     return (
         <NativeBaseProvider style={styles.container}>
