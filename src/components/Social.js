@@ -99,7 +99,6 @@ const Social = () => {
         })
             .then((res) => res.json())
             .then((res) => {
-                // setFollowing(res.following);
                 setUsers(res.users);
                 setRefreshing(false);
                 console.info('Users fetched', following, users);
@@ -126,7 +125,6 @@ const Social = () => {
         )
             .then((res) => res.json())
             .then((res) => {
-                // setFollowing(res.following);
                 setUsers(res.users);
                 setRefreshing(false);
                 console.info('Users fetched', res.following);
@@ -324,7 +322,6 @@ const Social = () => {
                                                     )
                                                 }>
                                                 {following &&
-                                                // following.length > 0 &&
                                                 following.includes(item.id)
                                                     ? 'Following'
                                                     : 'Follow'}
