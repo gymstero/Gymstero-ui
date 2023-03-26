@@ -6,7 +6,6 @@ import {
   Button,
   View,
   Heading,
-  Box,
   HStack,
 } from "native-base";
 import { Text } from "react-native";
