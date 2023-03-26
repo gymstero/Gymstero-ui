@@ -105,7 +105,7 @@ const Social = () => {
             })
             .catch((err) => {
                 console.warn(err);
-            });
+            }).finally(() => setRefreshing(false));
     };
 
     const searchUser = async () => {
@@ -300,6 +300,7 @@ const Social = () => {
                                             source={{ uri: item.photoURL }}
                                             alt={item.username}
                                             size='sm'
+                                            
                                         />
 
                                         <Container w='45%' ml={4} my='auto'>
@@ -307,6 +308,7 @@ const Social = () => {
                                                 {item.username}
                                             </Text>
                                         </Container>
+
                                         <HStack alignSelf='center'>
                                             <Button
                                                 bg={theme.colors.primary}
