@@ -25,7 +25,7 @@ const SocialCounterHeader = ({ userData }) => {
                   }}
                   source={{
                       uri:
-                          userData.photoURL ||
+                          (userData && userData.photoURL) ||
                           'https://img.icons8.com/ios-glyphs/90/000000/user--v1.png',
                   }}
                   alt='user profile'
@@ -47,7 +47,7 @@ const SocialCounterHeader = ({ userData }) => {
                       title='Posts'
                       onPress={() => navigation.navigate('Social')}>
                       <Text color={theme.colors.text}>
-                          {getWorkoutCount(userData.workouts)}
+                          {userData ? getWorkoutCount(userData.workouts) : 0}
                       </Text>
                       <Text color={theme.colors.text}>Workout</Text>
                   </Pressable>
@@ -71,7 +71,9 @@ const SocialCounterHeader = ({ userData }) => {
                       title='Following'
                       onPress={() => navigation.navigate('UserProfile')}>
                       <Text color={theme.colors.text}>
-                          {getFollowingUserCount(userData.following)}
+                          {userData
+                              ? getFollowingUserCount(userData.following)
+                              : 0}
                       </Text>
                       <Text color={theme.colors.text}>Following</Text>
                   </Pressable>
