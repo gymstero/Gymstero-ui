@@ -4,7 +4,7 @@ import {
   NativeBaseProvider,
   ScrollView,
   Text,
-  View,
+  View
 } from "native-base";
 import { useState, useEffect } from "react";
 import exerciseMedia from "../../exerciseContent/exerciseMedia";
@@ -29,13 +29,11 @@ const ChooseExercise = () => {
     } else {
       eTypeQuery = `exerciseType=${route.params.eType}`;
     }
-
     if (route.params.mGroup === "Any") {
       mGroupQuery = "";
     } else {
       mGroupQuery = `muscleGroup=${route.params.mGroup}`;
     }
-
     fetch(
       `http://10.0.2.2:8080/api/workout/exercises?${eTypeQuery}&${mGroupQuery}`,
       {
@@ -91,32 +89,34 @@ const ChooseExercise = () => {
                   padding={1}
                   margin={2}
                   key={index}
-                  imageSource={exerciseMedia[exercise.id].picture}
-                  title={exercise.title}
-                  
-                  onPress={() => navigation.navigate("ExerciseNav", {screen: "ExerciseDetails" ,
-                                                                          params: {page: "update",
+                >
+                  <ItemCard
+                    imageSource={exerciseMedia[exercise.id].picture}
+                    title={exercise.title}
+                    onPress={() => navigation.navigate("ExerciseNav", {screen: "ExerciseDetails" ,
+                    params: {page: "update",
                       id: exercise.id,
                       title: exercise.title,
                       workoutTitle: route.params.workoutTitle,
                       workoutId: route.params.workoutId,
                     }})
-                  }
-                  imageStyle={{
-                    width: 100,
-                    height: 100,
-                    marginRight: 30,
-                    marginLeft: 10,
-                    padding: 5,
-                  }}
-                />
-              </View>
-            ))
-          ) : (
-            <Text>Nothing Here Yet</Text>
-          )}
-        </VStack>
-      </ScrollView>
+                    }
+                    imageStyle={{
+                      width: 100,
+                      height: 100,
+                      marginRight: 30,
+                      marginLeft: 10,
+                      padding: 5,
+                    }}
+                  />
+                </View>
+              ))
+            ) : (
+              <Text>Nothing Here Yet</Text>
+            )}
+          </VStack>
+        </ScrollView>
+      )}
     </NativeBaseProvider>
   );
 };
