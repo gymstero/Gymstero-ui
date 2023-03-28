@@ -47,7 +47,8 @@ const AddWorkoutPlan = () => {
             <ItemCard
               imageSource={exerciseMedia["ptixVI5fnk43gT9Y2GJO"].picture}
               title={"Barbell Bench Press"}
-              onPress={() => navigation.navigate("ExerciseNav")}
+              onPress={() => navigation.navigate("ExerciseNav", {screen: "ExerciseDetails" ,
+                                                                          params: {page: "" ,id:"nzbF9FgWLbKag3h8GCcq" }})}
               imageStyle={{ padding: 5, height: 100 }}
             />
           </View>

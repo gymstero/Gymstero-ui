@@ -91,34 +91,32 @@ const ChooseExercise = () => {
                   padding={1}
                   margin={2}
                   key={index}
-                >
-                  <ItemCard
-                    imageSource={exerciseMedia[exercise.id].picture}
-                    title={exercise.title}
-                    onPress={() =>
-                      navigation.navigate("CreateExercise", {
-                        id: exercise.id,
-                        title: exercise.title,
-                        workoutTitle: route.params.workoutTitle,
-                        workoutId: route.params.workoutId,
-                      })
-                    }
-                    imageStyle={{
-                      width: 100,
-                      height: 100,
-                      marginRight: 30,
-                      marginLeft: 10,
-                      padding: 5,
-                    }}
-                  />
-                </View>
-              ))
-            ) : (
-              <Text>Nothing Here Yet</Text>
-            )}
-          </VStack>
-        </ScrollView>
-      )}
+                  imageSource={exerciseMedia[exercise.id].picture}
+                  title={exercise.title}
+                  
+                  onPress={() => navigation.navigate("ExerciseNav", {screen: "ExerciseDetails" ,
+                                                                          params: {page: "update",
+                      id: exercise.id,
+                      title: exercise.title,
+                      workoutTitle: route.params.workoutTitle,
+                      workoutId: route.params.workoutId,
+                    }})
+                  }
+                  imageStyle={{
+                    width: 100,
+                    height: 100,
+                    marginRight: 30,
+                    marginLeft: 10,
+                    padding: 5,
+                  }}
+                />
+              </View>
+            ))
+          ) : (
+            <Text>Nothing Here Yet</Text>
+          )}
+        </VStack>
+      </ScrollView>
     </NativeBaseProvider>
   );
 };
