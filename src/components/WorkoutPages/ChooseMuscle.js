@@ -5,7 +5,6 @@ import {
   NativeBaseProvider,
   ScrollView,
   Text,
-  View,
 } from "native-base";
 import ItemCard from "../Layout/ItemCard";
 import ChestImage from "../../images/Chest.png";
@@ -33,7 +32,7 @@ const ChooseMuscle = () => {
       <ScrollView backgroundColor={"white"}>
         <VStack alignItems="center" space={4} mt={5}>
           <Text fontSize={20} fontWeight={600}>
-            Exercise Type: {route.params.eType}
+            {route.params.eType} Muscle Groups
           </Text>
           {MuscleGroupArray.length > 0 ? (
             MuscleGroupArray.map((muscle, index) => (

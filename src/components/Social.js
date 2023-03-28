@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     NativeBaseProvider,
     Center,
@@ -11,48 +11,33 @@ import {
     Container,
     Image,
 } from 'native-base';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { getIdToken , getUser} from './auth/auth';
+import { getIdToken, getUser } from './auth/auth';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { theme } from '../theme/theme';
+
 const Social = () => {
     const [workouts, setWorkouts] = useState([]);
     const [users, setUsers] = useState([]);
     const [display, setDisplay] = useState('users');
     const [refreshing, setRefreshing] = useState(true);
     const [input, setInput] = useState('');
-    const navigation = useNavigation();
+    const [following, setFollowing] = useState([]);
 
-    const fetchWorkouts = async () => {
-        const idToken = await getIdToken();
+    const isFocused = useIsFocused();
 
-        fetch(`http://10.0.2.2:8080/api/workout/`, {
-            method: 'Get',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${idToken}`,
-            },
-        })
-            .then((res) => res.json())
-            .then((res) => {
-                setWorkouts(res.workouts);
-                setRefreshing(false);
-                console.info('Workout fetched 1', res.workouts, workouts);
-            })
-            .catch((err) => {
-                console.warn(err);
-            });
-    };
     const changeDisplay = (type) => {
         if (type != display) {
             setDisplay(type);
         }
     };
-    const searchWorkout = async () => {
+
+    const fetchWorkouts = async () => {
+        const userInfo = await getUser();
         const idToken = await getIdToken();
 
-        fetch(`http://10.0.2.2:8080/api/workout?workoutTitle=${input}`, {
+        fetch(`http://10.0.2.2:8080/api/workout/user/${userInfo.uid}`, {
             method: 'Get',
             headers: {
                 Accept: 'application/json',
@@ -64,17 +49,47 @@ const Social = () => {
             .then((res) => {
                 setWorkouts(res.workouts);
                 setRefreshing(false);
-                console.info('Workout fetched 1', res.workouts, workouts);
+                console.info('Workout fetched ');
             })
             .catch((err) => {
                 console.warn(err);
+            });
+    };
+
+    const searchWorkout = async () => {
+        const userInfo = await getUser();
+        const idToken = await getIdToken();
+
+        fetch(
+            `http://10.0.2.2:8080/api/workout/user/${userInfo.uid}?workoutTitle=${input}`,
+            {
+                method: 'Get',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${idToken}`,
+                },
+            }
+        )
+            .then((res) => res.json())
+            .then((res) => {
+                setWorkouts(res.workouts);
+                setRefreshing(false);
+                console.info('Workout fetched ');
+            })
+            .catch((err) => {
+                console.warn(err);
+            })
+            .finally(() => {
+                setInput('');
             });
     };
 
     const fetchUsers = async () => {
+        const userInfo = await getUser();
         const idToken = await getIdToken();
 
-        fetch(`http://10.0.2.2:8080/api/user/`, {
+        fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}`, {
             method: 'Get',
             headers: {
                 Accept: 'application/json',
@@ -84,34 +99,97 @@ const Social = () => {
         })
             .then((res) => res.json())
             .then((res) => {
+                // setFollowing(res.following);
                 setUsers(res.users);
                 setRefreshing(false);
-                console.info('Users fetched', res.users, users);
+                console.info('Users fetched', following, users);
             })
             .catch((err) => {
                 console.warn(err);
-            }).finally(() => setRefreshing(false));
+            })
+            .finally(() => setRefreshing(false));
     };
+
     const searchUser = async () => {
+        const userInfo = await getUser();
         const idToken = await getIdToken();
-        fetch(`http://10.0.2.2:8080/api/user?username=${input}`, {
-            method: 'Get',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${idToken}`,
-            },
-        })
+
+        fetch(
+            `http://10.0.2.2:8080/api/user/${userInfo.uid}?username=${input}`,
+            {
+                method: 'Get',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${idToken}`,
+                },
+            }
+        )
             .then((res) => res.json())
             .then((res) => {
                 setUsers(res.users);
                 setRefreshing(false);
-                console.info('Users fetched', res.users, users);
+                console.info('Users fetched', res.following);
             })
             .catch((err) => {
                 console.warn(err);
+            })
+            .finally(() => {
+                setInput('');
             });
     };
+
+    const followAction = async (following, otherUserId) => {
+        setRefreshing(true);
+        const userInfo = await getUser();
+        const idToken = await getIdToken();
+
+        if (!following.includes(otherUserId)) {
+            fetch(
+                `http://10.0.2.2:8080/api/user/${userInfo.uid}/following/${otherUserId}`,
+                {
+                    method: 'Put',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${idToken}`,
+                    },
+                }
+            )
+                .then((res) => res.json())
+                .then((res) => {
+                    setFollowing(res.following);
+                    fetchUsers();
+                    console.info(`Start following ${otherUserId}`);
+                })
+                .catch((err) => {
+                    console.warn(err);
+                });
+        } else {
+            fetch(
+                `http://10.0.2.2:8080/api/user/${userInfo.uid}/unfollowing/${otherUserId}`,
+                {
+                    method: 'Put',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${idToken}`,
+                    },
+                }
+            )
+                .then((res) => res.json())
+                .then((res) => {
+                    setFollowing(res.following);
+                    fetchUsers();
+                    console.info(`Unfollowed ${otherUserId}`);
+                })
+                .catch((err) => {
+                    console.warn(err);
+                });
+        }
+        setRefreshing(false);
+    };
+
     const submitInput = () => {
         if (display == 'users') {
             searchUser();
@@ -119,7 +197,55 @@ const Social = () => {
             searchWorkout();
         }
     };
-    const cancelSearch = () => {
+
+    const copyWorkout = async (workoutId) => {
+        const userInfo = await getUser();
+        const idToken = await getIdToken();
+
+        fetch(
+            `http://10.0.2.2:8080/api/workout/copy-workout/${workoutId}/to-user/${userInfo.uid}`,
+            {
+                method: 'Put',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${idToken}`,
+                },
+            }
+        )
+            .then((res) => res.json())
+            .then((res) => {
+                // setFollowing(res.following);
+                console.info(`Copied ${workoutId}`);
+            })
+            .catch((err) => {
+                console.warn(err);
+            });
+    };
+
+    const getFollowingUsers = async () => {
+        const userInfo = await getUser();
+        const idToken = await getIdToken();
+
+        fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/get-following`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${idToken}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                setFollowing(res.following);
+                console.info(`Fetched following users`, res);
+            })
+            .catch((err) => {
+                console.warn(err);
+            });
+    };
+
+    const resetSearch = () => {
         setInput('');
         if (display == 'users') {
             fetchUsers();
@@ -127,85 +253,74 @@ const Social = () => {
             fetchWorkouts();
         }
     };
-    const addFollower = async(id) => {
-        const idToken = await getIdToken();
-        const userInfo = await getUser();
-        fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/following/${id}`, {
-            method: 'Put',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${idToken}`,
-            },
-        })
-            .then((res) => res.json())
-            .catch((err) => {
-                console.warn(err);
-            });
-    }
-    const removeFollower = async(id) => {
-        const idToken = await getIdToken();
-        const userInfo = await getUser();
-        fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/unfollowing/${id}`, {
-            method: 'Put',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${idToken}`,
-            },
-        })
-            .then((res) => res.json())
-            .catch((err) => {
-                console.warn(err);
-            });
-    }
 
-    const follow = async (user) => {
-        const userInfo = await getUser();
-        console.log(userInfo)
-        if (!user.followers.includes(userInfo.uid)){
-            addFollower(user.id);
-        }
-        else if (user.followers.includes(userInfo.uid)){
-            removeFollower(user.id)
-        }
-    }
     useEffect(() => {
-        fetchWorkouts();
-        fetchUsers();
-    }, [refreshing]);
+        if (isFocused) {
+            getFollowingUsers();
+            fetchUsers();
+            fetchWorkouts();
+        }
+    }, [refreshing, isFocused]);
 
     return (
         <NativeBaseProvider style={styles.container}>
             <TouchableOpacity>
                 <Center w='90%' mx='auto'>
                     <HStack mt={10}>
-                        <Button w='50%' onPress={() => changeDisplay('users')}>
+                        <Button
+                            style={{
+                                borderBottomLeftRadius: 10,
+                                borderRadius: 0,
+                                borderTopLeftRadius: 10,
+                            }}
+                            w='50%'
+                            bg={theme.colors.primary}
+                            opacity={display === 'users' ? 1 : 0.75}
+                            onPress={() => changeDisplay('users')}>
                             Users
                         </Button>
                         <Button
+                            style={{
+                                borderBottomRightRadius: 10,
+                                borderRadius: 0,
+                                borderTopRightRadius: 10,
+                            }}
                             w='50%'
+                            bg={theme.colors.primary}
+                            opacity={display === 'workouts' ? 1 : 0.75}
                             onPress={() => changeDisplay('workouts')}>
                             Workouts
                         </Button>
                     </HStack>
-                    <Input
-                        mt={5}
-                        onChangeText={(text) => {
-                            setInput(text);
-                            console.log(text);
-                        }}
-                        placeholder='Enter User or Workout name...'
-                        value={input}
-                    />
-                    <Button mt={5} w='100%' onPress={() => submitInput()}>
-                        Search
-                    </Button>
-                    {input && input.length > 0 ? (
-                        <Button onPress={() => cancelSearch()}>Cancel</Button>
-                    ) : (
-                        <></>
-                    )}
+                    <HStack w='100%'>
+                        <Input
+                            mt={5}
+                            flex={8}
+                            onChangeText={(text) => {
+                                setInput(text);
+                                console.log(text);
+                            }}
+                            placeholder='Enter User or Workout name...'
+                            value={input}
+                        />
+                        <Button
+                            mt={5}
+                            flex={1}
+                            bg={theme.colors.primary}
+                            onPress={() => submitInput()}
+                            style={{
+                                borderBottomRightRadius: 5,
+                                borderRadius: 0,
+                                borderTopRightRadius: 5,
+                            }}>
+                            <MaterialCommunityIcons
+                                name='magnify'
+                                color='white'
+                                size={32}
+                            />
+                        </Button>
+                    </HStack>
+
                     {workouts &&
                     display == 'workouts' &&
                     workouts.length > 0 ? (
@@ -218,9 +333,10 @@ const Social = () => {
                                 <Pressable>
                                     <HStack mt={2}>
                                         <MaterialCommunityIcons
-                                            name='circle'
+                                            name='plus'
                                             color='gray.100'
                                             size={40}
+                                            onPress={() => copyWorkout(item.id)}
                                         />
                                         <Container w='60%' ml={2} my='auto'>
                                             <Text fontSize={18}>
@@ -249,36 +365,53 @@ const Social = () => {
                                 <Pressable>
                                     <HStack mt={2}>
                                         <Image
-                                            source={{ uri: item.photoURL }}
+                                            source={{
+                                                uri:
+                                                    item.photoURL ||
+                                                    'https://img.icons8.com/ios-glyphs/90/000000/user--v1.png',
+                                            }}
                                             alt={item.username}
-                                            size='sm'
-                                            
+                                            style={{
+                                                width: 50,
+                                                height: 50,
+                                                borderRadius: 100,
+                                            }}
                                         />
 
-                                        <Container w='60%' ml={4} my='auto'>
+                                        <Container w='45%' ml={4} my='auto'>
                                             <Text fontSize={20}>
                                                 {item.username}
                                             </Text>
                                         </Container>
-                                        <Container alignSelf='center' >
-                                            <MaterialCommunityIcons
-                                                name='share-variant'
-                                                size={28}
-                                                onPress = {() => {
-                                                    follow(item)
-                                                    setRefreshing(true);
-                                                }
-                                                }
-                                            />
-                                        </Container>
-                                        <Text
-                                            fontSize={16}
-                                            w={5}
-                                            ml={2}
-                                            textAlign='right'
-                                            alignSelf='center'>
-                                            {item.followers.length}
-                                        </Text>
+
+                                        <HStack alignSelf='center'>
+                                            <Button
+                                                bg={theme.colors.primary}
+                                                fontSize={14}
+                                                w={20}
+                                                p={1}
+                                                textAlign='right'
+                                                alignSelf='center'
+                                                onPress={() =>
+                                                    followAction(
+                                                        following,
+                                                        item.id
+                                                    )
+                                                }>
+                                                {following &&
+                                                following.includes(item.id)
+                                                    ? 'Following'
+                                                    : 'Follow'}
+                                            </Button>
+                                            <Text
+                                                fontSize={14}
+                                                w={5}
+                                                ml={2}
+                                                textAlign='right'
+                                                alignSelf='center'>
+                                                {item.numOfFollowers}
+                                            </Text>
+                                        </HStack>
                                     </HStack>
                                 </Pressable>
                             )}

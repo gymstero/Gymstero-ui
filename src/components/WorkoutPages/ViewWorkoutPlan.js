@@ -4,7 +4,7 @@ import {
   Box,
   Heading,
   VStack,
-  Center,
+  View,
   Text,
   FlatList,
   Pressable,
@@ -13,7 +13,6 @@ import {
   HStack,
   Spacer,
   Image,
-  ScrollView,
 } from "native-base";
 import React, { useState, useEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -22,6 +21,7 @@ import { customStyles } from "../../theme/customStyles";
 import exerciseMedia from "../../exerciseContent/exerciseMedia";
 import { theme } from "../../theme/theme";
 import { FontAwesome } from "@expo/vector-icons";
+import { ActivityIndicator } from "react-native";
 
 const ViewWorkoutPlan = () => {
   const navigation = useNavigation();
@@ -29,8 +29,10 @@ const ViewWorkoutPlan = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [exerciseGoals, setExerciseGoals] = useState([]);
   const { title, id } = route.params;
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchWorkout = async () => {
+    setIsLoading(true);
     const idToken = await getIdToken();
 
     fetch(`http://10.0.2.2:8080/api/workout/${id}/exercise-goals`, {
@@ -49,7 +51,7 @@ const ViewWorkoutPlan = () => {
       .catch((err) => {
         console.warn(err);
       })
-      .finally(() => setRefreshing(false));
+      .finally(() => setIsLoading(false));
   };
 
   const updateWorkout = async () => {
@@ -112,17 +114,17 @@ const ViewWorkoutPlan = () => {
     fetchWorkout();
   }, [route, refreshing]);
 
-  //----------------------------------
-
-  //----------------------------------
-
   return (
-    <NativeBaseProvider flex={1}>
-      <VStack alignItems="center" backgroundColor={"white"}>
-        <Heading mb={5} color={"black"}>
+    <NativeBaseProvider>
+      <View style={customStyles.container}>
+        <Heading mb={5} color={theme.colors.primary}>
           {title}
         </Heading>
-        {exerciseGoals && exerciseGoals.length > 0 ? (
+        {isLoading ? (
+          <View style={customStyles.loadingContainer}>
+            <ActivityIndicator size="large" color={theme.colors.secondary} />
+          </View>
+        ) : exerciseGoals && exerciseGoals.length > 0 ? (
           <FlatList
             maxH="70%"
             data={exerciseGoals}
@@ -186,13 +188,37 @@ const ViewWorkoutPlan = () => {
             )}
           />
         ) : (
-          <Text style={styles.title}>Nothing Here Yet</Text>
+          <View style={customStyles.loadingContainer}>
+            <Text>Nothing Here Yet</Text>
+            <Button
+              p="2"
+              mb={3}
+              variant="outline"
+              title="Profile"
+              backgroundColor={"transparent"}
+              onPress={() =>
+                navigation.navigate("ChooseExerciseType", {
+                  workoutId: route.params.id,
+                  title: route.params.title,
+                })
+              }
+            >
+              <Text color={theme.colors.primary} fontWeight={"bold"}>
+                <FontAwesome
+                  name="plus"
+                  color={theme.colors.primary}
+                  marginRight={5}
+                />
+                {"  "}
+                ADD NEW EXERCISE
+              </Text>
+            </Button>
+          </View>
         )}
 
-        <Box w="85%">
-          {exerciseGoals && exerciseGoals.length > 0 ? (
+        {exerciseGoals && exerciseGoals.length > 0 ? (
+          <Box w="100%">
             <Button
-              w="100%"
               p="2"
               mt={3}
               mb={2}
@@ -215,36 +241,30 @@ const ViewWorkoutPlan = () => {
                 Run Workout
               </Text>
             </Button>
-          ) : (
-            <></>
-          )}
-          <Button
-            p="2"
-            mb={3}
-            variant="outline"
-            title="Profile"
-            backgroundColor={"transparent"}
-            onPress={() =>
-              navigation.navigate("ChooseExerciseType", {
-                workoutId: route.params.id,
-                title: route.params.title,
-              })
-            }
-          >
-            <Text color={theme.colors.primary} fontWeight={"bold"}>
-              <FontAwesome
-                name="plus"
-                color={theme.colors.primary}
-                marginRight={5}
-              />
-              {"  "}
-              ADD NEW EXERCISE
-            </Text>
-          </Button>
-
-          {exerciseGoals && exerciseGoals.length > 0 ? (
             <Button
-              w="100%"
+              p="2"
+              mb={3}
+              variant="outline"
+              title="Profile"
+              backgroundColor={"transparent"}
+              onPress={() =>
+                navigation.navigate("ChooseExerciseType", {
+                  workoutId: route.params.id,
+                  title: route.params.title,
+                })
+              }
+            >
+              <Text color={theme.colors.primary} fontWeight={"bold"}>
+                <FontAwesome
+                  name="plus"
+                  color={theme.colors.primary}
+                  marginRight={5}
+                />
+                {"  "}
+                ADD NEW EXERCISE
+              </Text>
+            </Button>
+            <Button
               p="2"
               mb={5}
               variant="outline"
@@ -261,11 +281,11 @@ const ViewWorkoutPlan = () => {
                 {"  "}Update Workout Plan
               </Text>
             </Button>
-          ) : (
-            <></>
-          )}
-        </Box>
-      </VStack>
+          </Box>
+        ) : (
+          <></>
+        )}
+      </View>
     </NativeBaseProvider>
   );
 };

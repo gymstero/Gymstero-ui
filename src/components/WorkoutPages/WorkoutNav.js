@@ -28,19 +28,14 @@ function WorkoutNav() {
 
       <Work.Screen name="ExerciseNav" component={ExerciseNav} />
 
+      <Work.Screen name="ChooseExerciseType" component={ChooseExerciseType} />
+      <Work.Screen name="ChooseMuscle" component={ChooseMuscle} />
+      <Work.Screen name="ChooseExercise" component={ChooseExercise} />
+      <Work.Screen name="CreateExercise" component={CreateExercise} />
+      <Work.Screen name="ModifyExercise" component={ModifyExercise} />
 
-          <Work.Screen
-              name='ChooseExerciseType'
-              component={ChooseExerciseType}
-          />
-          <Work.Screen name='ChooseMuscle' component={ChooseMuscle} />
-          <Work.Screen name='ChooseExercise' component={ChooseExercise} />
-          <Work.Screen name='CreateExercise' component={CreateExercise} />
-          <Work.Screen name='ModifyExercise' component={ModifyExercise} />
-
-          <Work.Screen name='RunExercise' component={RunExercise} />
-
-      </Work.Navigator>
+      <Work.Screen name="RunExercise" component={RunExercise} />
+    </Work.Navigator>
   );
 }
 

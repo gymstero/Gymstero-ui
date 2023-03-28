@@ -10,6 +10,7 @@ import {
   Heading,
   Spinner,
   Text,
+  ScrollView,
 } from "native-base";
 import { useEffect, useState } from "react";
 import { customStyles } from "../../theme/customStyles";
@@ -81,96 +82,98 @@ const ModifyExercise = () => {
 
   return (
     <NativeBaseProvider flex={1} bg="red">
-      <VStack direction="column" mt="100" space={10}>
-        {exercise.exerciseInfo ? (
-          <Box alignItems="center">
-            <Heading>
-              Modify&nbsp;
-              {exercise.exerciseInfo.title}
-            </Heading>
-            <FormControl isInvalid w="85%" maxW="350px" mb="5">
-              <FormControl.Label>Target Sets</FormControl.Label>
-              <Input
-                placeholder="Enter Target Set"
-                value={exercise.targetSets}
-                onChangeText={(text) =>
-                  setExercise({
-                    ...exercise,
-                    targetSets: text,
-                  })
-                }
-              />
-              <FormControl.Label>Target Reps</FormControl.Label>
-              <Input
-                placeholder="Enter Target Reps"
-                value={exercise.targetReps}
-                onChangeText={(text) =>
-                  setExercise({
-                    ...exercise,
-                    targetReps: text,
-                  })
-                }
-              />
-              <FormControl.Label>Target Weight - kg</FormControl.Label>
-              <Input
-                placeholder="Enter Weight"
-                value={exercise.targetWeight}
-                onChangeText={(text) =>
-                  setExercise({
-                    ...exercise,
-                    targetWeight: text,
-                  })
-                }
-              />
-              <FormControl.Label>Estimated Time - mins</FormControl.Label>
-              <Input
-                placeholder="Enter Estimated Time"
-                value={exercise.estimatedTime}
-                onChangeText={(text) =>
-                  setExercise({
-                    ...exercise,
-                    estimatedTime: text,
-                  })
-                }
-              />
-              <FormControl.Label>Comment</FormControl.Label>
-              <Input
-                placeholder="Enter comment"
-                value={exercise.comment}
-                onChangeText={(text) =>
-                  setExercise({
-                    ...exercise,
-                    comment: text,
-                  })
-                }
-              />
-            </FormControl>
-            <HStack>
-              <VStack p="2">
-                <Button
-                  w={40}
-                  backgroundColor={theme.colors.primary}
-                  onPress={updateExercise}
-                >
-                  <Text color={theme.colors.text}>Update</Text>
-                </Button>
-              </VStack>
+      <ScrollView>
+        <VStack direction="column" mt="100" space={10}>
+          {exercise.exerciseInfo ? (
+            <Box alignItems="center">
+              <Heading>
+                Modify&nbsp;
+                {exercise.exerciseInfo.title}
+              </Heading>
+              <FormControl isInvalid w="85%" maxW="350px" mb="5">
+                <FormControl.Label>Target Sets</FormControl.Label>
+                <Input
+                  placeholder="Enter Target Set"
+                  value={exercise.targetSets}
+                  onChangeText={(text) =>
+                    setExercise({
+                      ...exercise,
+                      targetSets: text,
+                    })
+                  }
+                />
+                <FormControl.Label>Target Reps</FormControl.Label>
+                <Input
+                  placeholder="Enter Target Reps"
+                  value={exercise.targetReps}
+                  onChangeText={(text) =>
+                    setExercise({
+                      ...exercise,
+                      targetReps: text,
+                    })
+                  }
+                />
+                <FormControl.Label>Target Weight - kg</FormControl.Label>
+                <Input
+                  placeholder="Enter Weight"
+                  value={exercise.targetWeight}
+                  onChangeText={(text) =>
+                    setExercise({
+                      ...exercise,
+                      targetWeight: text,
+                    })
+                  }
+                />
+                <FormControl.Label>Estimated Time - mins</FormControl.Label>
+                <Input
+                  placeholder="Enter Estimated Time"
+                  value={exercise.estimatedTime}
+                  onChangeText={(text) =>
+                    setExercise({
+                      ...exercise,
+                      estimatedTime: text,
+                    })
+                  }
+                />
+                <FormControl.Label>Comment</FormControl.Label>
+                <Input
+                  placeholder="Enter comment"
+                  value={exercise.comment}
+                  onChangeText={(text) =>
+                    setExercise({
+                      ...exercise,
+                      comment: text,
+                    })
+                  }
+                />
+              </FormControl>
+              <HStack>
+                <VStack p="2">
+                  <Button
+                    w={40}
+                    backgroundColor={theme.colors.primary}
+                    onPress={updateExercise}
+                  >
+                    <Text color={theme.colors.text}>Update</Text>
+                  </Button>
+                </VStack>
 
-              <VStack p="2">
-                <Button
-                  w={40}
-                  onPress={() => deleteExercise(exercise.id)}
-                  backgroundColor={theme.colors.secondary}
-                >
-                  <Text color={theme.colors.text}>Delete</Text>
-                </Button>
-              </VStack>
-            </HStack>
-          </Box>
-        ) : (
-          <Spinner size="lg" />
-        )}
-      </VStack>
+                <VStack p="2">
+                  <Button
+                    w={40}
+                    onPress={() => deleteExercise(exercise.id)}
+                    backgroundColor={theme.colors.secondary}
+                  >
+                    <Text color={theme.colors.text}>Delete</Text>
+                  </Button>
+                </VStack>
+              </HStack>
+            </Box>
+          ) : (
+            <Spinner size="lg" />
+          )}
+        </VStack>
+      </ScrollView>
     </NativeBaseProvider>
   );
 };

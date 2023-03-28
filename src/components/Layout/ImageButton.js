@@ -54,7 +54,7 @@ const styles = {
   text: {
     color: "#FFF0EE",
     fontWeight: "bold",
-    top: "35%",
+    top: "19%",
     marginTop: 10,
     position: "absolute",
     backgroundColor: "rgba(0, 0, 0, 0.2)",

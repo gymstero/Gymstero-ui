@@ -23,4 +23,19 @@ export const customStyles = {
     border: 1,
     padding: 5,
   },
+  h1: {
+    fontFamily: "Arial",
+    fontSize: 32,
+    fontWeight: "bold",
+    padding: 10,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loading: {
+    //size: "large",
+    color: theme.colors.secondary,
+  },
 };

@@ -1,10 +1,18 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import Video from "react-native-video";
-//import ExerciseData from "./exerciseData.json";
+import ExerciseData from "./exerciseData.json";
 import { StyleSheet, TouchableOpacity, Pressable } from "react-native";
-import { NativeBaseProvider, Text, ScrollView, View, HStack, ArrowBackIcon,
-  CheckIcon, } from "native-base";
+import {
+  NativeBaseProvider,
+  Text,
+  ScrollView,
+  View,
+  HStack,
+  ArrowBackIcon,
+  CheckIcon,
+} from "native-base";
+
 import { customStyles } from "../../theme/customStyles";
 import { FontAwesome } from "@expo/vector-icons";
 import { theme } from "../../theme/theme";
@@ -107,7 +115,6 @@ const ExerciseDetails = () => {
           </Pressable>
         </HStack>
         ) }             
-
         <View style={{ flex: 1 }} onLayout={onLayout}>
           <Video
             source={exerciseMedia[route.params.id].video} // just update the source for example source={{ uri: 'http://www.example.com/video.mp4' }}
