@@ -109,14 +109,14 @@ const ChooseExercise = () => {
                     marginLeft: 10,
                     padding: 5,
                   }}
-                />
-              </View>
+                  />
             ))
           ) : (
             <Text>Nothing Here Yet</Text>
           )}
         </VStack>
       </ScrollView>
+      )}
     </NativeBaseProvider>
   );
 };
