@@ -79,13 +79,14 @@ const ChooseExercise = () => {
                   key={index}
                   imageSource={exerciseMedia[exercise.id].picture}
                   title={exercise.title}
-                  onPress={() =>
-                    navigation.navigate("CreateExercise", {
+                  
+                  onPress={() => navigation.navigate("ExerciseNav", {screen: "ExerciseDetails" ,
+                                                                          params: {page: "update",
                       id: exercise.id,
                       title: exercise.title,
                       workoutTitle: route.params.workoutTitle,
                       workoutId: route.params.workoutId,
-                    })
+                    }})
                   }
                   imageStyle={{
                     width: 100,
