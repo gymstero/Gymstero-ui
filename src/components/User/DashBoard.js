@@ -65,92 +65,94 @@ const Dashboard = () => {
   */
   console.log("this is workoutData\n" + JSON.stringify(workoutData));
   return (
-      <NativeBaseProvider>
-          <View style={customStyles.container}>
-              <HStack>
-                  <Text style={customStyles.h1}>
-                      {userData && userData.username}
-                  </Text>
+    <NativeBaseProvider>
+      <View style={customStyles.container}>
+        <HStack>
+          <Text style={customStyles.h1}>{userData && userData.username}</Text>
 
-                  <Pressable>
-                      <FontAwesome
-                          //  name={showFullDescription ? "bell" : "bells"}
-                          name={'bell'}
-                          style={{
-                              color: theme.colors.primary,
-                              fontSize: 20,
-                              right: 0,
-                          }}
-                      />
-                  </Pressable>
-              </HStack>
+          <Pressable>
+            <FontAwesome
+              //  name={showFullDescription ? "bell" : "bells"}
+              name={"bell"}
+              style={{
+                color: theme.colors.primary,
+                fontSize: 20,
+                right: 0,
+              }}
+            />
+          </Pressable>
+        </HStack>
 
-              <SocialCounterHeader userData={userData} />
+        <SocialCounterHeader userData={userData} />
 
-              <View
-                  backgroundColor={theme.colors.primary}
-                  borderColor={theme.colors.secondary}
-                  p={3}
-                  borderWidth={0}
-                  borderRadius={10}
-                  alignItems='center'>
-                  <Text
-                      color={theme.colors.text}
-                      fontSize={21}
-                      fontWeight={'bold'}
-                      mb={2}>
-                      Workouts for:{' '}
-                      {moment(
-                          workoutData && workoutData.length > 0
-                              ? workoutData[0].schedule
-                              : undefined
-                      ).format('dddd MMMM Do')}
-                  </Text>
+        <View
+          backgroundColor={theme.colors.primary}
+          borderColor={theme.colors.secondary}
+          p={3}
+          borderWidth={0}
+          borderRadius={10}
+          alignItems="center"
+        >
+          <Text
+            color={theme.colors.text}
+            fontSize={18}
+            fontWeight={"bold"}
+            mb={2}
+          >
+            Workouts for:{" "}
+            {moment(
+              workoutData && workoutData.length > 0
+                ? workoutData[0].schedule
+                : undefined
+            ).format("dddd MMMM Do")}
+          </Text>
 
-                  <View
-                      h={180}
-                      flexDirection='row'
-                      backgroundColor={theme.colors.background}
-                      borderRadius={10}
-                      padding={2}
-                      mt={2}>
-                      <ScrollView>
-                          {workoutData && workoutData.length > 0 ? (
-                              workoutData.map((workout, index) => (
-                                  <SmallWorkoutPlanCard
-                                      key={index}
-                                      title={workout.title}
-                                      imageSources={workout.exercises}
-                                      onPress={() =>
-                                          navigation.navigate(
-                                              'ViewWorkoutPlan',
-                                              {
-                                                  id: workout.id,
-                                                  title: workout.title,
-                                              }
-                                          )
-                                      }
-                                  />
-                              ))
-                          ) : (
-                              <></>
-                          )}
-                      </ScrollView>
-                  </View>
-              </View>
-
-              <ImageButton
-                  imageSource={groupWorkout}
-                  text='SOCIAL'
-                  onPress={() => navigation.navigate('Social')}
-              />
-              <ImageButton
-                  imageSource={schedule}
-                  text='SCHEDULE'
-                  onPress={() => navigation.navigate('Schedule')}
-              />
+          <View
+            h={180}
+            flexDirection="row"
+            backgroundColor={theme.colors.background}
+            borderRadius={10}
+            padding={2}
+            mt={2}
+          >
+            <ScrollView>
+              {workoutData && workoutData.length > 0 ? (
+                workoutData.map((workout, index) => (
+                  <SmallWorkoutPlanCard
+                    key={index}
+                    title={workout.title}
+                    imageSources={workout.exercises}
+                    onPress={() =>
+                      navigation.navigate("ViewWorkoutPlan", {
+                        id: workout.id,
+                        title: workout.title,
+                      })
+                    }
+                  />
+                ))
+              ) : (
+                <>
+                  <Text>No Workouts is planned</Text>
+                </>
+              )}
+            </ScrollView>
           </View>
-      </NativeBaseProvider>
+        </View>
+
+        <ImageButton
+          imageSource={groupWorkout}
+          text="SOCIAL"
+          onPress={() => navigation.navigate("Social")}
+          textStyle={{ top: "30%" }}
+        />
+        <ImageButton
+          imageSource={schedule}
+          text="SCHEDULE"
+          onPress={() => navigation.navigate("Schedule")}
+          textStyle={{ top: "30%" }}
+        />
+      </View>
+    </NativeBaseProvider>
   );
 };
 
