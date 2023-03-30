@@ -23,6 +23,7 @@ import exerciseMedia from "../../exerciseContent/exerciseMedia";
 import { theme } from "../../theme/theme";
 import { FontAwesome } from "@expo/vector-icons";
 import { ActivityIndicator } from "react-native";
+import { useWindowDimensions } from "react-native";
 
 const ViewWorkoutPlan = () => {
   const navigation = useNavigation();
@@ -31,6 +32,8 @@ const ViewWorkoutPlan = () => {
   const [exerciseGoals, setExerciseGoals] = useState([]);
   const { title, id } = route.params;
   const [isLoading, setIsLoading] = useState(false);
+
+  const { width } = useWindowDimensions();
 
   const fetchWorkout = async () => {
     setIsLoading(true);
@@ -164,11 +167,18 @@ const ViewWorkoutPlan = () => {
                       />
                     </VStack>
                     <VStack>
-                      <HStack>
-                        <Text fontSize="lg" fontWeight="600">
+                      <View w={160}>
+                        <Text
+                          fontSize={
+                            item.exerciseInfo.title.length > 19
+                              ? Math.round(width / 22)
+                              : 18
+                          }
+                          fontWeight="600"
+                        >
                           {item.exerciseInfo.title}
                         </Text>
-                      </HStack>
+                      </View>
                       <HStack>
                         <Text>
                           {item.exerciseInfo.exerciseType} -{" "}
