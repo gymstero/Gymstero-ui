@@ -164,7 +164,7 @@ const ModifyExercise = () => {
                     onPress={() => deleteExercise(exercise.id)}
                     backgroundColor={theme.colors.secondary}
                   >
-                    <Text color={theme.colors.text}>Delete</Text>
+                    <Text color={theme.colors.text}>Remove Exercise</Text>
                   </Button>
                 </VStack>
               </HStack>
