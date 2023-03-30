@@ -13,6 +13,7 @@ import {
   HStack,
   Spacer,
   Image,
+  PlayIcon,
 } from "native-base";
 import React, { useState, useEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -163,24 +164,67 @@ const ViewWorkoutPlan = () => {
                       />
                     </VStack>
                     <VStack>
-                      <Text fontSize="lg" fontWeight="600">
-                        {item.exerciseInfo.title}
-                      </Text>
-                      <Text>
-                        {item.exerciseInfo.exerciseType} -{" "}
-                        {item.exerciseInfo.muscleGroup}
-                      </Text>
+                      <HStack>
+                        <Text fontSize="lg" fontWeight="600">
+                          {item.exerciseInfo.title}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Text>
+                          {item.exerciseInfo.exerciseType} -{" "}
+                          {item.exerciseInfo.muscleGroup}
+                        </Text>
+                      </HStack>
+
+                      <HStack mt={1}>
+                        <Button
+                          backgroundColor={theme.colors.primary}
+                          onPress={() => navigation.navigate("Dashboard")}
+                        >
+                          <HStack>
+                            <PlayIcon
+                              mt={1}
+                              mr={1}
+                              color={theme.colors.secondary}
+                            />
+                            <Text color={theme.colors.text}>Exercise Demo</Text>
+                          </HStack>
+                        </Button>
+                      </HStack>
                     </VStack>
                     <Spacer />
                     <VStack alignSelf="center">
-                      <ChevronUpIcon
-                        color={theme.colors.secondary}
+                      <Pressable
                         onPress={() => changeOrder(index, "UP")}
-                      />
-                      <ChevronDownIcon
-                        color={theme.colors.secondary}
+                        style={{
+                          borderColor: theme.colors.secondary,
+                          borderWidth: 1,
+                          padding: 5,
+                          borderRadius: 10,
+                          margin: 2,
+                        }}
+                      >
+                        <ChevronUpIcon
+                          size={6}
+                          color={theme.colors.secondary}
+                        />
+                      </Pressable>
+
+                      <Pressable
                         onPress={() => changeOrder(index, "DOWN")}
-                      />
+                        style={{
+                          borderColor: theme.colors.secondary,
+                          borderWidth: 1,
+                          padding: 5,
+                          borderRadius: 10,
+                          margin: 2,
+                        }}
+                      >
+                        <ChevronDownIcon
+                          size={6}
+                          color={theme.colors.secondary}
+                        />
+                      </Pressable>
                     </VStack>
                   </HStack>
                 </Box>
@@ -220,8 +264,8 @@ const ViewWorkoutPlan = () => {
           <Box w="100%">
             <Button
               p="2"
-              mt={3}
-              mb={2}
+              mt={8}
+              mb={3}
               variant="outline"
               title="Run"
               backgroundColor={theme.colors.primary}
