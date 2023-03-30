@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import Video from "react-native-video";
-import ExerciseData from "./exerciseData.json";
 import { StyleSheet, TouchableOpacity, Pressable } from "react-native";
 import {
   NativeBaseProvider,
@@ -26,8 +25,12 @@ const ExerciseDetails = () => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const route = useRoute();
   const navigation = useNavigation();
-  const [page,setPage] = useState("");
-  const [ExerciseData, setExerciseData] = useState({description: "", instructions: [""], warning: ["22",'11']});
+  const [page, setPage] = useState("");
+  const [ExerciseData, setExerciseData] = useState({
+    description: "",
+    instructions: [""],
+    warning: ["22", "11"],
+  });
   const onLayout = (event) => {
     const { width } = event.nativeEvent.layout;
     const height = (width * 9) / 10;
@@ -50,7 +53,7 @@ const ExerciseDetails = () => {
 
   //const { description, instructions, warning } = ExerciseData;
 
-  const descriptionToShow  = showFullDescription
+  const descriptionToShow = showFullDescription
     ? ExerciseData.description
     : `${ExerciseData.description.slice(0, 100)}...`;
 
@@ -58,7 +61,9 @@ const ExerciseDetails = () => {
     ? ExerciseData.instructions
     : ExerciseData.instructions.slice(0, 1);
 
-  const warningsToDisplay = showFullWarning ? ExerciseData.warning : ExerciseData.warning.slice(0, 1);
+  const warningsToDisplay = showFullWarning
+    ? ExerciseData.warning
+    : ExerciseData.warning.slice(0, 1);
   //-------------------------------------------
   const fetchExercise = async () => {
     const idToken = await getIdToken();
@@ -74,47 +79,58 @@ const ExerciseDetails = () => {
       .then((res) => res.json())
       .then((res) => {
         setExerciseData(res.exercise);
-        console.info("exercise fetched", res.exercise,ExerciseData);
+        console.info("exercise fetched", res.exercise, ExerciseData);
       })
       .catch((err) => {
         console.warn(err);
-      })
+      });
   };
   useEffect(() => {
     fetchExercise();
-  },[])
+  }, []);
   useEffect(() => {
-    
     setPage(route.params.page);
     console.log(route.params.page);
-}, [route]);
+  }, [route]);
   //-------------------------------------------
   return (
     <NativeBaseProvider>
       <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
-        { page == "update" && (
+        {page == "update" && (
           <HStack alignItems={"center"}>
-          <Pressable>
-            <ArrowBackIcon ml={2} color={theme.colors.primary} size={7} onPress={() => navigation.goBack()} />
-          </Pressable>
+            <Pressable>
+              <ArrowBackIcon
+                ml={2}
+                color={theme.colors.primary}
+                size={7}
+                onPress={() => navigation.goBack()}
+              />
+            </Pressable>
 
-          <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
-            <Text style={[customStyles.header, { color: "black" }]}>
-              {ExerciseData.title}
-            </Text>
-          </View>
-          <Pressable>
-            <CheckIcon mr={2} color={theme.colors.primary} size={7} onPress={() =>
-                    navigation.navigate("CreateExercise", {
-                      id: route.params.id,
-                      title: route.params.title,
-                      workoutTitle: route.params.workoutTitle,
-                      workoutId: route.params.workoutId,
-                    })
-                  }/>
-          </Pressable>
-        </HStack>
-        ) }             
+            <View
+              style={{ flex: 1, flexDirection: "row", alignItems: "center" }}
+            >
+              <Text style={[customStyles.header, { color: "black" }]}>
+                {ExerciseData.title}
+              </Text>
+            </View>
+            <Pressable>
+              <CheckIcon
+                mr={2}
+                color={theme.colors.primary}
+                size={7}
+                onPress={() =>
+                  navigation.navigate("CreateExercise", {
+                    id: route.params.id,
+                    title: route.params.title,
+                    workoutTitle: route.params.workoutTitle,
+                    workoutId: route.params.workoutId,
+                  })
+                }
+              />
+            </Pressable>
+          </HStack>
+        )}
         <View style={{ flex: 1 }} onLayout={onLayout}>
           <Video
             source={exerciseMedia[route.params.id].video} // just update the source for example source={{ uri: 'http://www.example.com/video.mp4' }}
