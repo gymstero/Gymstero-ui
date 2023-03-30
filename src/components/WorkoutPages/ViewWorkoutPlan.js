@@ -13,7 +13,7 @@ import {
   HStack,
   Spacer,
   Image,
-  PlayIcon,
+  InfoOutlineIcon,
 } from "native-base";
 import React, { useState, useEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -189,15 +189,16 @@ const ViewWorkoutPlan = () => {
                       <HStack mt={1}>
                         <Button
                           backgroundColor={theme.colors.primary}
-                          onPress={() => navigation.navigate("Dashboard")}
+                          onPress={() => navigation.navigate("ExerciseNav", {screen: "ExerciseDetails" ,
+                                params: {page: "" ,id:item.exerciseInfo.id }})}
                         >
                           <HStack>
-                            <PlayIcon
+                            <InfoOutlineIcon
                               mt={1}
                               mr={1}
                               color={theme.colors.secondary}
                             />
-                            <Text color={theme.colors.text}>Exercise Demo</Text>
+                            <Text color={theme.colors.text}>Exercise Info</Text>
                           </HStack>
                         </Button>
                       </HStack>
