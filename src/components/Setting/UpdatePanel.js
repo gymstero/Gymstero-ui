@@ -44,13 +44,17 @@ const UpdatePanel = ({ userData, setUserData, setEditMode }) => {
       <Container mt={5}>
         <Flex flexDirection="row">
           <Image
+            style={{
+              width: 100,
+              height: 100,
+              borderRadius: 10,
+            }}
             source={{
               uri:
-                userData.photoURL ||
+                (userData && userData.photoURL) ||
                 "https://img.icons8.com/ios-glyphs/90/000000/user--v1.png",
             }}
             alt="user profile"
-            size="xl"
             flex={2}
           />
           <Container mx={5} flex={3} my="auto">
@@ -97,6 +101,7 @@ const UpdatePanel = ({ userData, setUserData, setEditMode }) => {
           <Switch
             size="lg"
             value={userData.publicUser}
+            colorScheme={"red"}
             onToggle={(value) =>
               setUserData({
                 ...userData,
@@ -129,7 +134,7 @@ const UpdatePanel = ({ userData, setUserData, setEditMode }) => {
           width={200}
           onPress={saveButtonPressed}
         >
-          Save
+          Update
         </Button>
       </Container>
     </>
