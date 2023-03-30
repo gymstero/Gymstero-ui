@@ -7,6 +7,7 @@ import {
   Box,
   FormControl,
   Input,
+  ScrollView,
 } from "native-base";
 import { useState } from "react";
 import { customStyles } from "../../theme/customStyles";
@@ -60,73 +61,75 @@ const CreateExercise = () => {
       });
   };
   return (
-    <NativeBaseProvider flex={1} bg="red">
-      <VStack direction="column" mt="100" space={10}>
-        <Box alignItems="center">
-          <Text>{route.params.title}</Text>
-          <FormControl isInvalid w="85%" maxW="350px" mb="5">
-            <FormControl.Label>Target Sets</FormControl.Label>
-            <Input
-              placeholder="enter target set"
-              onChangeText={(text) =>
-                SetExercise({
-                  ...exercise,
-                  targetSets: text,
-                })
-              }
-            />
-            <FormControl.Label>Target Reps</FormControl.Label>
-            <Input
-              placeholder="Enter Target Reps"
-              onChangeText={(text) =>
-                SetExercise({
-                  ...exercise,
-                  targetReps: text,
-                })
-              }
-            />
-            <FormControl.Label>Target Weight - kg</FormControl.Label>
-            <Input
-              placeholder="Enter Weight"
-              onChangeText={(text) =>
-                SetExercise({
-                  ...exercise,
-                  targetWeight: text,
-                })
-              }
-            />
-            <FormControl.Label>Estimated Time - mins</FormControl.Label>
-            <Input
-              placeholder="Enter Estimated Time"
-              onChangeText={(text) =>
-                SetExercise({
-                  ...exercise,
-                  estimatedTime: text,
-                })
-              }
-            />
-            <FormControl.Label>Comment</FormControl.Label>
-            <Input
-              placeholder="Enter comment"
-              onChangeText={(text) =>
-                SetExercise({
-                  ...exercise,
-                  comment: text,
-                })
-              }
-            />
-          </FormControl>
-          <Button
-            rounded="full"
-            w="85%"
-            p="4"
-            onPress={submitExercise}
-            backgroundColor={theme.colors.secondary}
-          >
-            Submit
-          </Button>
-        </Box>
-      </VStack>
+    <NativeBaseProvider>
+      <ScrollView backgroundColor={theme.colors.background}>
+        <VStack direction="column" mt="100" space={10}>
+          <Box alignItems="center">
+            <Text style={customStyles.header}>{route.params.title}</Text>
+            <FormControl isInvalid w="85%" maxW="350px" mb="5">
+              <FormControl.Label>Target Sets</FormControl.Label>
+              <Input
+                placeholder="enter target set"
+                onChangeText={(text) =>
+                  SetExercise({
+                    ...exercise,
+                    targetSets: text,
+                  })
+                }
+              />
+              <FormControl.Label>Target Reps</FormControl.Label>
+              <Input
+                placeholder="Enter Target Reps"
+                onChangeText={(text) =>
+                  SetExercise({
+                    ...exercise,
+                    targetReps: text,
+                  })
+                }
+              />
+              <FormControl.Label>Target Weight - kg</FormControl.Label>
+              <Input
+                placeholder="Enter Weight"
+                onChangeText={(text) =>
+                  SetExercise({
+                    ...exercise,
+                    targetWeight: text,
+                  })
+                }
+              />
+              <FormControl.Label>Estimated Time - mins</FormControl.Label>
+              <Input
+                placeholder="Enter Estimated Time"
+                onChangeText={(text) =>
+                  SetExercise({
+                    ...exercise,
+                    estimatedTime: text,
+                  })
+                }
+              />
+              <FormControl.Label>Comment</FormControl.Label>
+              <Input
+                placeholder="Enter comment"
+                onChangeText={(text) =>
+                  SetExercise({
+                    ...exercise,
+                    comment: text,
+                  })
+                }
+              />
+            </FormControl>
+            <Button
+              rounded="full"
+              w="170"
+              p="2"
+              onPress={submitExercise}
+              backgroundColor={theme.colors.secondary}
+            >
+              Set
+            </Button>
+          </Box>
+        </VStack>
+      </ScrollView>
     </NativeBaseProvider>
   );
 };
