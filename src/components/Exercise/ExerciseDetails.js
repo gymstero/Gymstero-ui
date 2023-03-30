@@ -96,7 +96,7 @@ const ExerciseDetails = () => {
   return (
     <NativeBaseProvider>
       <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
-        {page == "update" && (
+      
           <HStack alignItems={"center"}>
             <Pressable>
               <ArrowBackIcon
@@ -114,6 +114,7 @@ const ExerciseDetails = () => {
                 {ExerciseData.title}
               </Text>
             </View>
+            {page == "update" && (
             <Pressable>
               <CheckIcon
                 mr={2}
@@ -129,8 +130,9 @@ const ExerciseDetails = () => {
                 }
               />
             </Pressable>
+            )}
           </HStack>
-        )}
+        
         <View style={{ flex: 1 }} onLayout={onLayout}>
           <Video
             source={exerciseMedia[route.params.id].video} // just update the source for example source={{ uri: 'http://www.example.com/video.mp4' }}
