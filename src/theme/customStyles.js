@@ -1,5 +1,5 @@
-import { Center } from "native-base";
-import { theme } from "./theme";
+import { theme } from './theme';
+
 export const customStyles = {
     container: {
         padding: 2,
