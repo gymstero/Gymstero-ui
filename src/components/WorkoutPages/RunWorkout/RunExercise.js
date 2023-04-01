@@ -39,6 +39,7 @@ const RunExercise = () => {
     if (count < exercises.length - 1) {
       let num = count + 1;
       setCount(num);
+      setTimer(exercises[num].estimatedTime * 60);
       setIsPlaying(false);
       setReveal(false);
       setKey((prevKey) => prevKey + 1);
@@ -68,6 +69,7 @@ const RunExercise = () => {
   useEffect(() => {
     setPlayVideo(true);
     setExercises(route.params.exercises);
+    setTimer(route.params.exercises[count].estimatedTime * 60);
     console.log(route.params.exercises);
   }, [route]);
 
