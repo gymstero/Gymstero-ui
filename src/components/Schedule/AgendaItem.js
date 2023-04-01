@@ -43,72 +43,71 @@ const AgendaItem = (props) => {
   };
 
   return (
-    <>
-      <TouchableOpacity style={styles.item}>
-        <View>
-          <Text style={styles.itemDurationText}>{item.duration}</Text>
-        </View>
-        <View
-          style={{
-            backgroundColor: item.color,
-            padding: 10,
-            borderRadius: 5,
-            marginLeft: 16,
-            flex: 2,
-          }}
-        >
-          <Text style={styles.itemTitleText}>{item.title}</Text>
-        </View>
-        <View style={styles.itemButtonContainer}>
-          <Button
-            backgroundColor={theme.colors.secondary}
-            onPress={() => {
-              setScheduleToDelete({
-                id: item.id,
-                title: item.title,
-              });
-              setIsOpen(!isOpen);
-            }}
-          >
-            Delete
-          </Button>
-        </View>
-      </TouchableOpacity>
-      <AlertDialog
-        leastDestructiveRef={cancelRef}
-        isOpen={isOpen}
-        onClose={onClose}
-      >
-        <AlertDialog.Content>
-          <AlertDialog.CloseButton />
-          <AlertDialog.Header>Delete Workout Schedule</AlertDialog.Header>
-          <AlertDialog.Body>
-            {`Are you sure to remove ${scheduleToDelete.title} schedule? Workout data will be kept.`}
-          </AlertDialog.Body>
-          <AlertDialog.Footer>
-            <Button.Group space={2}>
-              <Button
-                variant="unstyled"
-                colorScheme="coolGray"
-                onPress={onClose}
-                ref={cancelRef}
-              >
-                Cancel
-              </Button>
-              <Button
-                colorScheme="red"
-                onPress={() => {
-                  deleteSchedule(scheduleToDelete.id);
-                  onClose();
-                }}
-              >
-                Delete
-              </Button>
-            </Button.Group>
-          </AlertDialog.Footer>
-        </AlertDialog.Content>
-      </AlertDialog>
-    </>
+      <>
+          <TouchableOpacity style={styles.item}>
+              <View>
+                  <Text w={8} style={styles.itemDurationText}>
+                      {item.duration}
+                  </Text>
+              </View>
+              <View
+                  style={{
+                      backgroundColor: item.color,
+                      padding: 10,
+                      borderRadius: 5,
+                      marginLeft: 16,
+                      flex: 2,
+                  }}>
+                  <Text style={styles.itemTitleText}>{item.title}</Text>
+              </View>
+              <View style={styles.itemButtonContainer}>
+                  <Button
+                      backgroundColor={theme.colors.secondary}
+                      onPress={() => {
+                          setScheduleToDelete({
+                              id: item.id,
+                              title: item.title,
+                          });
+                          setIsOpen(!isOpen);
+                      }}>
+                      Delete
+                  </Button>
+              </View>
+          </TouchableOpacity>
+          <AlertDialog
+              leastDestructiveRef={cancelRef}
+              isOpen={isOpen}
+              onClose={onClose}>
+              <AlertDialog.Content>
+                  <AlertDialog.CloseButton />
+                  <AlertDialog.Header>
+                      Delete Workout Schedule
+                  </AlertDialog.Header>
+                  <AlertDialog.Body>
+                      {`Are you sure to remove ${scheduleToDelete.title} schedule? Workout data will be kept.`}
+                  </AlertDialog.Body>
+                  <AlertDialog.Footer>
+                      <Button.Group space={2}>
+                          <Button
+                              variant='unstyled'
+                              colorScheme='coolGray'
+                              onPress={onClose}
+                              ref={cancelRef}>
+                              Cancel
+                          </Button>
+                          <Button
+                              colorScheme='red'
+                              onPress={() => {
+                                  deleteSchedule(scheduleToDelete.id);
+                                  onClose();
+                              }}>
+                              Delete
+                          </Button>
+                      </Button.Group>
+                  </AlertDialog.Footer>
+              </AlertDialog.Content>
+          </AlertDialog>
+      </>
   );
 };
 
