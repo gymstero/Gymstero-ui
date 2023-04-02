@@ -20,6 +20,7 @@ import {
 import auth from "@react-native-firebase/auth";
 import Logo from "../../images/gymsteroLogo.png";
 import { customStyles } from "../../theme/customStyles";
+import { REACT_APP_API_URL } from '../../../config';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -64,25 +65,25 @@ const Login = () => {
       password: password,
     };
 
-    fetch("http://10.0.2.2:8080/user/login", {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify(userData),
+    fetch(`${REACT_APP_API_URL}/user/login`, {
+        method: 'POST',
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify(userData),
     })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.code > 201) {
-          setUserMessage(res.message);
-          setError(true);
-        } else {
-          navigation.navigate("Home");
-        }
-      })
-      .catch((err) => {
-        console.error("Error in login", err);
-        setUserMessage("Something went wrong in login");
-        setError(true);
-      });
+        .then((res) => res.json())
+        .then((res) => {
+            if (res.code > 201) {
+                setUserMessage(res.message);
+                setError(true);
+            } else {
+                navigation.navigate('Home');
+            }
+        })
+        .catch((err) => {
+            console.error('Error in login', err);
+            setUserMessage('Something went wrong in login');
+            setError(true);
+        });
   };
 
   GoogleSignin.configure({

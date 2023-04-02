@@ -4,6 +4,7 @@ import { getUser, getIdToken } from "../auth/auth";
 import UpdatePanel from "./UpdatePanel";
 import UserInfoPanel from "./UserInfoPanel";
 import { customStyles } from "../../theme/customStyles";
+import { REACT_APP_API_URL } from '../../../config';
 
 const Setting = () => {
   const [editMode, setEditMode] = useState(false);
@@ -15,22 +16,22 @@ const Setting = () => {
     const userInfo = await getUser();
     const idToken = await getIdToken();
 
-    fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/setting`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${idToken}`,
-      },
+    fetch(`${REACT_APP_API_URL}/api/user/${userInfo.uid}/setting`, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${idToken}`,
+        },
     })
-      .then((res) => res.json())
-      .then((res) => {
-        setUserData(res.userData);
-        console.info("User data fetched", userData);
-      })
-      .catch((err) => {
-        console.warn(err);
-      });
+        .then((res) => res.json())
+        .then((res) => {
+            setUserData(res.userData);
+            console.info('User data fetched', userData);
+        })
+        .catch((err) => {
+            console.warn(err);
+        });
   };
 
   useEffect(() => {

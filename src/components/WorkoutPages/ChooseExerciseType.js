@@ -13,8 +13,7 @@ import CalisthenicsImage from "../../images/Calisthenics.jpg";
 import CardioImage from "../../images/Cardio.jpg";
 import CoreImage from "../../images/Core.jpg";
 import WeightLiftingImage from "../../images/WeightLifting.jpg";
-import { theme } from "../../theme/theme";
-import { customStyles } from "../../theme/customStyles";
+import { theme } from '../../theme/theme';
 
 const ChooseExerciseType = () => {
 

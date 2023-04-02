@@ -24,6 +24,7 @@ import { theme } from "../../theme/theme";
 import { FontAwesome } from "@expo/vector-icons";
 import { ActivityIndicator } from "react-native";
 import { useWindowDimensions } from "react-native";
+import { REACT_APP_API_URL } from '../../../config';
 
 const ViewWorkoutPlan = () => {
   const navigation = useNavigation();
@@ -39,23 +40,23 @@ const ViewWorkoutPlan = () => {
     setIsLoading(true);
     const idToken = await getIdToken();
 
-    fetch(`http://10.0.2.2:8080/api/workout/${id}/exercise-goals`, {
-      method: "Get",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${idToken}`,
-      },
+    fetch(`${REACT_APP_API_URL}/api/workout/${id}/exercise-goals`, {
+        method: 'Get',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${idToken}`,
+        },
     })
-      .then((res) => res.json())
-      .then((res) => {
-        setExerciseGoals(res.exerciseGoals);
-        console.info("User exercise goals fetched", res);
-      })
-      .catch((err) => {
-        console.warn(err);
-      })
-      .finally(() => setIsLoading(false));
+        .then((res) => res.json())
+        .then((res) => {
+            setExerciseGoals(res.exerciseGoals);
+            console.info('User exercise goals fetched', res);
+        })
+        .catch((err) => {
+            console.warn(err);
+        })
+        .finally(() => setIsLoading(false));
   };
 
   const updateWorkout = async () => {
@@ -66,23 +67,23 @@ const ViewWorkoutPlan = () => {
       exerciseGoalIds.unshift(exerciseGoal.id)
     );
 
-    fetch(`http://10.0.2.2:8080/api/workout/${id}`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${idToken}`,
-      },
-      body: JSON.stringify(exerciseGoalIds),
+    fetch(`${REACT_APP_API_URL}/api/workout/${id}`, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${idToken}`,
+        },
+        body: JSON.stringify(exerciseGoalIds),
     })
-      .then((res) => res.json())
-      .then((res) => {
-        console.info("Workout plan updated", res);
-        navigation.navigate("WorkoutMainPage");
-      })
-      .catch((err) => {
-        console.warn(err);
-      });
+        .then((res) => res.json())
+        .then((res) => {
+            console.info('Workout plan updated', res);
+            navigation.navigate('WorkoutMainPage');
+        })
+        .catch((err) => {
+            console.warn(err);
+        });
   };
 
   const reorderArray = (event) => {

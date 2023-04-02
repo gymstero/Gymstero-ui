@@ -1,24 +1,25 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import Video from "react-native-video";
-import { StyleSheet, TouchableOpacity, Pressable } from "react-native";
+import { REACT_APP_API_URL } from '../../../config';
+import React, { useEffect } from 'react';
+import { useState } from 'react';
+import Video from 'react-native-video';
+import { StyleSheet, TouchableOpacity, Pressable } from 'react-native';
 import {
-  NativeBaseProvider,
-  Text,
-  ScrollView,
-  View,
-  HStack,
-  ArrowBackIcon,
-  CheckIcon,
-} from "native-base";
+    NativeBaseProvider,
+    Text,
+    ScrollView,
+    View,
+    HStack,
+    ArrowBackIcon,
+    CheckIcon,
+} from 'native-base';
 
-import { customStyles } from "../../theme/customStyles";
-import { FontAwesome } from "@expo/vector-icons";
-import { theme } from "../../theme/theme";
-import LinearGradient from "react-native-linear-gradient";
-import exerciseMedia from "../../exerciseContent/exerciseMedia";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { getIdToken } from "../auth/auth";
+import { customStyles } from '../../theme/customStyles';
+import { FontAwesome } from '@expo/vector-icons';
+import { theme } from '../../theme/theme';
+import LinearGradient from 'react-native-linear-gradient';
+import exerciseMedia from '../../exerciseContent/exerciseMedia';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { getIdToken } from '../auth/auth';
 
 const ExerciseDetails = () => {
     // Video dimension calculation
@@ -66,7 +67,7 @@ const ExerciseDetails = () => {
     const fetchExercise = async () => {
         const idToken = await getIdToken();
 
-        fetch(`http://10.0.2.2:8080/api/workout/exercise/${route.params.id}`, {
+        fetch(`${REACT_APP_API_URL}/api/workout/exercise/${route.params.id}`, {
             method: 'Get',
             headers: {
                 Accept: 'application/json',

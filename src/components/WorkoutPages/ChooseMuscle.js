@@ -14,7 +14,7 @@ import TricepsImage from "../../images/Triceps.png";
 import LegsImage from "../../images/Legs.png";
 import BackImage from "../../images/Back.png";
 import { theme } from "../../theme/theme";
-import { customStyles } from "../../theme/customStyles";
+
 const ChooseMuscle = () => {
   const navigation = useNavigation();
   const route = useRoute();

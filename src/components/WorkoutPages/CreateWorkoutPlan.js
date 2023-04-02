@@ -8,79 +8,78 @@ import {
 } from "native-base";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { getUser, getIdToken } from "../auth/auth";
-
+import { getUser, getIdToken } from '../auth/auth';
 import { theme } from "../../theme/theme";
 import { customStyles } from "../../theme/customStyles";
+import { REACT_APP_API_URL } from '../../../config';
 
 const CreateWorkoutPlan = () => {
-  const [plan, setPlan] = useState({
-    id: "",
-    title: "",
-  });
-  const navigation = useNavigation();
+    const [plan, setPlan] = useState({
+        id: '',
+        title: '',
+    });
+    const navigation = useNavigation();
 
-  const submitWorkoutPlan = async () => {
-    const userInfo = await getUser();
-    const idToken = await getIdToken();
+    const submitWorkoutPlan = async () => {
+        const userInfo = await getUser();
+        const idToken = await getIdToken();
 
-    fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/workout`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${idToken}`,
-      },
-      body: JSON.stringify({
-        title: plan.title,
-        exerciseGoals: [],
-      }),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.info("Workout fetched", res);
-        navigation.navigate("ViewWorkoutPlan", {
-          id: res.id,
-          title: plan.title,
-        });
-      })
-      .catch((err) => {
-        console.warn(err);
-      });
-  };
-  return (
-    <NativeBaseProvider>
-      <View style={customStyles.container}>
-        <Box w="100%" alignItems="center" style={customStyles.h1}>
-          <Heading color={theme.colors.primary} p="2">
-            New Workout Plan
-          </Heading>
-        </Box>
-        <Box w="100%" alignItems="center">
-          <Input
-            p="2"
-            mt="2"
-            placeholder="Enter Workout Title"
-            onChangeText={(text) =>
-              setPlan({
-                ...plan,
-                title: text,
-              })
-            }
-          />
-          <Button
-            backgroundColor={theme.colors.secondary}
-            w="50%"
-            mt="5"
-            rounded="full"
-            onPress={submitWorkoutPlan}
-          >
-            Next
-          </Button>
-        </Box>
-      </View>
-    </NativeBaseProvider>
-  );
+        fetch(`${REACT_APP_API_URL}/api/user/${userInfo.uid}/workout`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${idToken}`,
+            },
+            body: JSON.stringify({
+                title: plan.title,
+                exerciseGoals: [],
+            }),
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                console.info('Workout fetched', res);
+                navigation.navigate('ViewWorkoutPlan', {
+                    id: res.id,
+                    title: plan.title,
+                });
+            })
+            .catch((err) => {
+                console.warn(err);
+            });
+    };
+    return (
+        <NativeBaseProvider>
+            <View style={customStyles.container}>
+                <Box w='100%' alignItems='center' style={customStyles.h1}>
+                    <Heading color={theme.colors.primary} p='2'>
+                        New Workout Plan
+                    </Heading>
+                </Box>
+                <Box w='100%' alignItems='center'>
+                    <Input
+                        p='2'
+                        mt='2'
+                        placeholder='Enter Workout Title'
+                        onChangeText={(text) =>
+                            setPlan({
+                                ...plan,
+                                title: text,
+                            })
+                        }
+                    />
+                    <Button
+                        backgroundColor={theme.colors.secondary}
+                        w='50%'
+                        mt='5'
+                        rounded='full'
+                        onPress={submitWorkoutPlan}>
+                        Next
+                    </Button>
+                </Box>
+            </View>
+        </NativeBaseProvider>
+    );
 };
 
 const styles = {

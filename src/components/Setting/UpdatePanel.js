@@ -1,40 +1,39 @@
 import React from "react";
 import {
-  Box,
-  Button,
-  Container,
-  Flex,
-  Image,
-  Switch,
-  Text,
-  Input,
-  TextArea,
-  Spacer,
-  View,
-} from "native-base";
+    Box,
+    Button,
+    Container,
+    Flex,
+    Image,
+    Switch,
+    Text,
+    Input,
+    TextArea,
+    Spacer,
+} from 'native-base';
 import { getUser, getIdToken } from "../auth/auth";
 import { theme } from "../../theme/theme";
-import { customStyles } from "../../theme/customStyles";
+import { REACT_APP_API_URL } from '../../../config';
 
 const UpdatePanel = ({ userData, setUserData, setEditMode }) => {
   const saveButtonPressed = async () => {
     const userInfo = await getUser();
     const idToken = await getIdToken();
 
-    fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/setting`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${idToken}`,
-      },
-      body: JSON.stringify(userData),
+    fetch(`${REACT_APP_API_URL}/api/user/${userInfo.uid}/setting`, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${idToken}`,
+        },
+        body: JSON.stringify(userData),
     })
-      .then((res) => res.json())
-      .then((res) => console.log("User data saved", res))
-      .catch((err) => {
-        console.error(err);
-      });
+        .then((res) => res.json())
+        .then((res) => console.log('User data saved', res))
+        .catch((err) => {
+            console.error(err);
+        });
 
     setEditMode(false);
   };

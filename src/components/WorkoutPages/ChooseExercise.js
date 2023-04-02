@@ -13,6 +13,8 @@ import { theme } from "../../theme/theme";
 import { getIdToken } from "../auth/auth";
 import ItemCard from "../Layout/ItemCard";
 import { ActivityIndicator } from "react-native";
+import { REACT_APP_API_URL } from '../../../config';
+
 const ChooseExercise = () => {
   const route = useRoute();
   const navigation = useNavigation();
@@ -35,25 +37,25 @@ const ChooseExercise = () => {
       mGroupQuery = `muscleGroup=${route.params.mGroup}`;
     }
     fetch(
-      `http://10.0.2.2:8080/api/workout/exercises?${eTypeQuery}&${mGroupQuery}`,
-      {
-        method: "Get",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${idToken}`,
-        },
-      }
+        `${REACT_APP_API_URL}/api/workout/exercises?${eTypeQuery}&${mGroupQuery}`,
+        {
+            method: 'Get',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${idToken}`,
+            },
+        }
     )
-      .then((res) => res.json())
-      .then((res) => {
-        setExercises(res.exercises);
-        console.info("Exercises are fetched", res.exercises);
-      })
-      .catch((err) => {
-        console.warn(err);
-      })
-      .finally(() => setLoading(false));
+        .then((res) => res.json())
+        .then((res) => {
+            setExercises(res.exercises);
+            console.info('Exercises are fetched', res.exercises);
+        })
+        .catch((err) => {
+            console.warn(err);
+        })
+        .finally(() => setLoading(false));
   };
 
   useEffect(() => {

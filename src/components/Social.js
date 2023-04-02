@@ -16,6 +16,7 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { getIdToken, getUser } from './auth/auth';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { theme } from '../theme/theme';
+import { REACT_APP_API_URL } from '../../config';
 
 const Social = () => {
     const [workouts, setWorkouts] = useState([]);
@@ -37,7 +38,7 @@ const Social = () => {
         const userInfo = await getUser();
         const idToken = await getIdToken();
 
-        fetch(`http://10.0.2.2:8080/api/workout/user/${userInfo.uid}`, {
+        fetch(`${REACT_APP_API_URL}/api/workout/user/${userInfo.uid}`, {
             method: 'Get',
             headers: {
                 Accept: 'application/json',
@@ -61,7 +62,7 @@ const Social = () => {
         const idToken = await getIdToken();
 
         fetch(
-            `http://10.0.2.2:8080/api/workout/user/${userInfo.uid}?workoutTitle=${input}`,
+            `${REACT_APP_API_URL}/api/workout/user/${userInfo.uid}?workoutTitle=${input}`,
             {
                 method: 'Get',
                 headers: {
@@ -89,7 +90,7 @@ const Social = () => {
         const userInfo = await getUser();
         const idToken = await getIdToken();
 
-        fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}`, {
+        fetch(`${REACT_APP_API_URL}/api/user/${userInfo.uid}`, {
             method: 'Get',
             headers: {
                 Accept: 'application/json',
@@ -115,7 +116,7 @@ const Social = () => {
         const idToken = await getIdToken();
 
         fetch(
-            `http://10.0.2.2:8080/api/user/${userInfo.uid}?username=${input}`,
+            `${REACT_APP_API_URL}/api/user/${userInfo.uid}?username=${input}`,
             {
                 method: 'Get',
                 headers: {
@@ -146,7 +147,7 @@ const Social = () => {
 
         if (!following.includes(otherUserId)) {
             fetch(
-                `http://10.0.2.2:8080/api/user/${userInfo.uid}/following/${otherUserId}`,
+                `${REACT_APP_API_URL}/api/user/${userInfo.uid}/following/${otherUserId}`,
                 {
                     method: 'Put',
                     headers: {
@@ -167,7 +168,7 @@ const Social = () => {
                 });
         } else {
             fetch(
-                `http://10.0.2.2:8080/api/user/${userInfo.uid}/unfollowing/${otherUserId}`,
+                `${REACT_APP_API_URL}/api/user/${userInfo.uid}/unfollowing/${otherUserId}`,
                 {
                     method: 'Put',
                     headers: {
@@ -203,7 +204,7 @@ const Social = () => {
         const idToken = await getIdToken();
 
         fetch(
-            `http://10.0.2.2:8080/api/workout/copy-workout/${workoutId}/to-user/${userInfo.uid}`,
+            `${REACT_APP_API_URL}/api/workout/copy-workout/${workoutId}/to-user/${userInfo.uid}`,
             {
                 method: 'Put',
                 headers: {
@@ -227,7 +228,7 @@ const Social = () => {
         const userInfo = await getUser();
         const idToken = await getIdToken();
 
-        fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/get-following`, {
+        fetch(`${REACT_APP_API_URL}/api/user/${userInfo.uid}/get-following`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
