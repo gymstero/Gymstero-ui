@@ -19,6 +19,7 @@ import {
 import auth from "@react-native-firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../../images/gymsteroLogo.png";
+import { REACT_APP_API_URL } from '../../../config';
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -73,25 +74,25 @@ const Signup = () => {
       confirmPassword: confirmPassword,
     };
 
-    fetch("http://10.0.2.2:8080/user/register", {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify(userData),
+    fetch(`${REACT_APP_API_URL}/user/register`, {
+        method: 'POST',
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify(userData),
     })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.code > 201) {
-          setUserMessage(res.message);
-          setError(true);
-        } else {
-          navigation.navigate("Login");
-        }
-      })
-      .catch((err) => {
-        console.error("Error in signup", err);
-        setUserMessage("Something went wrong while creating user account");
-        setError(true);
-      });
+        .then((res) => res.json())
+        .then((res) => {
+            if (res.code > 201) {
+                setUserMessage(res.message);
+                setError(true);
+            } else {
+                navigation.navigate('Login');
+            }
+        })
+        .catch((err) => {
+            console.error('Error in signup', err);
+            setUserMessage('Something went wrong while creating user account');
+            setError(true);
+        });
   };
 
   GoogleSignin.configure({
@@ -111,10 +112,10 @@ const Signup = () => {
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       const userInfo = await auth().signInWithCredential(googleCredential);
 
-      fetch("http://10.0.2.2:8080/user/signin-with-google", {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(userInfo.user),
+      fetch(`${REACT_APP_API_URL}/user/signin-with-google`, {
+          method: 'POST',
+          headers: { 'Content-type': 'application/json' },
+          body: JSON.stringify(userInfo.user),
       });
       navigation.navigate("Home");
     } catch (err) {

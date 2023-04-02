@@ -13,6 +13,7 @@ import { getUser, getIdToken } from "../auth/auth";
 import { theme } from "../../theme/theme";
 import { customStyles } from "../../theme/customStyles";
 import { ActivityIndicator } from "react-native";
+import { REACT_APP_API_URL } from '../../../config';
 
 const Schedule = () => {
   const [workoutScheduleItems, setWorkoutScheduleItems] = useState([]);
@@ -96,23 +97,23 @@ const Schedule = () => {
     const idToken = await getIdToken();
     setLoading(true);
 
-    fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/workout-schedule`, {
-      method: "Get",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${idToken}`,
-      },
+    fetch(`${REACT_APP_API_URL}/api/user/${userInfo.uid}/workout-schedule`, {
+        method: 'Get',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${idToken}`,
+        },
     })
-      .then((res) => res.json())
-      .then((res) => {
-        console.info("Workout fetched", res.workoutSchedule);
-        addToCalendar(res.workoutSchedule);
-      })
-      .catch((err) => {
-        console.warn(err);
-      })
-      .finally(() => setLoading(false));
+        .then((res) => res.json())
+        .then((res) => {
+            console.info('Workout fetched', res.workoutSchedule);
+            addToCalendar(res.workoutSchedule);
+        })
+        .catch((err) => {
+            console.warn(err);
+        })
+        .finally(() => setLoading(false));
   };
 
   useEffect(() => {

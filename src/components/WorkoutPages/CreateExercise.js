@@ -10,6 +10,7 @@ import {
   ScrollView,
 } from "native-base";
 import { useState } from "react";
+import { REACT_APP_API_URL } from '../../../config';
 import { customStyles } from "../../theme/customStyles";
 import { theme } from "../../theme/theme";
 import { getIdToken } from "../auth/auth";
@@ -30,35 +31,35 @@ const CreateExercise = () => {
     const idToken = await getIdToken();
 
     fetch(
-      `http://10.0.2.2:8080/api/workout/${route.params.workoutId}/exercise-goal`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${idToken}`,
-        },
-        body: JSON.stringify({
-          exerciseId: route.params.id,
-          targetSets: exercise.targetSets,
-          targetReps: exercise.targetReps,
-          targetWeight: exercise.targetWeight,
-          estimatedTime: exercise.estimatedTime,
-          comment: exercise.comment,
-        }),
-      }
+        `${REACT_APP_API_URL}/api/workout/${route.params.workoutId}/exercise-goal`,
+        {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${idToken}`,
+            },
+            body: JSON.stringify({
+                exerciseId: route.params.id,
+                targetSets: exercise.targetSets,
+                targetReps: exercise.targetReps,
+                targetWeight: exercise.targetWeight,
+                estimatedTime: exercise.estimatedTime,
+                comment: exercise.comment,
+            }),
+        }
     )
-      .then((res) => res.json())
-      .then((res) => {
-        console.info("Exercise goal posted", res);
-        navigation.navigate("ViewWorkoutPlan", {
-          id: route.params.workoutId,
-          title: route.params.workoutTitle,
+        .then((res) => res.json())
+        .then((res) => {
+            console.info('Exercise goal posted', res);
+            navigation.navigate('ViewWorkoutPlan', {
+                id: route.params.workoutId,
+                title: route.params.workoutTitle,
+            });
+        })
+        .catch((err) => {
+            console.warn(err);
         });
-      })
-      .catch((err) => {
-        console.warn(err);
-      });
   };
   return (
     <NativeBaseProvider>

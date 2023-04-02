@@ -14,6 +14,7 @@ import {
 import UserInfo from './UserInfo';
 import { getUser, getIdToken } from '../auth/auth';
 import { customStyles } from '../../theme/customStyles';
+import { REACT_APP_API_URL } from '../../../config';
 
 const UserProfile = () => {
     const [userData, setUserData] = useState({});
@@ -24,7 +25,7 @@ const UserProfile = () => {
         const userInfo = await getUser();
         const idToken = await getIdToken();
 
-        fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/profile`, {
+        fetch(`${REACT_APP_API_URL}/api/user/${userInfo.uid}/profile`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -41,7 +42,7 @@ const UserProfile = () => {
                 console.warn(err);
             });
 
-        fetch(`http://10.0.2.2:8080/api/user/${userInfo.uid}/get-connections`, {
+        fetch(`${REACT_APP_API_URL}/api/user/${userInfo.uid}/get-connections`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
