@@ -48,7 +48,7 @@ const SocialCounterHeader = ({ userData }) => {
             alignItems="center"
             variant="outline"
             title="Posts"
-            onPress={() => navigation.navigate("Social")}
+            onPress={() => navigation.navigate("Workout")}
           >
             <Text color={theme.colors.text}>
               {userData ? getWorkoutCount(userData.workouts) : 0}
