@@ -1,7 +1,4 @@
 
-![Logo](https://raw.githubusercontent.com/gymstero/Gymstero-ui/main/src/images/gymsteroLogo.png?token=GHSAT0AAAAAAB5YXDF6OWNCQKZMDGO4IHBUZBKLIRQ)
-
-
 # Gymstero Android App
 
 Gymstero is a React Native Android mobile application with social functionalities which allows you to created Workout Plans, Add Exercises, Schedule Workouts and Share them with your friends.
